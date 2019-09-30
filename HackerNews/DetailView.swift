@@ -10,30 +10,43 @@ import Foundation
 import SwiftUI
 
 struct DetailView: View {
-    let item: Item
-    let comments: [Comment] = sampleComments
+    @ObservedObject var item: Item
+
+    func reload() {
+        item.loadComments()
+    }
+    
+    func indentPixels(_ level: Int) -> CGFloat {
+        return 10 * CGFloat(level)
+    }
 
     var body: some View {
         List {
-            VStack(alignment: .leading) {
-                Text(item.title)
-                    .font(.headline)
-                    .foregroundColor(.primary)
+        VStack(alignment: .leading) {
+            Text(item.title)
+                .font(.headline)
+                .foregroundColor(.primary)
 
-                Text(item.subheading)
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                }
-                                
-                ForEach(comments) { comment in
+            Text(item.subheading)
+                .font(.caption)
+                .foregroundColor(.secondary)
+            }
+                            
+            ForEach(item.comments) { comment in
+                VStack(alignment: .leading) {
+                    Text(comment.author)
+                        .fontWeight(.bold)
+                    Spacer()
                     Text(comment.body)
-                }
-        }.navigationBarTitle("\(comments.count) comments", displayMode: .inline)
+                }.padding(.leading, self.indentPixels(comment.indentLevel))
+            }
+        }.navigationBarTitle("\(item.comments.count) comments", displayMode: .inline)
+        .onAppear(perform: reload)
     }
     
 }
 
-
+/*
 struct DetailView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -41,3 +54,4 @@ struct DetailView_Previews: PreviewProvider {
         }
     }
 }
+*/

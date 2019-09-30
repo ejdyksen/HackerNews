@@ -10,29 +10,35 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject private var service: HackerNewsService
-
+ 
+    func reload() {
+        self.service.load()
+    }
+    
     var body: some View {
         NavigationView {
             MasterView(items: service.topStories)
                 .navigationBarTitle(Text("Top Stories"), displayMode: .automatic)
                 .navigationBarItems(
-                    leading: EditButton(),
                     trailing: Button(
                         action: {
                             self.service.load()
                         }
                     ) {
-                        Text("Load")
+                        Text("Reload")
                     }
                 )
-//            DetailView(item: hnService.topStories.first!)
-        }.navigationViewStyle(DoubleColumnNavigationViewStyle())
-            .accentColor(.orange)
+            if (service.topStories.count > 0 ) {
+                DetailView(item: service.topStories.first!)
+            }
+        }
+        .navigationViewStyle(DoubleColumnNavigationViewStyle())
+        .accentColor(.orange)
+        .onAppear(perform: reload)
     }
 }
 
 struct MasterView: View {
-//    @ObservedObject var hnService: HackerNewsService
     var items: [Item]
 
     var body: some View {
@@ -50,7 +56,8 @@ struct MasterView: View {
                     }
                 }
             }
-        }.animation(.none)
+        }
+        .animation(.none)
     }
 }
 

@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Item: Identifiable {
+class Item: ObservableObject, Identifiable {
     var id: Int                 //req
     let title: String           //req
     let storyLink: URL          //req
@@ -18,7 +18,8 @@ struct Item: Identifiable {
 
     var score: Int?
     var commentCount: Int?
-    var commentLink: URL {
+    @Published var comments: [Comment] = []
+    var itemLink: URL {
         get {
             return URL(string: "https://news.ycombinator.com/item?id=\(self.id)")!
         }
@@ -104,7 +105,33 @@ struct Item: Identifiable {
             self.commentCount = nil
         }
         
-        // Comment URL, optional
-        
+    }
+    
+    func loadComments() {
+        DispatchQueue.global(qos: .userInteractive).async    {
+            let dataTask = URLSession.shared.dataTask(with: self.itemLink) { data, response, error in
+                do {
+                    let doc = try HTMLDocument(data: data!)
+                    let nodeList = doc.css("table.comment-tree tr.athing")
+
+                    var newComments: [Comment] = []
+
+                    for node in nodeList {
+                        let newComment = Comment(withNode: node)
+                        if (newComment != nil) {
+                            newComments.append(newComment!)
+                        }
+                    }
+
+                    DispatchQueue.main.sync {
+                        self.comments = newComments
+                    }
+
+                } catch let error {
+                  print(error)
+                }
+            }
+            dataTask.resume()
+        }
     }
 }
