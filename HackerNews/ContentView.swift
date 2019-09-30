@@ -8,62 +8,57 @@
 
 import SwiftUI
 
-private let dateFormatter: DateFormatter = {
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateStyle = .medium
-    dateFormatter.timeStyle = .medium
-    return dateFormatter
-}()
-
 struct ContentView: View {
-    @EnvironmentObject private var hnService: HackerNewsService
+    @EnvironmentObject private var service: HackerNewsService
 
     var body: some View {
         NavigationView {
-            MasterView(hnService: hnService)
-                .navigationBarTitle(Text("Top Stories"))
+            MasterView(items: service.topStories)
+                .navigationBarTitle(Text("Top Stories"), displayMode: .automatic)
                 .navigationBarItems(
                     leading: EditButton(),
                     trailing: Button(
                         action: {
-                            let _ = self.hnService.load()
+                            self.service.load()
                         }
                     ) {
                         Text("Load")
                     }
                 )
-            DetailView()
+//            DetailView(item: hnService.topStories.first!)
         }.navigationViewStyle(DoubleColumnNavigationViewStyle())
+            .accentColor(.orange)
     }
 }
 
 struct MasterView: View {
-    @ObservedObject var hnService: HackerNewsService
+//    @ObservedObject var hnService: HackerNewsService
+    var items: [Item]
 
     var body: some View {
         List {
-            ForEach(hnService.topStories, id: \.id) { story in
-                NavigationLink(
-                    destination: DetailView()
-                ) {
-                    Text(story.title)
+            ForEach(items) { item in
+                NavigationLink(destination: DetailView(item: item)) {
+                    VStack(alignment: .leading) {
+                        Text(item.title)
+                            .font(.headline)
+                            .foregroundColor(.primary)
+
+                        Text(item.subheading)
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
                 }
             }
-        }
+        }.animation(.none)
     }
 }
 
-struct DetailView: View {
-//    var selectedDate: Date?
-
-    var body: some View {
-        Text("Detail view content goes here")
-    }
-}
-
+ 
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+            .environmentObject(HackerNewsService.exampleService())
     }
 }

@@ -16,10 +16,6 @@ class HackerNewsService: ObservableObject {
     var storiesUpdate: AnyCancellable?
     
     @Published var topStories: [Item] = []
-    
-    init() {
-        self.load()
-    }
 
     func load() {
         DispatchQueue.global(qos: .userInteractive).async {

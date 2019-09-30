@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		29136B28234078BB00F0F88A /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 29136B27234078BB00F0F88A /* libxml2.tbd */; };
 		295071072338838700131247 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295071062338838700131247 /* Data.swift */; };
+		29551D472341958900D3ECC7 /* PreviewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29551D462341958900D3ECC7 /* PreviewData.swift */; };
+		29551D492341AB0100D3ECC7 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29551D482341AB0100D3ECC7 /* DetailView.swift */; };
+		29551D4B2341C4DE00D3ECC7 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29551D4A2341C4DE00D3ECC7 /* Comment.swift */; };
 		29A1E0A5234083CC00357A09 /* Element.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29A1E09C234083CB00357A09 /* Element.swift */; };
 		29A1E0A6234083CC00357A09 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29A1E09D234083CB00357A09 /* Document.swift */; };
 		29A1E0A7234083CC00357A09 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29A1E09E234083CB00357A09 /* Node.swift */; };
@@ -49,6 +52,9 @@
 		2905FCBE233FA33600084FB3 /* libxml2.2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.2.tbd; path = usr/lib/libxml2.2.tbd; sourceTree = SDKROOT; };
 		29136B27234078BB00F0F88A /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
 		295071062338838700131247 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
+		29551D462341958900D3ECC7 /* PreviewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewData.swift; sourceTree = "<group>"; };
+		29551D482341AB0100D3ECC7 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
+		29551D4A2341C4DE00D3ECC7 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		29A1E09C234083CB00357A09 /* Element.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Element.swift; sourceTree = "<group>"; };
 		29A1E09D234083CB00357A09 /* Document.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
 		29A1E09E234083CB00357A09 /* Node.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
@@ -114,7 +120,9 @@
 			isa = PBXGroup;
 			children = (
 				295071062338838700131247 /* Data.swift */,
+				29551D462341958900D3ECC7 /* PreviewData.swift */,
 				29A21011233EA1550083BD2C /* Item.swift */,
+				29551D4A2341C4DE00D3ECC7 /* Comment.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -163,6 +171,7 @@
 				29DE08A82337DF6E00A07BCA /* AppDelegate.swift */,
 				29DE08AA2337DF6E00A07BCA /* SceneDelegate.swift */,
 				29DE08AC2337DF6E00A07BCA /* ContentView.swift */,
+				29551D482341AB0100D3ECC7 /* DetailView.swift */,
 				29DE08AE2337DF6F00A07BCA /* Assets.xcassets */,
 				29DE08B32337DF6F00A07BCA /* LaunchScreen.storyboard */,
 				29DE08B62337DF6F00A07BCA /* Info.plist */,
@@ -335,11 +344,14 @@
 				29A21012233EA1550083BD2C /* Item.swift in Sources */,
 				29A1E0AB234083CC00357A09 /* Helpers.swift in Sources */,
 				29A1E0A5234083CC00357A09 /* Element.swift in Sources */,
+				29551D492341AB0100D3ECC7 /* DetailView.swift in Sources */,
 				29A1E0A7234083CC00357A09 /* Node.swift in Sources */,
+				29551D472341958900D3ECC7 /* PreviewData.swift in Sources */,
 				29A1E0A8234083CC00357A09 /* Error.swift in Sources */,
 				295071072338838700131247 /* Data.swift in Sources */,
 				29A1E0A6234083CC00357A09 /* Document.swift in Sources */,
 				29DE08A92337DF6E00A07BCA /* AppDelegate.swift in Sources */,
+				29551D4B2341C4DE00D3ECC7 /* Comment.swift in Sources */,
 				29A1E0A9234083CC00357A09 /* Queryable.swift in Sources */,
 				29DE08AB2337DF6E00A07BCA /* SceneDelegate.swift in Sources */,
 				29DE08AD2337DF6E00A07BCA /* ContentView.swift in Sources */,

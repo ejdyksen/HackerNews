@@ -8,23 +8,50 @@
 
 import Foundation
 
-struct Item {
-    let id: Int                 //req
+struct Item: Identifiable {
+    var id: Int                 //req
     let title: String           //req
     let storyLink: URL          //req
-//    let domain: String
+    let domain: String
     let age: String
-    let score: Int?             //opt
     let author: String?
-    let commentLink: URL?
-    let commentCount: Int?
-    
+
+    var score: Int?
+    var commentCount: Int?
+    var commentLink: URL {
+        get {
+            return URL(string: "https://news.ycombinator.com/item?id=\(self.id)")!
+        }
+    }
+    var subheading: String {
+        if (score != nil && author != nil) {
+            return "\(score!) points by \(author!) \(age)"
+        } else if (score == nil && author != nil) {
+            return "by \(author!) \(age)"
+        } else if (score != nil && author == nil) {
+            return "\(score!) points \(age)"
+        } else {
+            return age
+        }
+    }
+
+
+    init(id: Int, title: String, storyLink: URL, domain: String, age: String, author: String) {
+        self.id = id
+        self.title = title
+        self.storyLink = storyLink
+        self.domain = domain
+        self.age = age
+        self.author = author
+        self.score = 0
+        self.commentCount = 0
+    }
     
     init?(withNode node: XMLElement) {
         // Gather some additional XMLNodes
         guard
-            let adjacentItem = node.xpath("./following-sibling::tr[1]").first,
-            let storyLinkNode = node.xpath(".//a[@class='storylink']").first
+            let adjacentItem = node.firstChild(xpath: "./following-sibling::tr[1]"),
+            let storyLinkNode = node.firstChild(xpath: ".//a[@class='storylink']")
             else {
                 return nil
         }
@@ -35,17 +62,20 @@ struct Item {
         }
         self.id = id
   
-        // Link to the story, which is required
+        // Link and title, which are required
         guard let href = storyLinkNode.attributes["href"], let storyLink = URL(string: href) else {
             return nil
         }
         self.storyLink = storyLink
-        
-
         self.title = storyLinkNode.stringValue
         
+        guard let domainNode = node.firstChild(xpath: ".//*[@class='sitestr']") else {
+            return nil
+        }
+        self.domain = domainNode.stringValue
+        
         // Age, required
-        guard let ageNode = adjacentItem.xpath(".//*[@class='age']").first else {
+        guard let ageNode = adjacentItem.firstChild(xpath: ".//*[@class='age']") else {
             return nil
         }
         self.age = ageNode.stringValue
@@ -53,7 +83,7 @@ struct Item {
         
         // Score, optional
         if
-            let scoreString = adjacentItem.xpath(".//*[@id='score_\(self.id)']").first?.stringValue,
+            let scoreString = adjacentItem.firstChild(xpath: ".//*[@id='score_\(self.id)']")?.stringValue,
             let scoreStringComponent = scoreString.split(separator: " ").first,
             let score = Int(scoreStringComponent) {
             self.score = score
@@ -62,11 +92,11 @@ struct Item {
         }
         
         // Author, optional
-        self.author = adjacentItem.xpath(".//a[@class='hnuser']").first?.stringValue
+        self.author = adjacentItem.firstChild(xpath: ".//*[@class='hnuser']")?.stringValue
         
         // Comment count, optional
         if
-            let commentCountString = adjacentItem.xpath("./td/a[last()]").first?.stringValue,
+            let commentCountString = adjacentItem.firstChild(xpath: "./td/a[last()]")?.stringValue,
             let commentCountComponent = commentCountString.split(separator: " ").first,
             let commentCount = Int(commentCountComponent) {
             self.commentCount = commentCount
@@ -75,6 +105,6 @@ struct Item {
         }
         
         // Comment URL, optional
-        self.commentLink = URL(string: "https://news.ycombinator.com/item?id=\(self.id)")
+        
     }
 }
