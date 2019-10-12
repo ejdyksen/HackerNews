@@ -1,0 +1,841 @@
+<html op="item"><head><meta name="referrer" content="origin"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" type="text/css" href="news.css?mrkzsHFUB3DwAIsyqoaR">
+            <link rel="shortcut icon" href="favicon.ico">
+        <title>Is Amazon Unstoppable? | Hacker News</title></head><body><center><table id="hnmain" border="0" cellpadding="0" cellspacing="0" width="85%" bgcolor="#f6f6ef">
+        <tr><td bgcolor="#ff6600"><table border="0" cellpadding="0" cellspacing="0" width="100%" style="padding:2px"><tr><td style="width:18px;padding-right:4px"><a href="https://news.ycombinator.com"><img src="y18.gif" width="18" height="18" style="border:1px white solid;"></a></td>
+                  <td style="line-height:12pt; height:10px;"><span class="pagetop"><b class="hnname"><a href="news">Hacker News</a></b>
+              <a href="newest">new</a> | <a href="front">past</a> | <a href="newcomments">comments</a> | <a href="ask">ask</a> | <a href="show">show</a> | <a href="jobs">jobs</a> | <a href="submit">submit</a>            </span></td><td style="text-align:right;padding-right:4px;"><span class="pagetop">
+                              <a href="login?goto=item%3Fid%3D21217220">login</a>
+                          </span></td>
+              </tr></table></td></tr>
+<tr id="pagespace" title="Is Amazon Unstoppable?" style="height:10px"></tr><tr><td><table class="fatitem" border="0">
+        <tr class='athing' id='21217220'>
+      <td align="right" valign="top" class="title"><span class="rank"></span></td>      <td valign="top" class="votelinks"><center><a id='up_21217220' href='vote?id=21217220&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="title"><a href="https://www.newyorker.com/magazine/2019/10/21/is-amazon-unstoppable" class="storylink">Is Amazon Unstoppable?</a><span class="sitebit comhead"> (<a href="from?site=newyorker.com"><span class="sitestr">newyorker.com</span></a>)</span></td></tr><tr><td colspan="2"></td><td class="subtext">
+        <span class="score" id="score_21217220">59 points</span> by <a href="user?id=ericzawo" class="hnuser">ericzawo</a> <span class="age"><a href="item?id=21217220">22 hours ago</a></span> <span id="unv_21217220"></span> | <a href="hide?id=21217220&amp;goto=item%3Fid%3D21217220">hide</a> | <a href="https://hn.algolia.com/?query=Is%20Amazon%20Unstoppable%3F&sort=byDate&dateRange=all&type=story&storyText=false&prefix&page=0" class="hnpast">past</a> | <a href="https://www.google.com/search?q=Is%20Amazon%20Unstoppable%3F">web</a> | <a href="fave?id=21217220&amp;auth=22300b320197409e3e172ffcfcb81faec02aee88">favorite</a> | <a href="item?id=21217220">80&nbsp;comments</a>              </td></tr>
+            <tr style="height:10px"></tr><tr><td colspan="2"></td><td>
+          <form method="post" action="comment"><input type="hidden" name="parent" value="21217220"><input type="hidden" name="goto" value="item?id=21217220"><input type="hidden" name="hmac" value="643753fb4e445de5bab190dcbf3f6328bc65aa37"><textarea name="text" rows="6" cols="60"></textarea>
+                <br><br><input type="submit" value="add comment"></form>
+      </td></tr>
+  </table><br><br>
+  <table border="0" class='comment-tree'>
+            <tr class='athing comtr ' id='21221060'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="0"></td><td valign="top" class="votelinks"><center><a id='up_21221060' href='vote?id=21221060&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=joefourier" class="hnuser">joefourier</a> <span class="age"><a href="item?id=21221060">19 hours ago</a></span> <span id="unv_21221060"></span><span class="par"></span> <a class="togg" n="29" href="javascript:void(0)" onclick="return toggle(event, 21221060)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">I never understood this obsession with Amazon. Their online store does not offer particularly good value apart from fast shipping for commodity items. It’s convenient, but there’s plenty of competition: you can get many of the same goods on AliExpress or eBay for a lot cheaper. And when you need something more specific like audio equipment, electronics components or even a Raspberry Pi, you’ll need to go to a specialised online store as it’s unlikely to be available on Amazon, and if it is it won’t be Prime and will have a massive mark-up.<p>Their cloud offering are the real money-maker, although I’m not personally a fan due to their high price and non-intuitive interface.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21221060&amp;goto=item%3Fid%3D21217220%2321221060">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+        <tr class='athing comtr ' id='21223285'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="40"></td><td valign="top" class="votelinks"><center><a id='up_21223285' href='vote?id=21223285&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=kwanbix" class="hnuser">kwanbix</a> <span class="age"><a href="item?id=21223285">18 hours ago</a></span> <span id="unv_21223285"></span><span class="par"></span> <a class="togg" n="2" href="javascript:void(0)" onclick="return toggle(event, 21223285)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">I cannot talk about Aliexpress because I never ordered there (seems absolutely chaotic for my taste), but rarely do I see better prices on ebay or other merchants. It happens, but it is very rare for my use case.<p>In contrast, Amazon&#x27;s customer service is superb. Let me give you an example of many years ago. I bought an external hard drive in Rakuten, and instead of being 2 TB, I received a 1.5 TB one.<p>I called to complain, and they told me I was outside their complain window. The crazy thing was that for them, their claim window was since they shipped, and this purchase took 4 days to arrive. I was off by 2 days according to them, but totally fine if you count the time from when I received it.<p>This is the opposite experience I have had with Amazon. They are always trying to help and fix things. Now that I live in Germany, Amazon has auto translate so I can keep purchasing things easily. Another example of going the extra length.<p>That said, I try to purchase from other merchants, because a monopoly is never good, so I go to Saturn and MediaMarkt a lot.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21223285&amp;goto=item%3Fid%3D21217220%2321223285">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+        <tr class='athing comtr ' id='21225262'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="80"></td><td valign="top" class="votelinks"><center><a id='up_21225262' href='vote?id=21225262&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=distances" class="hnuser">distances</a> <span class="age"><a href="item?id=21225262">14 hours ago</a></span> <span id="unv_21225262"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 21225262)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">Check also other online shops. Geizhals.de is your friend in Germany.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21225262&amp;goto=item%3Fid%3D21217220%2321225262">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+      <tr class='athing comtr ' id='21223592'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="40"></td><td valign="top" class="votelinks"><center><a id='up_21223592' href='vote?id=21223592&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=ekianjo" class="hnuser">ekianjo</a> <span class="age"><a href="item?id=21223592">17 hours ago</a></span> <span id="unv_21223592"></span><span class="par"></span> <a class="togg" n="11" href="javascript:void(0)" onclick="return toggle(event, 21223592)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">&gt;  Their online store does not offer particularly good value apart from fast shipping for commodity items<p>you forgot the excellent return policy, almost no question asked. Before Amazon that was almost unthinkable and you would wait weeks to be paid back.<p>They have improved e-commerce to the point that it&#x27;s better than most other previous (online) shopping experiences.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21223592&amp;goto=item%3Fid%3D21217220%2321223592">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+        <tr class='athing comtr ' id='21223985'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="80"></td><td valign="top" class="votelinks"><center><a id='up_21223985' href='vote?id=21223985&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=benhurmarcel" class="hnuser">benhurmarcel</a> <span class="age"><a href="item?id=21223985">17 hours ago</a></span> <span id="unv_21223985"></span><span class="par"></span> <a class="togg" n="6" href="javascript:void(0)" onclick="return toggle(event, 21223985)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">It used to be better, not anymore. I used to buy on Amazon first, but these days on Amazon I&#x27;ve had too many fake products, and refurbished products sold as new.<p>True, they refund easily. But I&#x27;d rather not have to return half of my purchases.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21223985&amp;goto=item%3Fid%3D21217220%2321223985">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+        <tr class='athing comtr ' id='21230841'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="120"></td><td valign="top" class="votelinks"><center><a id='up_21230841' href='vote?id=21230841&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=ekianjo" class="hnuser">ekianjo</a> <span class="age"><a href="item?id=21230841">1 hour ago</a></span> <span id="unv_21230841"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 21230841)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">&gt;  these days on Amazon I&#x27;ve had too many fake products<p>I keep seeing this kind of posts on HN, and even though I shop several times a week on Amazon I have never received a fake product. Is this limited to very specific categories?</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21230841&amp;goto=item%3Fid%3D21217220%2321230841">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+    <tr class='athing comtr ' id='21228080'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="120"></td><td valign="top" class="votelinks"><center><a id='up_21228080' href='vote?id=21228080&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=wahern" class="hnuser">wahern</a> <span class="age"><a href="item?id=21228080">9 hours ago</a></span> <span id="unv_21228080"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 21228080)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">So why not only buy products sold by Amazon?<p>I&#x27;ve never had a problem buying third-party products through Amazon, but long before I started reading about fraud stories I always tended to avoid those, anyhow. I like Amazon because of the consistency. For anything expensive, if Amazon doesn&#x27;t sell it directly I&#x27;ll go to a local retailer rather than take the risk. Only rarely do I buy, say, German deodorant from some random importer selling through Amazon. Alternatively, I&#x27;ll buy from an eBay seller as long as they have a solid reputation. The problem with Amazon&#x27;s review system is that it&#x27;s not obvious to me from which seller a customer purchased the product, which sort of makes the review system useless in that regard.<p>So, yes, the review system is problematic, but why avoid Amazon entirely when you can simply avoid non-Amazon sellers? This refrain about fraudulent third-party sellers seems like a non sequitur to me, at least the way it&#x27;s presented. If you&#x27;re avoiding Amazon out of spite for the way they obfuscate seller reputations, then just say that; that&#x27;s a fair argument.<p>EDIT: Here&#x27;s what I look for: &quot;Ships from and sold by Amazon.com.&quot; If you see that, then it means Amazon is getting the product through the same channels as, say, Target. As far as I understand, Amazon won&#x27;t intermingle their inventory in the same bins as third-party inventory, or if they did long ago they no longer do. But feel free to correct me if I&#x27;m wrong.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21228080&amp;goto=item%3Fid%3D21217220%2321228080">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+    <tr class='athing comtr ' id='21227954'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="120"></td><td valign="top" class="votelinks"><center><a id='up_21227954' href='vote?id=21227954&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=notyourwork" class="hnuser">notyourwork</a> <span class="age"><a href="item?id=21227954">10 hours ago</a></span> <span id="unv_21227954"></span><span class="par"></span> <a class="togg" n="3" href="javascript:void(0)" onclick="return toggle(event, 21227954)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">Half sounds like a over dramatization of a minority issue.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21227954&amp;goto=item%3Fid%3D21217220%2321227954">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+        <tr class='athing comtr ' id='21228037'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="160"></td><td valign="top" class="votelinks"><center><a id='up_21228037' href='vote?id=21228037&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=kardos" class="hnuser">kardos</a> <span class="age"><a href="item?id=21228037">10 hours ago</a></span> <span id="unv_21228037"></span><span class="par"></span> <a class="togg" n="2" href="javascript:void(0)" onclick="return toggle(event, 21228037)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">Even if it was 10% used-products-sold-as-new, that&#x27;s not acceptable.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21228037&amp;goto=item%3Fid%3D21217220%2321228037">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+        <tr class='athing comtr ' id='21230266'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="200"></td><td valign="top" class="votelinks"><center><a id='up_21230266' href='vote?id=21230266&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=ericd" class="hnuser">ericd</a> <span class="age"><a href="item?id=21230266">3 hours ago</a></span> <span id="unv_21230266"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 21230266)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">I’ve ordered hundreds of items from Amazon, I’ve never gotten any that I thought were used.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21230266&amp;goto=item%3Fid%3D21217220%2321230266">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+          <tr class='athing comtr ' id='21223737'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="80"></td><td valign="top" class="votelinks"><center><a id='up_21223737' href='vote?id=21223737&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=danpalmer" class="hnuser">danpalmer</a> <span class="age"><a href="item?id=21223737">17 hours ago</a></span> <span id="unv_21223737"></span><span class="par"></span> <a class="togg" n="2" href="javascript:void(0)" onclick="return toggle(event, 21223737)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">In the UK the Amazon returns policy isn&#x27;t that great. It&#x27;s quite a pain to return something to them (requires printing, packaging, registration on the website or over the phone, etc), and most other retailers will take returns with no real issue anyway. There are many retailers with better returns experiences.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21223737&amp;goto=item%3Fid%3D21217220%2321223737">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+        <tr class='athing comtr ' id='21223749'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="120"></td><td valign="top" class="votelinks"><center><a id='up_21223749' href='vote?id=21223749&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=IshKebab" class="hnuser">IshKebab</a> <span class="age"><a href="item?id=21223749">17 hours ago</a></span> <span id="unv_21223749"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 21223749)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">Not any more - you can take it to a shop, they print the label and you drop it off there. If you keep the original packaging it is really trivial.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21223749&amp;goto=item%3Fid%3D21217220%2321223749">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+      <tr class='athing comtr ' id='21223707'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="80"></td><td valign="top" class="votelinks"><center><a id='up_21223707' href='vote?id=21223707&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=paulpauper" class="hnuser">paulpauper</a> <span class="age"><a href="item?id=21223707">17 hours ago</a></span> <span id="unv_21223707"></span><span class="par"></span> <a class="togg" n="2" href="javascript:void(0)" onclick="return toggle(event, 21223707)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">they will close your account if you do it too much</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21223707&amp;goto=item%3Fid%3D21217220%2321223707">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+        <tr class='athing comtr ' id='21227630'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="120"></td><td valign="top" class="votelinks"><center><a id='up_21227630' href='vote?id=21227630&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=yifanl" class="hnuser">yifanl</a> <span class="age"><a href="item?id=21227630">10 hours ago</a></span> <span id="unv_21227630"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 21227630)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">I&#x27;ve read that, but the sole case I&#x27;ve heard was well beyond what a normal consumer would be doing (I don&#x27;t remember the details well, but he was doing something like doing electronic repairs for his college dorm by ordering electronics from amazon for spare parts and then doing returns after taking the spare parts out)</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21227630&amp;goto=item%3Fid%3D21217220%2321227630">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+        <tr class='athing comtr ' id='21230363'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="40"></td><td valign="top" class="votelinks"><center><a id='up_21230363' href='vote?id=21230363&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=simonebrunozzi" class="hnuser">simonebrunozzi</a> <span class="age"><a href="item?id=21230363">3 hours ago</a></span> <span id="unv_21230363"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 21230363)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">Amazon.com has ~50% of the e-commerce market in the US [0].<p>2nd place is Ebay with... 6.6%! Third is Apple with 3.9%, then Walmart with 3.7%.<p>That, to me, means there&#x27;s not much real competition. You are right, there are cheaper way to buy, but people simply don&#x27;t use them.<p>[0]: <a href="https:&#x2F;&#x2F;techcrunch.com&#x2F;2018&#x2F;07&#x2F;13&#x2F;amazons-share-of-the-us-e-commerce-market-is-now-49-or-5-of-all-retail-spend&#x2F;" rel="nofollow">https:&#x2F;&#x2F;techcrunch.com&#x2F;2018&#x2F;07&#x2F;13&#x2F;amazons-share-of-the-us-e-...</a></span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21230363&amp;goto=item%3Fid%3D21217220%2321230363">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+    <tr class='athing comtr ' id='21223839'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="40"></td><td valign="top" class="votelinks"><center><a id='up_21223839' href='vote?id=21223839&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=mschuetz" class="hnuser">mschuetz</a> <span class="age"><a href="item?id=21223839">17 hours ago</a></span> <span id="unv_21223839"></span><span class="par"></span> <a class="togg" n="3" href="javascript:void(0)" onclick="return toggle(event, 21223839)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">&gt; Their online store does not offer particularly good value apart from fast shipping for commodity items.<p>Here are some of the main reason why I look for things on amazon first:<p>* Fast shipping<p>* Reliable<p>* Huge variety of goods<p>* I&#x27;ve already set things up. I don&#x27;t want to register and add payment details to hundreds of web shops. If one already sells everything I need, I&#x27;m using that one.<p>* Very buyer friendly<p>* All invoices online, in digital form, in one place. Saves a lot of headache when it&#x27;s tax time.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21223839&amp;goto=item%3Fid%3D21217220%2321223839">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+        <tr class='athing comtr ' id='21223961'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="80"></td><td valign="top" class="votelinks"><center><a id='up_21223961' href='vote?id=21223961&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=H1Supreme" class="hnuser">H1Supreme</a> <span class="age"><a href="item?id=21223961">17 hours ago</a></span> <span id="unv_21223961"></span><span class="par"></span> <a class="togg" n="2" href="javascript:void(0)" onclick="return toggle(event, 21223961)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">&gt; Fast shipping<p>This is only if you have a Prime account. Otherwise it takes over a week for me to get orders that are two business days away. I believe this is deliberate on their part, as I experienced it multiple times.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21223961&amp;goto=item%3Fid%3D21217220%2321223961">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+        <tr class='athing comtr ' id='21228178'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="120"></td><td valign="top" class="votelinks"><center><a id='up_21228178' href='vote?id=21228178&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=goldcd" class="hnuser">goldcd</a> <span class="age"><a href="item?id=21228178">9 hours ago</a></span> <span id="unv_21228178"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 21228178)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">Prime is a pretty awesome tool in their arsenal though.<p>Initially &quot;Pay up-front for discounted shipping&quot; is a bit of a hard sell. Works fine for customers who&#x27;ve shopped with them for years and can tot up the shipping fees they&#x27;ve already spent (or annoying waits).<p>So for new customers - how about free music and video?
+Now nobody&#x27;s going to say it&#x27;s better than spotify + Netflix (or your providers of choice)... but it&#x27;s not a bad bundle to get for a year for that one prime payment. Then once you&#x27;ve made that Prime payment - well might as well shop from Amazon..<p>I&#x27;m a prime member and mentally file it alongside by cable provider.. I might be able to get better individual services, but collectively they&#x27;d all cost more - and more importantly you get stung massively if you don&#x27;t transition in one go.<p>Amazon ups this even further by just having a single priced &#x27;Prime&#x27; service.
+i.e. No reduction in cost if you just want the free shipping and spend the saving on spotify&#x2F;netflix&#x2F;hulu&#x2F;apple&#x2F;whatever.
+Nor can you pay to watch &quot;Grand Tour&quot; (or your show of choice, legally) without having that tempting free postage from amazon available to you.<p>Only possible way I can see of breaking this stranglehold is for external companies to play nice with each other.
+e.g. If a few online providers (one in each area) get together and brand themselves - and then this brand can be bundled with other services.<p>e.g. &quot;NewEgg provides free next day to spotify subscribers&quot;<p>If this doesn&#x27;t happen Amazon can&#x27;t be defeated.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21228178&amp;goto=item%3Fid%3D21217220%2321228178">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+        <tr class='athing comtr ' id='21226437'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="40"></td><td valign="top" class="votelinks"><center><a id='up_21226437' href='vote?id=21226437&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=HeyLaughingBoy" class="hnuser">HeyLaughingBoy</a> <span class="age"><a href="item?id=21226437">12 hours ago</a></span> <span id="unv_21226437"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 21226437)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00"><i>apart from fast shipping</i><p>That alone is huge value. I ordered a torque wrench this morning. I live on a farm out in the country and Amazon says it will be at my door Sunday. I have every reason to believe them.<p>As for the rest of your comment... if I need standardized electronics with a known supply chain, I order from Digi-Key, and living in Minnesota, it will be here within two days. But for anything else <i>including Raspberry Pi&#x27;s</i> I&#x27;ll order from Amazon because the prices are competitive and, again, fast shipping.<p>Amazon isn&#x27;t unstoppable, but they&#x27;re pretty damn good.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21226437&amp;goto=item%3Fid%3D21217220%2321226437">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+    <tr class='athing comtr ' id='21228209'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="40"></td><td valign="top" class="votelinks"><center><a id='up_21228209' href='vote?id=21228209&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=P_I_Staker" class="hnuser">P_I_Staker</a> <span class="age"><a href="item?id=21228209">9 hours ago</a></span> <span id="unv_21228209"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 21228209)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">A few things:<p>* Prices are competitive (maybe not best of the best, but you don&#x27;t really get ripped off)<p>* One stop shop<p>* Lots reviews (yes they&#x27;re dubious, but I still find them useful, and some sites only have reviews of a few products)<p>* Fast shipping<p>* Great return policy</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21228209&amp;goto=item%3Fid%3D21217220%2321228209">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+    <tr class='athing comtr ' id='21223618'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="40"></td><td valign="top" class="votelinks"><center><a id='up_21223618' href='vote?id=21223618&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=SmellyGeekBoy" class="hnuser">SmellyGeekBoy</a> <span class="age"><a href="item?id=21223618">17 hours ago</a></span> <span id="unv_21223618"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 21223618)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">&gt; Their online store does not offer particularly good value apart from fast shipping for commodity items.<p>You say this like it&#x27;s a bad thing? This is exactly what I use Amazon for.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21223618&amp;goto=item%3Fid%3D21217220%2321223618">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+    <tr class='athing comtr ' id='21222082'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="40"></td><td valign="top" class="votelinks"><center><a id='up_21222082' href='vote?id=21222082&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=hakfoo" class="hnuser">hakfoo</a> <span class="age"><a href="item?id=21222082">19 hours ago</a></span> <span id="unv_21222082"></span><span class="par"></span> <a class="togg" n="3" href="javascript:void(0)" onclick="return toggle(event, 21222082)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">Amazon hit a sweet spot of &quot;good enough, so why bother looking elsewhere.&quot;  If you wanted a widget, they&#x27;d have it, it would be roughly what you expected, at the right price, shipped quickly.  That&#x27;s what got them where they were.  Once you&#x27;re committed to that philosophy, stuff like paying for Prime or using their automatic-services (Dash buttons before they were deprecated) is a feasible leap and encourages their stickiness.<p>The moment you lose that perception, things fall apart rapidly.  People go back to comparison shopping and I&#x27;m not convinced Amazon wins that battle.<p>They lost &quot;They&#x27;d have it&quot; with terrible search and attempts to salvage a cross-sell out of anything.  Their search might still be able to work for &quot;I want a FooCorp model 37ABC34567 television&quot; but a simple browsing-focused request like &quot;PCI-E 802.11ac cards&quot; is going to be a nightmare of miscategorized items and terrible filters.<p>They&#x27;re losing &quot;It would be roughly what you expected&quot; with the combined-inventory scandal, but also the product line so broad that there&#x27;s going to be room for inherently dodgy crap.  Specialist retailers provide value in curation-- they won&#x27;t sell the absolute worst junk that sneaks into essentially unpoliced AliExpress&#x2F;eBay&#x2F;Amazon listings.<p>&quot;At the right price&quot; is surprisingly spotty.  They often aren&#x27;t the cheapest, and some items are locked behind a $120-per-annum paywall.  They also put their pricing reputation on the line with third-party sellers on board-- for the last month, they&#x27;d have been happy to sell you a Ryzen 3900X, but at 50% over MSRP.  Even now, they&#x27;re still $60 over sticker.  Retailers:  It is not a sign of weakness to say you&#x27;re out of stock, rather than hand off the sale to a bottom-feeder reseller who&#x27;s treating their wares like Cabbage Patch Kids in 1982.<p>&quot;Shipped quickly&quot; has become a joke.  Maybe if you buy Prime it&#x27;s different, but I never know what to expect for paid shipping.  They&#x27;ll quote a range 5-10 days from now, and sometimes it will take 1 day and sometimes  the full 10.  I hesitate to buy time-sensitive gifts with them and would fear to trust it for business-critical timing.  You&#x27;ve built one of the most sophisticated logistics networks on Earth, cutting out USPS&#x2F;UPS&#x2F;etc. and you can&#x27;t get me a more accurate delivery estimate than a mail-in offer from the back of a cereal box?</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21222082&amp;goto=item%3Fid%3D21217220%2321222082">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+        <tr class='athing comtr ' id='21223530'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="80"></td><td valign="top" class="votelinks"><center><a id='up_21223530' href='vote?id=21223530&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=sokoloff" class="hnuser">sokoloff</a> <span class="age"><a href="item?id=21223530">18 hours ago</a></span> <span id="unv_21223530"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 21223530)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">The search results I get for your wireless card are pretty on-target for me.<p><a href="https:&#x2F;&#x2F;www.amazon.com&#x2F;s?k=PCI-E+802.11ac" rel="nofollow">https:&#x2F;&#x2F;www.amazon.com&#x2F;s?k=PCI-E+802.11ac</a><p>Not all of the faceted search items make sense, but I get pretty good results for the search overall.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21223530&amp;goto=item%3Fid%3D21217220%2321223530">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+    <tr class='athing comtr ' id='21223259'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="80"></td><td valign="top" class="votelinks"><center><a id='up_21223259' href='vote?id=21223259&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=isostatic" class="hnuser">isostatic</a> <span class="age"><a href="item?id=21223259">18 hours ago</a></span> <span id="unv_21223259"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 21223259)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c88">It&#x27;s the failure of modern capitalism. Growth is what&#x27;s important, not size. It doesn&#x27;t matter how much you&#x27;re worth, how good your product is, you have to constantly extract an extra ounce, and that leads to a collapse.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21223259&amp;goto=item%3Fid%3D21217220%2321223259">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+      <tr class='athing comtr ' id='21223217'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="40"></td><td valign="top" class="votelinks"><center><a id='up_21223217' href='vote?id=21223217&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=imtringued" class="hnuser">imtringued</a> <span class="age"><a href="item?id=21223217">19 hours ago</a></span> <span id="unv_21223217"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 21223217)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">&gt;It’s convenient, but there’s plenty of competition: you can get many of the same goods on AliExpress or eBay for a lot cheaper.<p>My local discounters have cheaper prices than amazon and I don&#x27;t even have to pay or wait for shipping.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21223217&amp;goto=item%3Fid%3D21217220%2321223217">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+    <tr class='athing comtr ' id='21224162'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="40"></td><td valign="top" class="votelinks"><center><a id='up_21224162' href='vote?id=21224162&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=Simulacra" class="hnuser">Simulacra</a> <span class="age"><a href="item?id=21224162">16 hours ago</a></span> <span id="unv_21224162"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 21224162)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">&gt;&gt; you can get many of the same goods on AliExpress<p>Unless you’re opposed to using a Chinese system.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21224162&amp;goto=item%3Fid%3D21217220%2321224162">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+    <tr class='athing comtr ' id='21223311'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="40"></td><td valign="top" class="votelinks"><center><a id='up_21223311' href='vote?id=21223311&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=jansan" class="hnuser">jansan</a> <span class="age"><a href="item?id=21223311">18 hours ago</a></span> <span id="unv_21223311"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 21223311)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">I find their product ratings and reviews very valuable, although they have suffered a lot recently especially for Chinese products, which usually have a ton of fake reviews.<p>As opposed to this, Ebay&#x27;s seller ratings never had any value to me, because I am not really interested in who is selling the item. Maybe it was useful fifteen years ago, but nowadays I simply expect an item to be delivered on time if I order through a large retail website.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21223311&amp;goto=item%3Fid%3D21217220%2321223311">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+    <tr class='athing comtr ' id='21224152'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="40"></td><td valign="top" class="votelinks"><center><a id='up_21224152' href='vote?id=21224152&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=Kiro" class="hnuser">Kiro</a> <span class="age"><a href="item?id=21224152">16 hours ago</a></span> <span id="unv_21224152"></span><span class="par"></span> <a class="togg" n="2" href="javascript:void(0)" onclick="return toggle(event, 21224152)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">&gt; Their cloud offering are the real money-maker<p>Amazon has a 50% share of the US e-commerce market. Not sure what you&#x27;re implying here.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21224152&amp;goto=item%3Fid%3D21217220%2321224152">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+        <tr class='athing comtr ' id='21227147'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="80"></td><td valign="top" class="votelinks"><center><a id='up_21227147' href='vote?id=21227147&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=phnofive" class="hnuser">phnofive</a> <span class="age"><a href="item?id=21227147">11 hours ago</a></span> <span id="unv_21227147"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 21227147)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00"><a href="https:&#x2F;&#x2F;www.cnbc.com&#x2F;2019&#x2F;01&#x2F;31&#x2F;aws-earnings-q4-2018.html" rel="nofollow">https:&#x2F;&#x2F;www.cnbc.com&#x2F;2019&#x2F;01&#x2F;31&#x2F;aws-earnings-q4-2018.html</a><p>AWS makes most of Amazon’s profit, though profit had always been avoided.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21227147&amp;goto=item%3Fid%3D21217220%2321227147">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+                  <tr class='athing comtr ' id='21223610'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="0"></td><td valign="top" class="votelinks"><center><a id='up_21223610' href='vote?id=21223610&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=hos234" class="hnuser">hos234</a> <span class="age"><a href="item?id=21223610">17 hours ago</a></span> <span id="unv_21223610"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 21223610)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">They do have a weakness - Search.<p>There are a trillion products in a trillion categories and some meaningless small number get displayed on the first search result page. This is obviously highly abnormal and their own search teams will tell you that.<p>It creates unmonitorable arms races, unnatural uniformity across myriad cultures and thought processes, pissed sellers, frustrated customers and just bubbling tensions of all kinds.<p>It&#x27;s like taking all the animals and plants in the world throwing them on an island and telling visitors they experience everything through a magic window, but 10 at a time. Ofcourse they cant. If you know what you want to see - great! If not its just a useless experience.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21223610&amp;goto=item%3Fid%3D21217220%2321223610">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+              <tr class='athing comtr ' id='21223558'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="0"></td><td valign="top" class="votelinks"><center><a id='up_21223558' href='vote?id=21223558&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=ohduran" class="hnuser">ohduran</a> <span class="age"><a href="item?id=21223558">18 hours ago</a></span> <span id="unv_21223558"></span><span class="par"></span> <a class="togg" n="5" href="javascript:void(0)" onclick="return toggle(event, 21223558)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">&quot;Can Anyone Catch Nokia&quot; - Forbes magazine, 2007</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21223558&amp;goto=item%3Fid%3D21217220%2321223558">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+        <tr class='athing comtr ' id='21229224'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="40"></td><td valign="top" class="votelinks"><center><a id='up_21229224' href='vote?id=21229224&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=notjustanymike" class="hnuser">notjustanymike</a> <span class="age"><a href="item?id=21229224">7 hours ago</a></span> <span id="unv_21229224"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 21229224)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">Every company peaks. Apple is even showing signs of weakness.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21229224&amp;goto=item%3Fid%3D21217220%2321229224">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+    <tr class='athing comtr ' id='21223762'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="40"></td><td valign="top" class="votelinks"><center><a id='up_21223762' href='vote?id=21223762&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=paulpauper" class="hnuser">paulpauper</a> <span class="age"><a href="item?id=21223762">17 hours ago</a></span> <span id="unv_21223762"></span><span class="par"></span> <a class="togg" n="3" href="javascript:void(0)" onclick="return toggle(event, 21223762)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">there is no comparison though. this time is really different. there is nothing that can compete and compare to amazon&#x27;s distribution network and marketshare in the same way that Apple was able to upset the smartphone market.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21223762&amp;goto=item%3Fid%3D21217220%2321223762">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+        <tr class='athing comtr ' id='21230581'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="80"></td><td valign="top" class="votelinks"><center><a id='up_21230581' href='vote?id=21230581&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=AtlasBarfed" class="hnuser">AtlasBarfed</a> <span class="age"><a href="item?id=21230581">2 hours ago</a></span> <span id="unv_21230581"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 21230581)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">Walmart certainly has the infrastructure and logistics.<p>Doesn&#x27;t Amazon makes almost all its profits in AWS? And that they also seem invincible, but they are pretty expensive.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21230581&amp;goto=item%3Fid%3D21217220%2321230581">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+    <tr class='athing comtr ' id='21223904'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="80"></td><td valign="top" class="votelinks"><center><a id='up_21223904' href='vote?id=21223904&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=ohduran" class="hnuser">ohduran</a> <span class="age"><a href="item?id=21223904">17 hours ago</a></span> <span id="unv_21223904"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 21223904)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">Oh, but it is. Can Amazon live up to the unbounded expectations place upon it? No. Anything short of &quot;complete world domination&quot; is not doing it.<p>There are markets where the situation is quite worse than those where Amazon is. One is, for instance, search. You don&#x27;t even search anything: you google it.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21223904&amp;goto=item%3Fid%3D21217220%2321223904">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+                  <tr class='athing comtr ' id='21223742'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="0"></td><td valign="top" class="votelinks"><center><a id='up_21223742' href='vote?id=21223742&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=paulpauper" class="hnuser">paulpauper</a> <span class="age"><a href="item?id=21223742">17 hours ago</a></span> <span id="unv_21223742"></span><span class="par"></span> <a class="togg" n="5" href="javascript:void(0)" onclick="return toggle(event, 21223742)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">It&#x27;s funny how there are two concurrent narratives:<p>...the media portrays Amazon as this awful company that stiffs its employees and is destroying jobs and making the world a terrible place in the name of lower price and convenience.<p>...and yet Amazon is hugely popular with consumers, and Amazon is the second-biggest employer in the US, and there is huge demand for Amazon jobs in spite of the media&#x27;s insistence of how bad Amazon is and how bad such jobs are.<p>All these people looking to work at Amazon apparently didn&#x27;t get the media&#x27;s memo</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21223742&amp;goto=item%3Fid%3D21217220%2321223742">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+        <tr class='athing comtr ' id='21228717'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="40"></td><td valign="top" class="votelinks"><center><a id='up_21228717' href='vote?id=21228717&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=dredmorbius" class="hnuser">dredmorbius</a> <span class="age"><a href="item?id=21228717">8 hours ago</a></span> <span id="unv_21228717"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 21228717)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c5a">Vast size and economic power, on the one hand, and gross abuse and malevolence on the other, are hardly unheard of, and often closely related.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21228717&amp;goto=item%3Fid%3D21217220%2321228717">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+    <tr class='athing comtr ' id='21228251'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="40"></td><td valign="top" class="votelinks"><center><a id='up_21228251' href='vote?id=21228251&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=P_I_Staker" class="hnuser">P_I_Staker</a> <span class="age"><a href="item?id=21228251">9 hours ago</a></span> <span id="unv_21228251"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 21228251)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">It&#x27;s Walmart all over again</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21228251&amp;goto=item%3Fid%3D21217220%2321228251">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+    <tr class='athing comtr ' id='21223788'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="40"></td><td valign="top" class="votelinks"><center><a id='up_21223788' href='vote?id=21223788&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=mschuster91" class="hnuser">mschuster91</a> <span class="age"><a href="item?id=21223788">17 hours ago</a></span> <span id="unv_21223788"></span><span class="par"></span> <a class="togg" n="2" href="javascript:void(0)" onclick="return toggle(event, 21223788)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">The thing is, even a shit job at Amazon is better than no job at all, which is what Amazon (and other logistics and low wage employers) exploits.<p>The only thing to fix this power difference is job safety and conditions regulation.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21223788&amp;goto=item%3Fid%3D21217220%2321223788">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+        <tr class='athing comtr ' id='21223913'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="80"></td><td valign="top" class="votelinks"><center><a id='up_21223913' href='vote?id=21223913&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=ohduran" class="hnuser">ohduran</a> <span class="age"><a href="item?id=21223913">17 hours ago</a></span> <span id="unv_21223913"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 21223913)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">Wait, so a job at Amazon is better than anything else, and you complain about Amazon? Why not complaining about anything else?</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21223913&amp;goto=item%3Fid%3D21217220%2321223913">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+                  <tr class='athing comtr ' id='21223314'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="0"></td><td valign="top" class="votelinks"><center><a id='up_21223314' href='vote?id=21223314&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=libertine" class="hnuser">libertine</a> <span class="age"><a href="item?id=21223314">18 hours ago</a></span> <span id="unv_21223314"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 21223314)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">As an Amazon seller I have a growing belief that Amazon size and support approach via AI will be their compromise.<p>AI can&#x27;t offer good customer support, and won&#x27;t offer good customer support for the foreseeable future (at least in my eyes).<p>As an Amazon customer (in the EU), it still lacks a lot of choice, but prices are good for some items. Yet anything that would require a bit of customer support I wouldn&#x27;t buy it on Amazon.<p>And by customer support I don&#x27;t mean: &quot;give me a refund&quot;.<p>A refund is the last thing I want when I buy a product - it means what I got didn&#x27;t help me at all. It wasted my time, and I still have a problem.<p>With this said, ecommerce wise, I think Amazon is a giant with a lot of flaws bound to their size, that can be tackled by other players.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21223314&amp;goto=item%3Fid%3D21217220%2321223314">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+              <tr class='athing comtr ' id='21223310'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="0"></td><td valign="top" class="votelinks"><center><a id='up_21223310' href='vote?id=21223310&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=fouc" class="hnuser">fouc</a> <span class="age"><a href="item?id=21223310">18 hours ago</a></span> <span id="unv_21223310"></span><span class="par"></span> <a class="togg" n="6" href="javascript:void(0)" onclick="return toggle(event, 21223310)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">Is Google Unstoppable?<p>At this point Amazon is probably the less evil corporation compared to Google.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21223310&amp;goto=item%3Fid%3D21217220%2321223310">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+        <tr class='athing comtr ' id='21223644'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="40"></td><td valign="top" class="votelinks"><center><a id='up_21223644' href='vote?id=21223644&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=AllanHoustonSt" class="hnuser">AllanHoustonSt</a> <span class="age"><a href="item?id=21223644">17 hours ago</a></span> <span id="unv_21223644"></span><span class="par"></span> <a class="togg" n="4" href="javascript:void(0)" onclick="return toggle(event, 21223644)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">As far as Search as a product goes, Google is basically unstoppable IMO.  They’re just far and away ahead of everyone else in both the engineering and theoretical side.  They have the best infra for it and will keep their lead because they also get by far the most data for search which just goes into a positive feedback loop.<p>The gap between Google Search and any other Search competitor is way way way larger than say.. AWS and any other direct competitor.<p>In order for Google to be challenged on the Search front, I think it’ll require a fundamental change (in medium) in the way people prefer looking things up on the Internet.  Which is obviously an incredibly difficult question.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21223644&amp;goto=item%3Fid%3D21217220%2321223644">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+        <tr class='athing comtr ' id='21224124'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="80"></td><td valign="top" class="votelinks"><center><a id='up_21224124' href='vote?id=21224124&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=fouc" class="hnuser">fouc</a> <span class="age"><a href="item?id=21224124">16 hours ago</a></span> <span id="unv_21224124"></span><span class="par"></span> <a class="togg" n="3" href="javascript:void(0)" onclick="return toggle(event, 21224124)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">DDG is quite good, rarely do I need to resort to Google.<p>I wasn&#x27;t really talking about Search.. Google has a lot of products now and they&#x27;re all designed to further its goals of collecting information on people and otherwise controlling the internet.  Chrome, DNS, AMP, Android, etc.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21224124&amp;goto=item%3Fid%3D21217220%2321224124">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+        <tr class='athing comtr ' id='21228135'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="120"></td><td valign="top" class="votelinks"><center><a id='up_21228135' href='vote?id=21228135&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=codq" class="hnuser">codq</a> <span class="age"><a href="item?id=21228135">9 hours ago</a></span> <span id="unv_21228135"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 21228135)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">With a .41% market share, DuckDuckGo is no threat to Google.<p><a href="https:&#x2F;&#x2F;www.wikiwand.com&#x2F;en&#x2F;Web_search_engine#&#x2F;Market_share" rel="nofollow">https:&#x2F;&#x2F;www.wikiwand.com&#x2F;en&#x2F;Web_search_engine#&#x2F;Market_share</a></span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21228135&amp;goto=item%3Fid%3D21217220%2321228135">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+    <tr class='athing comtr ' id='21228016'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="120"></td><td valign="top" class="votelinks"><center><a id='up_21228016' href='vote?id=21228016&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=rafaelvasco" class="hnuser">rafaelvasco</a> <span class="age"><a href="item?id=21228016">10 hours ago</a></span> <span id="unv_21228016"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 21228016)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">Not near as good as Google unfortunately. From two sites with the same content I&#x27;m searching, google always knows the one that I prefer. Always; Power of Tracking I suppose;</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21228016&amp;goto=item%3Fid%3D21217220%2321228016">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+        <tr class='athing comtr ' id='21228259'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="40"></td><td valign="top" class="votelinks"><center><a id='up_21228259' href='vote?id=21228259&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=P_I_Staker" class="hnuser">P_I_Staker</a> <span class="age"><a href="item?id=21228259">9 hours ago</a></span> <span id="unv_21228259"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 21228259)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">Can anyone fill me in as to why? I&#x27;ve been more pissed at Amazon lately</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21228259&amp;goto=item%3Fid%3D21217220%2321228259">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+                <tr class='athing comtr ' id='21223896'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="0"></td><td valign="top" class="votelinks"><center><a id='up_21223896' href='vote?id=21223896&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=spodek" class="hnuser">spodek</a> <span class="age"><a href="item?id=21223896">17 hours ago</a></span> <span id="unv_21223896"></span><span class="par"></span> <a class="togg" n="4" href="javascript:void(0)" onclick="return toggle(event, 21223896)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00"><i>Amazon.com</i> means <i>garbage</i> to me.<p>Mainly because I see how much garbage from them ends up in my building&#x27;s trash. And my city&#x27;s trash.<p>The most visible is their packaging, but their ease-of-ordering leads to most of the products people buy from them being stupid shit nobody needs or wants beyond the moment someone&#x27;s urge leads them to buy it now.<p>I suggest that most of us would be happier and the world cleaner if Amazon located its warehouses next to landfills and when people bought things they simply moved the products from the warehouse to the landfill, skipping the steps of shipping them to the person for them to throw them out. For example, my city, New York&#x27;s, Department of Sanitation cost would drop from 1.6 billion annually and our noise would drop with fewer trash trucks.<p>Of course I&#x27;m overstating, but the longer you go without using them, the less you&#x27;ll consider it overstatement. If you haven&#x27;t, I recommend going without for six months or a year.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21223896&amp;goto=item%3Fid%3D21217220%2321223896">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+        <tr class='athing comtr ' id='21223956'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="40"></td><td valign="top" class="votelinks"><center><a id='up_21223956' href='vote?id=21223956&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=paulpauper" class="hnuser">paulpauper</a> <span class="age"><a href="item?id=21223956">17 hours ago</a></span> <span id="unv_21223956"></span><span class="par"></span> <a class="togg" n="3" href="javascript:void(0)" onclick="return toggle(event, 21223956)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">umm...let us suppose that instead of amazon producing the garbage, it&#x27;s split among dozens of smaller companies. Would it matter. Economic activity will produce waste whether it is from a single company or multiple ones. it&#x27;s just that amazon is a bigger target.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21223956&amp;goto=item%3Fid%3D21217220%2321223956">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+        <tr class='athing comtr ' id='21223995'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="80"></td><td valign="top" class="votelinks"><center><a id='up_21223995' href='vote?id=21223995&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=Konnstann" class="hnuser">Konnstann</a> <span class="age"><a href="item?id=21223995">17 hours ago</a></span> <span id="unv_21223995"></span><span class="par"></span> <a class="togg" n="2" href="javascript:void(0)" onclick="return toggle(event, 21223995)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">I think the idea is that the convenience of Amazon causes economic activity that otherwise wouldn&#x27;t happen. Personally, I&#x27;ve never bought any knickknacks off of the site, but I definitely see enough marginally-useful garbage when I am browsing to understand the parent&#x27;s point.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21223995&amp;goto=item%3Fid%3D21217220%2321223995">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+        <tr class='athing comtr ' id='21225471'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="120"></td><td valign="top" class="votelinks"><center><a id='up_21225471' href='vote?id=21225471&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=spodek" class="hnuser">spodek</a> <span class="age"><a href="item?id=21225471">14 hours ago</a></span> <span id="unv_21225471"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 21225471)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">Exactly.<p>Plus, at least in a city, we can buy from local places that used less packaging and shipping in total life analysis.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21225471&amp;goto=item%3Fid%3D21217220%2321225471">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+                    <tr class='athing comtr ' id='21221083'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="0"></td><td valign="top" class="votelinks"><center><a id='up_21221083' href='vote?id=21221083&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=kbos87" class="hnuser">kbos87</a> <span class="age"><a href="item?id=21221083">19 hours ago</a></span> <span id="unv_21221083"></span><span class="par"></span> <a class="togg" n="6" href="javascript:void(0)" onclick="return toggle(event, 21221083)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">Amazon is only unstoppable if we let them be. The world would be a much more interesting place for founders and employees if amazon were limited to being 1&#x2F;100th its size.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21221083&amp;goto=item%3Fid%3D21217220%2321221083">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+        <tr class='athing comtr ' id='21222801'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="40"></td><td valign="top" class="votelinks"><center><a id='up_21222801' href='vote?id=21222801&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=jjeaff" class="hnuser">jjeaff</a> <span class="age"><a href="item?id=21222801">19 hours ago</a></span> <span id="unv_21222801"></span><span class="par"></span> <a class="togg" n="3" href="javascript:void(0)" onclick="return toggle(event, 21222801)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">I don&#x27;t disagree. But I find it interesting that Amazon is thought of as this juggernaut when Walmart has literally double the revenue they do.<p>Sure, they may be going in the right direction, but the amount of product they are moving and their bargaining power as a buyer pales in comparison to wmt. Especially considering that a large chunk of their revenue is from non retail services and fees from 3rd party sellers, the products of which they may never touch.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21222801&amp;goto=item%3Fid%3D21217220%2321222801">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+        <tr class='athing comtr ' id='21223194'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="80"></td><td valign="top" class="votelinks"><center><a id='up_21223194' href='vote?id=21223194&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=coldtea" class="hnuser">coldtea</a> <span class="age"><a href="item?id=21223194">19 hours ago</a></span> <span id="unv_21223194"></span><span class="par"></span> <a class="togg" n="2" href="javascript:void(0)" onclick="return toggle(event, 21223194)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">&gt;<i>But I find it interesting that Amazon is thought of as this juggernaut when Walmart has literally double the revenue they do.</i><p>It&#x27;s the momentum not the revenue.<p>It&#x27;s also the domains it affects.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21223194&amp;goto=item%3Fid%3D21217220%2321223194">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+        <tr class='athing comtr ' id='21224049'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="120"></td><td valign="top" class="votelinks"><center><a id='up_21224049' href='vote?id=21224049&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=Merrill" class="hnuser">Merrill</a> <span class="age"><a href="item?id=21224049">16 hours ago</a></span> <span id="unv_21224049"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 21224049)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">2017 to 2018 Amazon grew from $103 to $121B revenues or by $18B, while Walmart grew from $375 to $388B or by $13B. However, Amazon&#x27;s revenues include some fast growing areas such as AWS, so the revenues they are taking away from other retailers are probably about the same.<p>Amazon&#x27;s impact on retail may be felt more because it sells a vast variety of products, which makes a lot of the small boutique stores in malls no longer viable. That space has to be converted to services or close.<p><a href="https:&#x2F;&#x2F;stores.org&#x2F;stores-top-retailers-2019&#x2F;" rel="nofollow">https:&#x2F;&#x2F;stores.org&#x2F;stores-top-retailers-2019&#x2F;</a><p><a href="https:&#x2F;&#x2F;stores.org&#x2F;stores-top-retailers-2018&#x2F;" rel="nofollow">https:&#x2F;&#x2F;stores.org&#x2F;stores-top-retailers-2018&#x2F;</a></span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21224049&amp;goto=item%3Fid%3D21217220%2321224049">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+        <tr class='athing comtr ' id='21228469'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="40"></td><td valign="top" class="votelinks"><center><a id='up_21228469' href='vote?id=21228469&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=gremlinsinc" class="hnuser">gremlinsinc</a> <span class="age"><a href="item?id=21228469">9 hours ago</a></span> <span id="unv_21228469"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 21228469)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">We need a federated replacement...<p>What about some sort of open-company (the kind ethereum promised us w&#x2F; dapps), where the company is basically owned by employees and customers. The more hours you put in as an employee &#x2F; volunteer the more you get back. But even dedicated customers would get stock for purchases, reviews, etc...<p>It would encourage an ecosystem by giving the majority of $$ back to empoloyees and customers but would organically build out some of the nice-to-haves that Amazon has like a shipping network, and warehousing of goods, and one-place-shopping&#x2F;comparisons.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21228469&amp;goto=item%3Fid%3D21217220%2321228469">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+    <tr class='athing comtr ' id='21223777'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="40"></td><td valign="top" class="votelinks"><center><a id='up_21223777' href='vote?id=21223777&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=paulpauper" class="hnuser">paulpauper</a> <span class="age"><a href="item?id=21223777">17 hours ago</a></span> <span id="unv_21223777"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 21223777)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">why should we want to? The are providing a service million of people use and it employ thousands of people. Why is there such an impetus by certain people to attack successful companies and people. It&#x27;s like &quot;hey this company is doing too well! let&#x27;s go after it!&quot;</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21223777&amp;goto=item%3Fid%3D21217220%2321223777">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+                <tr class='athing comtr ' id='21223525'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="0"></td><td valign="top" class="votelinks"><center><a id='up_21223525' href='vote?id=21223525&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=cs702" class="hnuser">cs702</a> <span class="age"><a href="item?id=21223525">18 hours ago</a></span> <span id="unv_21223525"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 21223525)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">I just finished reading this well-researched and well-written article, and the best way I can summarize it is with a quote from <i>The Dark Knight</i>:<p>&quot;You either die a hero, or you live long enough to see yourself become the villain.&quot;[a]<p>--<p>[a] <a href="https:&#x2F;&#x2F;en.wikiquote.org&#x2F;wiki&#x2F;The_Dark_Knight_(film)" rel="nofollow">https:&#x2F;&#x2F;en.wikiquote.org&#x2F;wiki&#x2F;The_Dark_Knight_(film)</a></span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21223525&amp;goto=item%3Fid%3D21217220%2321223525">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+              <tr class='athing comtr ' id='21223595'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="0"></td><td valign="top" class="votelinks"><center><a id='up_21223595' href='vote?id=21223595&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=Merrill" class="hnuser">Merrill</a> <span class="age"><a href="item?id=21223595">17 hours ago</a></span> <span id="unv_21223595"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 21223595)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">Someone who recently became a new first-time mom credits Amazon&#x27;s same-day delivery, Target&#x27;s same-day pickup, and a supermarket&#x27;s online order &#x2F; bring to your car service with making life a lot easier.<p>Her sister, who had kids last decade, is jealous. I don&#x27;t think consumers want to stop Amazon.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21223595&amp;goto=item%3Fid%3D21217220%2321223595">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+              <tr class='athing comtr ' id='21220063'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="0"></td><td valign="top" class="votelinks"><center><a id='up_21220063' href='vote?id=21220063&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=jdkee" class="hnuser">jdkee</a> <span class="age"><a href="item?id=21220063">19 hours ago</a></span> <span id="unv_21220063"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 21220063)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">It is only unstoppable to the extent that there is no political will to regulate or break it up.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21220063&amp;goto=item%3Fid%3D21217220%2321220063">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+              <tr class='athing comtr ' id='21223596'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="0"></td><td valign="top" class="votelinks"><center><a id='up_21223596' href='vote?id=21223596&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=sveme" class="hnuser">sveme</a> <span class="age"><a href="item?id=21223596">17 hours ago</a></span> <span id="unv_21223596"></span><span class="par"></span> <a class="togg" n="2" href="javascript:void(0)" onclick="return toggle(event, 21223596)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">I wonder whether there is already a law that states:<p>&quot;Whenever the media implies that a hegemon will be at the number one spot forever, it will mark the start of its decline&quot;.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21223596&amp;goto=item%3Fid%3D21217220%2321223596">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+        <tr class='athing comtr ' id='21229190'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="40"></td><td valign="top" class="votelinks"><center><a id='up_21229190' href='vote?id=21229190&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=boldslogan" class="hnuser">boldslogan</a> <span class="age"><a href="item?id=21229190">7 hours ago</a></span> <span id="unv_21229190"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 21229190)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00"><a href="https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Regression_toward_the_mean#Other_examples" rel="nofollow">https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Regression_toward_the_mean#Oth...</a><p>&quot;If a business organisation has a highly profitable quarter, despite the underlying reasons for its performance being unchanged, it is likely to do less well the next quarter.&quot;<p>so something similar...if a buisness is featured as number one...it is likely to do less well in the future...</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21229190&amp;goto=item%3Fid%3D21217220%2321229190">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+                <tr class='athing comtr ' id='21219082'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="0"></td><td valign="top" class="votelinks"><center><a id='up_21219082' href='vote?id=21219082&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=m463" class="hnuser">m463</a> <span class="age"><a href="item?id=21219082">19 hours ago</a></span> <span id="unv_21219082"></span><span class="par"></span> <a class="togg" n="12" href="javascript:void(0)" onclick="return toggle(event, 21219082)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">It will be stopped by a company that either doesn&#x27;t exist or is a startup now.<p>IBM &gt; Microsoft &gt; Google &gt; Duck Duck Go</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21219082&amp;goto=item%3Fid%3D21217220%2321219082">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+        <tr class='athing comtr ' id='21219170'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="40"></td><td valign="top" class="votelinks"><center><a id='up_21219170' href='vote?id=21219170&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=monitorman" class="hnuser">monitorman</a> <span class="age"><a href="item?id=21219170">19 hours ago</a></span> <span id="unv_21219170"></span><span class="par"></span> <a class="togg" n="8" href="javascript:void(0)" onclick="return toggle(event, 21219170)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">Duck Duck Go? Really?</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21219170&amp;goto=item%3Fid%3D21217220%2321219170">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+        <tr class='athing comtr ' id='21220297'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="80"></td><td valign="top" class="votelinks"><center><a id='up_21220297' href='vote?id=21220297&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=m463" class="hnuser">m463</a> <span class="age"><a href="item?id=21220297">19 hours ago</a></span> <span id="unv_21220297"></span><span class="par"></span> <a class="togg" n="7" href="javascript:void(0)" onclick="return toggle(event, 21220297)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">(tongue in cheek)<p>The point was that large unstoppable incumbents have always been replaced with something nobody expected.<p>(that said, monsanto and debeers are still around)</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21220297&amp;goto=item%3Fid%3D21217220%2321220297">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+        <tr class='athing comtr ' id='21223243'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="120"></td><td valign="top" class="votelinks"><center><a id='up_21223243' href='vote?id=21223243&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=isostatic" class="hnuser">isostatic</a> <span class="age"><a href="item?id=21223243">19 hours ago</a></span> <span id="unv_21223243"></span><span class="par"></span> <a class="togg" n="3" href="javascript:void(0)" onclick="return toggle(event, 21223243)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">IBM is still around. So is Microsoft. So is Google.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21223243&amp;goto=item%3Fid%3D21217220%2321223243">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+        <tr class='athing comtr ' id='21227960'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="160"></td><td valign="top" class="votelinks"><center><a id='up_21227960' href='vote?id=21227960&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=m463" class="hnuser">m463</a> <span class="age"><a href="item?id=21227960">10 hours ago</a></span> <span id="unv_21227960"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 21227960)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">IBM was unstoppable, then Microsoft came from nowhere.<p>Microsoft was unstoppable, then nonexistent Google appeared.<p>(yeah, microsoft&#x2F;google&#x2F;apple have vied for &quot;current top money vaccum&quot;)</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21227960&amp;goto=item%3Fid%3D21217220%2321227960">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+    <tr class='athing comtr ' id='21228038'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="160"></td><td valign="top" class="votelinks"><center><a id='up_21228038' href='vote?id=21228038&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=notyourwork" class="hnuser">notyourwork</a> <span class="age"><a href="item?id=21228038">10 hours ago</a></span> <span id="unv_21228038"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 21228038)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">IBM is basically on life support milking their consulting business and pretending Watson does stuff it doesn’t to further their consulting business.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21228038&amp;goto=item%3Fid%3D21217220%2321228038">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+      <tr class='athing comtr ' id='21222824'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="120"></td><td valign="top" class="votelinks"><center><a id='up_21222824' href='vote?id=21222824&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=jjeaff" class="hnuser">jjeaff</a> <span class="age"><a href="item?id=21222824">19 hours ago</a></span> <span id="unv_21222824"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 21222824)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">Debeers is on its way out. They may come up with something to stay relevant, but they are getting desperate to come up with ever more sophisticated machines to detect man made diamonds from their mined blood diamonds.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21222824&amp;goto=item%3Fid%3D21217220%2321222824">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+    <tr class='athing comtr ' id='21223249'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="120"></td><td valign="top" class="votelinks"><center><a id='up_21223249' href='vote?id=21223249&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=Gigablah" class="hnuser">Gigablah</a> <span class="age"><a href="item?id=21223249">18 hours ago</a></span> <span id="unv_21223249"></span><span class="par"></span> <a class="togg" n="2" href="javascript:void(0)" onclick="return toggle(event, 21223249)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">IBM and Microsoft are still around, too. I don’t get your example.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21223249&amp;goto=item%3Fid%3D21217220%2321223249">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+        <tr class='athing comtr ' id='21223291'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="160"></td><td valign="top" class="votelinks"><center><a id='up_21223291' href='vote?id=21223291&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=PostOnce" class="hnuser">PostOnce</a> <span class="age"><a href="item?id=21223291">18 hours ago</a></span> <span id="unv_21223291"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 21223291)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">Microsoft not only is still around, it has a 25% higher market cap than Google.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21223291&amp;goto=item%3Fid%3D21217220%2321223291">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+          <tr class='athing comtr ' id='21223432'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="40"></td><td valign="top" class="votelinks"><center><a id='up_21223432' href='vote?id=21223432&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=shardinator" class="hnuser">shardinator</a> <span class="age"><a href="item?id=21223432">18 hours ago</a></span> <span id="unv_21223432"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 21223432)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">It will be stopped by millions of smaller stores being on a single platform with the ability to get a product in 1hr to overnight within the same metro area.
+The challenge is to categorise the inventory at those millions - can start with thousands - of local stores. Once that happens, watch out amazon.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21223432&amp;goto=item%3Fid%3D21217220%2321223432">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+    <tr class='athing comtr ' id='21223301'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="40"></td><td valign="top" class="votelinks"><center><a id='up_21223301' href='vote?id=21223301&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=mda" class="hnuser">mda</a> <span class="age"><a href="item?id=21223301">18 hours ago</a></span> <span id="unv_21223301"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 21223301)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">Seriously? Also, I think you mean Microsoft &gt; Google &gt; Bing (Microsoft) ?</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21223301&amp;goto=item%3Fid%3D21217220%2321223301">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+    <tr class='athing comtr ' id='21223802'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="40"></td><td valign="top" class="votelinks"><center><a id='up_21223802' href='vote?id=21223802&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=paulpauper" class="hnuser">paulpauper</a> <span class="age"><a href="item?id=21223802">17 hours ago</a></span> <span id="unv_21223802"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 21223802)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">ppl said the same thing about google in 2005. Same thing about  Microsoft in the 80&#x27;s and 90&#x27;s. Both companies are doing better than ever. IBM is still around and is still huge.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21223802&amp;goto=item%3Fid%3D21217220%2321223802">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+                <tr class='athing comtr ' id='21220167'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="0"></td><td valign="top" class="votelinks"><center><a id='up_21220167' href='vote?id=21220167&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=throwawaysea" class="hnuser">throwawaysea</a> <span class="age"><a href="item?id=21220167">19 hours ago</a></span> <span id="unv_21220167"></span><span class="par"></span> <a class="togg" n="4" href="javascript:void(0)" onclick="return toggle(event, 21220167)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">The overall bias of this article is apparent from the very beginning. This is probably a good time to refer to <a href="https:&#x2F;&#x2F;www.allsides.com&#x2F;media-bias&#x2F;media-bias-ratings" rel="nofollow">https:&#x2F;&#x2F;www.allsides.com&#x2F;media-bias&#x2F;media-bias-ratings</a>, which lists The New Yorker as having a far-left bias.<p>The caption below the image next to the headline:<p>&gt; Bezos, reportedly worth a hundred and fourteen billion dollars, has donated less than three per cent of his wealth to charity.<p>Why is this caption relevant to the topic that the article purports to speak to in the title? And why is the opening paragraph just an unsubstantiated rumor about Jeff Bezos snubbing Bill Gates in an apparent act of vanity? Why mention something without evidence, except to influence the reader in bad faith? And again, why is it relevant to the title?<p>A significant portion of this article is based on the opinion of one former employee, Ian Freed. Other quotes are similarly anecdotal, without representation of opposing perspectives. And the focus shifts from topic to topic abruptly, without pausing to critically question the points that are hastily presented. For example, Biden&#x27;s comparison of Amazon&#x27;s corporate taxes to tax rates for firefighters&#x2F;teachers is nonsensical. It would make more sense to compare the personal tax rates of Amazon employees to firefighters&#x2F;teachers.<p>I will note the article isn&#x27;t all bad. I thought the story about Birkenstock was fair - counterfeits do threaten the value of brands. The bit about the positive side of warehouse jobs for workers left behind in other industries was also surprising. And I think anti-trust concerns were presented well.<p>But a lot of this very lengthy article seems to be an unfocused spray of information that presents one side of the story on many different facets, without much of a cohesive narrative.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21220167&amp;goto=item%3Fid%3D21217220%2321220167">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+        <tr class='athing comtr ' id='21221548'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="40"></td><td valign="top" class="votelinks"><center><a id='up_21221548' href='vote?id=21221548&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=skinnymuch" class="hnuser">skinnymuch</a> <span class="age"><a href="item?id=21221548">19 hours ago</a></span> <span id="unv_21221548"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 21221548)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">Not your main point at all. But saying they have far-left bias. Then bringing up them bringing up Biden. Biden is so far from being far left. Barely qualifies as left.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21221548&amp;goto=item%3Fid%3D21217220%2321221548">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+    <tr class='athing comtr ' id='21223637'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="40"></td><td valign="top" class="votelinks"><center><a id='up_21223637' href='vote?id=21223637&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=thundergolfer" class="hnuser">thundergolfer</a> <span class="age"><a href="item?id=21223637">17 hours ago</a></span> <span id="unv_21223637"></span><span class="par"></span> <a class="togg" n="2" href="javascript:void(0)" onclick="return toggle(event, 21223637)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">The fact that the site you linked puts The New York Times in the furthest left category is completely invalidating. It’s actually laughable.<p>Anarchism, Syndicalism, Communism. Those are far-left ideologies. The New York Times is centrist. It’s editorial section is _explicitly_ pro-capitalism.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21223637&amp;goto=item%3Fid%3D21217220%2321223637">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+        <tr class='athing comtr ' id='21229529'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="80"></td><td valign="top" class="votelinks"><center><a id='up_21229529' href='vote?id=21229529&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=Twixes" class="hnuser">Twixes</a> <span class="age"><a href="item?id=21229529">6 hours ago</a></span> <span id="unv_21229529"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 21229529)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">The US is extraordinarily skewed to the right economically, so healthcare for all is a controversy and outlets like the NYT are considered leftist.</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21229529&amp;goto=item%3Fid%3D21217220%2321229529">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+                  <tr class='athing comtr ' id='21217394'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="0"></td><td valign="top" class="votelinks"><center><a id='up_21217394' href='vote?id=21217394&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=joeblow9999" class="hnuser">joeblow9999</a> <span class="age"><a href="item?id=21217394">20 hours ago</a></span> <span id="unv_21217394"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 21217394)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c00">good to see betteridge&#x27;s law going strong</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21217394&amp;goto=item%3Fid%3D21217220%2321217394">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+              <tr class='athing comtr ' id='21223403'><td>
+            <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="0"></td><td valign="top" class="votelinks"><center><a id='up_21223403' href='vote?id=21223403&amp;how=up&amp;goto=item%3Fid%3D21217220'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+          <a href="user?id=11235813213455" class="hnuser">11235813213455</a> <span class="age"><a href="item?id=21223403">18 hours ago</a></span> <span id="unv_21223403"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 21223403)"></a>          <span class='storyon'></span>
+                  </span></div><br><div class="comment">
+                  <span class="commtext c73">I&#x27;m more concerned about the health of Amazon Forest</span>
+              <div class='reply'>        <p><font size="1">
+                      <u><a href="reply?id=21223403&amp;goto=item%3Fid%3D21217220%2321223403">reply</a></u>
+                  </font>
+      </div></div></td></tr>
+      </table></td></tr>
+            </table>
+      <br><br>
+  </td></tr>
+<tr><td><img src="s.gif" height="10" width="0"><table width="100%" cellspacing="0" cellpadding="1"><tr><td bgcolor="#ff6600"></td></tr></table><br><center><span class="yclinks"><a href="newsguidelines.html">Guidelines</a>
+        | <a href="newsfaq.html">FAQ</a>
+        | <a href="mailto:hn@ycombinator.com">Support</a>
+        | <a href="https://github.com/HackerNews/API">API</a>
+        | <a href="security.html">Security</a>
+        | <a href="lists">Lists</a>
+        | <a href="bookmarklet.html" rel="nofollow">Bookmarklet</a>
+        | <a href="http://www.ycombinator.com/legal/">Legal</a>
+        | <a href="http://www.ycombinator.com/apply/">Apply to YC</a>
+        | <a href="mailto:hn@ycombinator.com">Contact</a></span><br><br><form method="get" action="//hn.algolia.com/">Search:
+          <input type="text" name="q" value="" size="17" autocorrect="off" spellcheck="false" autocapitalize="off" autocomplete="false"></form>
+            </center></td></tr>
+      </table></center></body><script type='text/javascript' src='hn.js?mrkzsHFUB3DwAIsyqoaR'></script>
+  </html>
