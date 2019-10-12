@@ -11,25 +11,19 @@ import SwiftUI
 
 struct DetailView: View {
     @ObservedObject var item: Item
-
-    func reload() {
-        item.loadComments()
-    }
     
-    func indentPixels(_ level: Int) -> CGFloat {
-        return 10 * CGFloat(level)
-    }
+    let bodyFont = Font.system(size: 14.0)
 
     var body: some View {
         List {
-        VStack(alignment: .leading) {
-            Text(item.title)
-                .font(.headline)
-                .foregroundColor(.primary)
+            VStack(alignment: .leading) {
+                Text(item.title)
+                    .font(.headline)
+                    .foregroundColor(.primary)
 
-            Text(item.subheading)
-                .font(.caption)
-                .foregroundColor(.secondary)
+                Text(item.subheading)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
             }
                             
             ForEach(item.comments) { comment in
@@ -38,12 +32,21 @@ struct DetailView: View {
                         .fontWeight(.bold)
                     Spacer()
                     Text(comment.body)
+                        .font(self.bodyFont)
                 }.padding(.leading, self.indentPixels(comment.indentLevel))
             }
         }.navigationBarTitle("\(item.comments.count) comments", displayMode: .inline)
         .onAppear(perform: reload)
     }
     
+    func reload() {
+        item.loadComments()
+    }
+    
+    func indentPixels(_ level: Int) -> CGFloat {
+        return 10 * CGFloat(level)
+    }
+
 }
 
 /*

@@ -35,6 +35,13 @@ class Item: ObservableObject, Identifiable {
             return age
         }
     }
+    var commentSummary: String {
+        if commentCount != nil {
+            return String(commentCount!)
+        } else {
+            return ""
+        }
+    }
 
 
     init(id: Int, title: String, storyLink: URL, domain: String, age: String, author: String) {
@@ -96,15 +103,13 @@ class Item: ObservableObject, Identifiable {
         self.author = adjacentItem.firstChild(xpath: ".//*[@class='hnuser']")?.stringValue
         
         // Comment count, optional
-        if
-            let commentCountString = adjacentItem.firstChild(xpath: "./td/a[last()]")?.stringValue,
-            let commentCountComponent = commentCountString.split(separator: " ").first,
-            let commentCount = Int(commentCountComponent) {
+        if let commentCountString = adjacentItem.firstChild(xpath: "./td/a[last()]")?.stringValue {
+            let delimiterSet = CharacterSet.whitespaces
+            let commentCountComponent = commentCountString.part.components(separatedBy: delimiterSet)
+            let firstComponent = commentCountComponent.first!
+            let commentCount = Int(firstComponent)
             self.commentCount = commentCount
-        } else {
-            self.commentCount = nil
         }
-        
     }
     
     func loadComments() {

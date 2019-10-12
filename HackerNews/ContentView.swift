@@ -10,15 +10,11 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject private var service: HackerNewsService
- 
-    func reload() {
-        self.service.load()
-    }
-    
+
     var body: some View {
         NavigationView {
             MasterView(items: service.topStories)
-                .navigationBarTitle(Text("Top Stories"), displayMode: .automatic)
+                .navigationBarTitle(Text("Top Stories"), displayMode: .inline)
                 .navigationBarItems(
                     trailing: Button(
                         action: {
@@ -36,6 +32,10 @@ struct ContentView: View {
         .accentColor(.orange)
         .onAppear(perform: reload)
     }
+    
+    func reload() {
+        self.service.reload()
+    }
 }
 
 struct MasterView: View {
@@ -45,14 +45,20 @@ struct MasterView: View {
         List {
             ForEach(items) { item in
                 NavigationLink(destination: DetailView(item: item)) {
-                    VStack(alignment: .leading) {
-                        Text(item.title)
-                            .font(.headline)
-                            .foregroundColor(.primary)
+                    HStack {
+                        VStack(alignment: .leading) {
+                            Text(item.title)
+                                .foregroundColor(.primary)
 
-                        Text(item.subheading)
-                            .font(.caption)
-                            .foregroundColor(.secondary)
+                            Text(item.subheading)
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
+                        Spacer()
+                        Text(item.commentSummary)
+                            .font(.subheadline)
+                            .foregroundColor(Color.gray)
+                            .padding(.leading)
                     }
                 }
             }
