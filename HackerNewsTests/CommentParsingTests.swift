@@ -11,15 +11,15 @@ import XCTest
 class CommentParsingTests: XCTestCase {
 
     override func setUp() {
-        do {
-            let testBundle = Bundle(for: type(of: self))
-            let url = testBundle.url(forResource: "amazon-unstoppable", withExtension: "txt")!
-            self.data = try Data(contentsOf: url)
-            service.load()
-            
-        } catch {
-            print(error)
-        }
+//        do {
+//            let testBundle = Bundle(for: type(of: self))
+//            let url = testBundle.url(forResource: "amazon-unstoppable", withExtension: "txt")!
+////            self.data = try Data(contentsOf: url)
+////            service.load()
+//            
+//        } catch {
+//            print(error)
+//        }
     }
 
     override func tearDown() {

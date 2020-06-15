@@ -8,11 +8,16 @@
 
 import Foundation
 import Combine
+import Fuzi
 
 class HackerNewsService: ObservableObject {
     @Published var topStories: [Item] = []
     private var page: Int = 1
 
+    init() {
+        
+    }
+    
     func reload() {
         page = 1
         topStories = []

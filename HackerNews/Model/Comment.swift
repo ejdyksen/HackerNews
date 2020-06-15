@@ -7,18 +7,44 @@
 //
 
 import Foundation
+import Fuzi
 
 struct Comment: Identifiable {
     let id: Int
-    let body: String
     let author: String
     let indentLevel: Int
+    var body: String = ""
+    var paragraphs: [String] = []
+    
+    init(id: Int, body: String, author: String, indentLevel: Int) {
+        self.id = id
+        self.body = body
+        self.author = author
+        self.indentLevel = indentLevel
+    }
     
     init?(withNode node: XMLElement) {
         self.id = Int(node.attr("id")!)!
-        let textNode = node.firstChild(css: ".commtext")
+        guard let textNode = node.firstChild(css: ".commtext") else {
+            return nil
+        }
         
-        self.body = textNode!.stringValue
+//        let htmlData = textNode.rawXML.data(using: .utf8)!
+//        self.body = try! NSAttributedString(data: htmlData, options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil)
+            
+//        self.body = NSAttributedString(string: textNode.stringValue)
+        
+        
+        
+        for child in textNode.childNodes(ofTypes: [.Element, .Text]) {
+            if child.type == .Text {
+                paragraphs.append(child.stringValue.trimmingCharacters(in: .newlines))
+            } else if child.type == .Element {
+                paragraphs.append(child.stringValue.trimmingCharacters(in: .newlines))
+            } else {
+                assert(false, "unhandled element type")
+            }
+        }
         
         self.author = node.firstChild(css: ".hnuser")!.stringValue
         

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Fuzi
 
 class Item: ObservableObject, Identifiable {
     var id: Int                 //req
@@ -77,13 +78,13 @@ class Item: ObservableObject, Identifiable {
         self.storyLink = storyLink
         self.title = storyLinkNode.stringValue
         
-        guard let domainNode = node.firstChild(xpath: ".//*[@class='sitestr']") else {
+        guard let domainNode = node.firstChild(css: ".sitestr") else {
             return nil
         }
         self.domain = domainNode.stringValue
         
         // Age, required
-        guard let ageNode = adjacentItem.firstChild(xpath: ".//*[@class='age']") else {
+        guard let ageNode = adjacentItem.firstChild(css: ".age") else {
             return nil
         }
         self.age = ageNode.stringValue
@@ -91,7 +92,7 @@ class Item: ObservableObject, Identifiable {
         
         // Score, optional
         if
-            let scoreString = adjacentItem.firstChild(xpath: ".//*[@id='score_\(self.id)']")?.stringValue,
+            let scoreString = adjacentItem.firstChild(css: "#score_\(self.id)")?.stringValue,
             let scoreStringComponent = scoreString.split(separator: " ").first,
             let score = Int(scoreStringComponent) {
             self.score = score
@@ -100,12 +101,12 @@ class Item: ObservableObject, Identifiable {
         }
         
         // Author, optional
-        self.author = adjacentItem.firstChild(xpath: ".//*[@class='hnuser']")?.stringValue
+        self.author = adjacentItem.firstChild(css: ".hnuser")?.stringValue
         
         // Comment count, optional
         if let commentCountString = adjacentItem.firstChild(xpath: "./td/a[last()]")?.stringValue {
             let delimiterSet = CharacterSet.whitespaces
-            let commentCountComponent = commentCountString.part.components(separatedBy: delimiterSet)
+            let commentCountComponent = commentCountString.components(separatedBy: delimiterSet)
             let firstComponent = commentCountComponent.first!
             let commentCount = Int(firstComponent)
             self.commentCount = commentCount
