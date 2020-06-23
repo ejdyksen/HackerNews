@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		29136B28234078BB00F0F88A /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 29136B27234078BB00F0F88A /* libxml2.tbd */; };
 		2925E387235444F6004E66D2 /* amazon-unstoppable.txt in Resources */ = {isa = PBXBuildFile; fileRef = 29CBE5AA2351A7E100C4640F /* amazon-unstoppable.txt */; };
 		2925E388235444FA004E66D2 /* introducing-swift.txt in Resources */ = {isa = PBXBuildFile; fileRef = 29666DE02351AAC10069637B /* introducing-swift.txt */; };
 		2925E389235444FA004E66D2 /* new.txt in Resources */ = {isa = PBXBuildFile; fileRef = 29666DE12351AAC10069637B /* new.txt */; };
@@ -88,7 +87,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				2932706B24972EA20007810D /* Fuzi in Frameworks */,
-				29136B28234078BB00F0F88A /* libxml2.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
