@@ -6,6 +6,8 @@
 //  Copyright © 2019 ejd. All rights reserved.
 //
 
+#if DEBUG
+
 import Foundation
 
 var itemOne = Item(id: 123,
@@ -49,3 +51,5 @@ func itemWithComments() -> Item {
     itemWithComments.comments = [comment1, comment2, comment3, comment4, comment5, comment6, comment7, comment8]
     return itemWithComments
 }
+
+#endif
