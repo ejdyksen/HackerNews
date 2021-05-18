@@ -23,18 +23,14 @@ struct Comment: Identifiable {
         self.indentLevel = indentLevel
     }
     
+    
     init?(withNode node: Fuzi.XMLElement) {
         self.id = Int(node.attr("id")!)!
         guard let textNode = node.firstChild(css: ".commtext") else {
             return nil
         }
-        
-//        let htmlData = textNode.rawXML.data(using: .utf8)!
-//        self.body = try! NSAttributedString(data: htmlData, options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil)
-            
-//        self.body = NSAttributedString(string: textNode.stringValue)
-        
-        
+                    
+        self.body = textNode.stringValue
         
         for child in textNode.childNodes(ofTypes: [.Element, .Text]) {
             if child.type == .Text {

@@ -25,7 +25,6 @@
 		29D8F934256B615D00E37E1E /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D8F919256B611F00E37E1E /* Item.swift */; };
 		29D8F935256B615D00E37E1E /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D8F919256B611F00E37E1E /* Item.swift */; };
 		29D8F940256B618B00E37E1E /* Fuzi in Frameworks */ = {isa = PBXBuildFile; productRef = 29D8F93F256B618B00E37E1E /* Fuzi */; };
-		29D8F947256B61D600E37E1E /* TextWithAttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D8F946256B61D600E37E1E /* TextWithAttributedString.swift */; };
 		29D8F94D256B620600E37E1E /* PreviewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D8F91B256B612B00E37E1E /* PreviewData.swift */; };
 		29D8F952256B620600E37E1E /* PreviewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D8F91B256B612B00E37E1E /* PreviewData.swift */; };
 /* End PBXBuildFile section */
@@ -72,7 +71,6 @@
 		29D8F91D256B612B00E37E1E /* introducing-swift.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "introducing-swift.txt"; sourceTree = "<group>"; };
 		29D8F91E256B612B00E37E1E /* topstories.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = topstories.txt; sourceTree = "<group>"; };
 		29D8F91F256B612B00E37E1E /* new.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = new.txt; sourceTree = "<group>"; };
-		29D8F946256B61D600E37E1E /* TextWithAttributedString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextWithAttributedString.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -213,7 +211,6 @@
 		29D8F945256B61B200E37E1E /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				29D8F946256B61D600E37E1E /* TextWithAttributedString.swift */,
 				29D8F8CF256B5FB300E37E1E /* ContentView.swift */,
 				29D8F90F256B610300E37E1E /* DetailView.swift */,
 			);
@@ -391,7 +388,6 @@
 				29D8F8F9256B5FB500E37E1E /* ContentView.swift in Sources */,
 				29D8F910256B610300E37E1E /* DetailView.swift in Sources */,
 				29D8F928256B615300E37E1E /* HackerNewsService.swift in Sources */,
-				29D8F947256B61D600E37E1E /* TextWithAttributedString.swift in Sources */,
 				29D8F934256B615D00E37E1E /* Item.swift in Sources */,
 				29D8F8F7256B5FB500E37E1E /* HackerNewsApp.swift in Sources */,
 			);
