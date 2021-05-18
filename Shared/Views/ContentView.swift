@@ -14,16 +14,15 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             MasterView(items: service.topStories)
-                .navigationBarTitle(Text("Top Stories"), displayMode: .inline)
-                .navigationBarItems(
-                    trailing: Button(
-                        action: {
+                .navigationTitle(Text("Top Stories"))
+                .toolbar {
+                    ToolbarItem(placement: .automatic) {
+                        Button("Reload") {
                             self.service.load()
                         }
-                    ) {
-                        Text("Reload")
                     }
-                )
+                }
+
             if (service.topStories.count > 0 ) {
                 DetailView(item: service.topStories.first!)
             }
@@ -32,7 +31,7 @@ struct ContentView: View {
         .accentColor(.orange)
         .onAppear(perform: reload)
     }
-    
+
     func reload() {
         self.service.reload()
     }
@@ -67,7 +66,7 @@ struct MasterView: View {
     }
 }
 
- 
+
 #if DEBUG
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {

@@ -56,7 +56,7 @@ class Item: ObservableObject, Identifiable {
         self.commentCount = 0
     }
     
-    init?(withNode node: XMLElement) {
+    init?(withNode node: Fuzi.XMLElement) {
         // Gather some additional XMLNodes
         guard
             let adjacentItem = node.firstChild(xpath: "./following-sibling::tr[1]"),

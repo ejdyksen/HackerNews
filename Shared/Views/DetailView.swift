@@ -36,7 +36,7 @@ struct DetailView: View {
                     }
                 }.padding(.leading, self.indentPixels(comment.indentLevel))
             }
-        }.navigationBarTitle("\(item.comments.count) comments", displayMode: .inline)
+        }.navigationTitle("\(item.comments.count) comments")
         .onAppear(perform: reload)
     }
     

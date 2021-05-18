@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		29477E97263608AC00F8EB1B /* Fuzi in Frameworks */ = {isa = PBXBuildFile; productRef = 29477E96263608AC00F8EB1B /* Fuzi */; };
 		29D8F8EA256B5FB500E37E1E /* Tests_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D8F8E9256B5FB500E37E1E /* Tests_iOS.swift */; };
 		29D8F8F5256B5FB500E37E1E /* Tests_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D8F8F4256B5FB500E37E1E /* Tests_macOS.swift */; };
 		29D8F8F7256B5FB500E37E1E /* HackerNewsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D8F8CE256B5FB300E37E1E /* HackerNewsApp.swift */; };
@@ -25,7 +26,6 @@
 		29D8F935256B615D00E37E1E /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D8F919256B611F00E37E1E /* Item.swift */; };
 		29D8F940256B618B00E37E1E /* Fuzi in Frameworks */ = {isa = PBXBuildFile; productRef = 29D8F93F256B618B00E37E1E /* Fuzi */; };
 		29D8F947256B61D600E37E1E /* TextWithAttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D8F946256B61D600E37E1E /* TextWithAttributedString.swift */; };
-		29D8F948256B61D600E37E1E /* TextWithAttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D8F946256B61D600E37E1E /* TextWithAttributedString.swift */; };
 		29D8F94D256B620600E37E1E /* PreviewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D8F91B256B612B00E37E1E /* PreviewData.swift */; };
 		29D8F952256B620600E37E1E /* PreviewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D8F91B256B612B00E37E1E /* PreviewData.swift */; };
 /* End PBXBuildFile section */
@@ -48,6 +48,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		29C6A13D264F17F900C33F36 /* HackerNews.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HackerNews.entitlements; sourceTree = "<group>"; };
 		29D8F8CE256B5FB300E37E1E /* HackerNewsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HackerNewsApp.swift; sourceTree = "<group>"; };
 		29D8F8CF256B5FB300E37E1E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		29D8F8D0256B5FB400E37E1E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -87,6 +88,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				29477E97263608AC00F8EB1B /* Fuzi in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -107,15 +109,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		29477E95263608AC00F8EB1B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		29D8F8C8256B5FB300E37E1E = {
 			isa = PBXGroup;
 			children = (
+				29C6A13D264F17F900C33F36 /* HackerNews.entitlements */,
 				29D8F8CD256B5FB300E37E1E /* Shared */,
 				29D8F8D7256B5FB400E37E1E /* iOS */,
 				29D8F8DE256B5FB400E37E1E /* macOS */,
 				29D8F8E8256B5FB500E37E1E /* Tests iOS */,
 				29D8F8F3256B5FB500E37E1E /* Tests macOS */,
 				29D8F8D6256B5FB400E37E1E /* Products */,
+				29477E95263608AC00F8EB1B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -245,6 +256,9 @@
 			dependencies = (
 			);
 			name = "HackerNews (macOS)";
+			packageProductDependencies = (
+				29477E96263608AC00F8EB1B /* Fuzi */,
+			);
 			productName = "HackerNews (macOS)";
 			productReference = 29D8F8DD256B5FB400E37E1E /* HackerNews.app */;
 			productType = "com.apple.product-type.application";
@@ -292,7 +306,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1220;
-				LastUpgradeCheck = 1220;
+				LastUpgradeCheck = 1250;
 				TargetAttributes = {
 					29D8F8D4256B5FB400E37E1E = {
 						CreatedOnToolsVersion = 12.2;
@@ -392,7 +406,6 @@
 				29D8F8FA256B5FB500E37E1E /* ContentView.swift in Sources */,
 				29D8F911256B610300E37E1E /* DetailView.swift in Sources */,
 				29D8F929256B615300E37E1E /* HackerNewsService.swift in Sources */,
-				29D8F948256B61D600E37E1E /* TextWithAttributedString.swift in Sources */,
 				29D8F935256B615D00E37E1E /* Item.swift in Sources */,
 				29D8F8F8256B5FB500E37E1E /* HackerNewsApp.swift in Sources */,
 			);
@@ -546,7 +559,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = HackerNews.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 5XT3U2N96X;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -557,6 +572,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ejdyksen.HackerNews;
 				PRODUCT_NAME = HackerNews;
 				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -567,7 +584,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = HackerNews.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 5XT3U2N96X;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -578,6 +597,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ejdyksen.HackerNews;
 				PRODUCT_NAME = HackerNews;
 				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -590,6 +611,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				ENABLE_PREVIEWS = YES;
@@ -612,6 +634,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				ENABLE_PREVIEWS = YES;
@@ -775,6 +798,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		29477E96263608AC00F8EB1B /* Fuzi */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 29D8F93E256B618B00E37E1E /* XCRemoteSwiftPackageReference "Fuzi" */;
+			productName = Fuzi;
+		};
 		29D8F93F256B618B00E37E1E /* Fuzi */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 29D8F93E256B618B00E37E1E /* XCRemoteSwiftPackageReference "Fuzi" */;

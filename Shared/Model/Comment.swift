@@ -23,7 +23,7 @@ struct Comment: Identifiable {
         self.indentLevel = indentLevel
     }
     
-    init?(withNode node: XMLElement) {
+    init?(withNode node: Fuzi.XMLElement) {
         self.id = Int(node.attr("id")!)!
         guard let textNode = node.firstChild(css: ".commtext") else {
             return nil
