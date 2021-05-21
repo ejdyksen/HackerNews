@@ -61,7 +61,9 @@ struct MasterView: View {
                     }
                 }
             }
+            .padding(2)
         }
+        .listStyle(PlainListStyle())
         .animation(.none)
     }
 }
