@@ -25,6 +25,8 @@
 		29D8F940256B618B00E37E1E /* Fuzi in Frameworks */ = {isa = PBXBuildFile; productRef = 29D8F93F256B618B00E37E1E /* Fuzi */; };
 		29D8F94D256B620600E37E1E /* PreviewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D8F91B256B612B00E37E1E /* PreviewData.swift */; };
 		29D8F952256B620600E37E1E /* PreviewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D8F91B256B612B00E37E1E /* PreviewData.swift */; };
+		29F947B52659511B00578039 /* Listing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F947B42659511B00578039 /* Listing.swift */; };
+		29F947B62659511B00578039 /* Listing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F947B42659511B00578039 /* Listing.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +48,7 @@
 		29D8F91D256B612B00E37E1E /* introducing-swift.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "introducing-swift.txt"; sourceTree = "<group>"; };
 		29D8F91E256B612B00E37E1E /* topstories.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = topstories.txt; sourceTree = "<group>"; };
 		29D8F91F256B612B00E37E1E /* new.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = new.txt; sourceTree = "<group>"; };
+		29F947B42659511B00578039 /* Listing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Listing.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,24 +74,25 @@
 		29D8F8C8256B5FB300E37E1E = {
 			isa = PBXGroup;
 			children = (
-				29C6A13D264F17F900C33F36 /* HackerNews.entitlements */,
-				29D8F8CD256B5FB300E37E1E /* Shared */,
-				29D8F8D7256B5FB400E37E1E /* iOS */,
+				29D8F8CD256B5FB300E37E1E /* HackerNews */,
 				29D8F8DE256B5FB400E37E1E /* macOS */,
 				29D8F8D6256B5FB400E37E1E /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		29D8F8CD256B5FB300E37E1E /* Shared */ = {
+		29D8F8CD256B5FB300E37E1E /* HackerNews */ = {
 			isa = PBXGroup;
 			children = (
-				29D8F945256B61B200E37E1E /* Views */,
 				29D8F916256B611F00E37E1E /* Model */,
+				29F947B3265950F200578039 /* Service */,
+				29D8F945256B61B200E37E1E /* Views */,
 				29D8F91A256B612B00E37E1E /* Preview Content */,
 				29D8F8CE256B5FB300E37E1E /* HackerNewsApp.swift */,
+				29C6A13D264F17F900C33F36 /* HackerNews.entitlements */,
+				29D8F8D8256B5FB400E37E1E /* Info.plist */,
 				29D8F8D0256B5FB400E37E1E /* Assets.xcassets */,
 			);
-			path = Shared;
+			path = HackerNews;
 			sourceTree = "<group>";
 		};
 		29D8F8D6256B5FB400E37E1E /* Products */ = {
@@ -98,14 +102,6 @@
 				29D8F8DD256B5FB400E37E1E /* HackerNews.app */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		29D8F8D7256B5FB400E37E1E /* iOS */ = {
-			isa = PBXGroup;
-			children = (
-				29D8F8D8256B5FB400E37E1E /* Info.plist */,
-			);
-			path = iOS;
 			sourceTree = "<group>";
 		};
 		29D8F8DE256B5FB400E37E1E /* macOS */ = {
@@ -120,9 +116,9 @@
 		29D8F916256B611F00E37E1E /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				29D8F917256B611F00E37E1E /* HackerNewsService.swift */,
-				29D8F918256B611F00E37E1E /* Comment.swift */,
+				29F947B42659511B00578039 /* Listing.swift */,
 				29D8F919256B611F00E37E1E /* Item.swift */,
+				29D8F918256B611F00E37E1E /* Comment.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -146,6 +142,14 @@
 				29D8F90F256B610300E37E1E /* DetailView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		29F947B3265950F200578039 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				29D8F917256B611F00E37E1E /* HackerNewsService.swift */,
+			);
+			path = Service;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -256,6 +260,7 @@
 			files = (
 				29D8F94D256B620600E37E1E /* PreviewData.swift in Sources */,
 				29D8F92E256B615B00E37E1E /* Comment.swift in Sources */,
+				29F947B52659511B00578039 /* Listing.swift in Sources */,
 				29D8F8F9256B5FB500E37E1E /* ContentView.swift in Sources */,
 				29D8F910256B610300E37E1E /* DetailView.swift in Sources */,
 				29D8F928256B615300E37E1E /* HackerNewsService.swift in Sources */,
@@ -270,6 +275,7 @@
 			files = (
 				29D8F952256B620600E37E1E /* PreviewData.swift in Sources */,
 				29D8F933256B615B00E37E1E /* Comment.swift in Sources */,
+				29F947B62659511B00578039 /* Listing.swift in Sources */,
 				29D8F8FA256B5FB500E37E1E /* ContentView.swift in Sources */,
 				29D8F911256B610300E37E1E /* DetailView.swift in Sources */,
 				29D8F929256B615300E37E1E /* HackerNewsService.swift in Sources */,

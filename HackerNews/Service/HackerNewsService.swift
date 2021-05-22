@@ -10,7 +10,7 @@ import Foundation
 import Combine
 import Fuzi
 
-class HackerNewsService: ObservableObject {
+class HackerNewsService {
     @Published var topStories: [Item] = []
     private var page: Int = 1
 
