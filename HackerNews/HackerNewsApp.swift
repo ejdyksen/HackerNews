@@ -11,9 +11,7 @@ import SwiftUI
 struct HackerNewsApp: App {
     var body: some Scene {
         WindowGroup {
-            let service = HackerNewsService()
-            let contentView = ContentView()
-            contentView.environmentObject(service)
+            HomeNav()
         }
     }
 }

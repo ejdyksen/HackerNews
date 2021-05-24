@@ -9,7 +9,7 @@
 import Foundation
 import Fuzi
 
-struct Comment: Identifiable {
+struct HNComment: Identifiable {
     let id: Int
     let author: String
     let indentLevel: Int
