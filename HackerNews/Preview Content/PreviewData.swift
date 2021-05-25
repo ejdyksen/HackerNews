@@ -28,7 +28,7 @@ var itemTwo = HNItem(id: 456,
                    score: 123,
                    commentCount: 555)
 
-let sampleItems = [itemOne, itemTwo]
+let sampleItems = [itemOne, itemTwo, itemOne, itemTwo, itemOne, itemTwo, itemOne, itemTwo]
 
 extension HNListing {
     static func exampleService() -> HNListing {

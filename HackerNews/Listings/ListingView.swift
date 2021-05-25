@@ -21,9 +21,7 @@ struct ListingView: View {
                     }
 
             }
-            .padding(2)
             .listStyle(PlainListStyle())
-            .animation(.none)
             .navigationTitle(Text(title) )
             .toolbar {
                 ToolbarItem(placement: .automatic) {

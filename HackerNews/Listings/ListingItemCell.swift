@@ -13,21 +13,39 @@ struct ListingItemCell: View {
     var body: some View {
         NavigationLink(destination: ItemDetailContainerView(item: item)) {
             HStack {
-                VStack(alignment: .leading) {
+                VStack(alignment: .leading, spacing: 0) {
                     Text(item.title)
+                        .font(.headline)
                         .foregroundColor(.primary)
-                        .padding(.bottom, 1)
-
-                    Text(item.subheading)
+                    + Text("  (\(item.domain))")
                         .font(.caption)
                         .foregroundColor(.secondary)
+
+                    Text(item.subheading)
+                        .font(.footnote)
+                        .foregroundColor(.secondary)
+                        .lineLimit(1)
+                        .padding(.top, 4)
+
                 }
+                .padding(.vertical, 3)
                 Spacer()
                 Text(String(item.commentCount))
                     .font(.subheadline)
                     .foregroundColor(Color.gray)
                     .padding(.leading)
             }
+        }
+    }
+
+}
+
+struct ListingItemCell_Previews: PreviewProvider {
+    static var previews: some View {
+        Group {
+            ListingItemCell(item: itemOne)
+                .previewLayout(.sizeThatFits)
+                .padding()
         }
     }
 }
