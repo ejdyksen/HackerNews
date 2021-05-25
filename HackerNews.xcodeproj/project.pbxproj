@@ -121,7 +121,6 @@
 			isa = PBXGroup;
 			children = (
 				29D8F91B256B612B00E37E1E /* PreviewData.swift */,
-				29D8F91E256B612B00E37E1E /* topstories.txt */,
 			);
 			path = "Preview Content";
 			sourceTree = "<group>";
