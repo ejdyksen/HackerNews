@@ -17,7 +17,7 @@ struct ListingItemCell: View {
                     Text(item.title)
                         .foregroundColor(.primary)
                         .padding(.bottom, 1)
-                    
+
                     Text(item.subheading)
                         .font(.caption)
                         .foregroundColor(.secondary)

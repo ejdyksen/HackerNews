@@ -12,7 +12,7 @@ import Fuzi
 
 class HNListing: ObservableObject {
     let listingType: String
-    
+
     @Published var items: [HNItem] = []
     @Published var isLoading = true
 
@@ -35,7 +35,7 @@ class HNListing: ObservableObject {
         loadMoreContent()
       }
     }
-    
+
     func loadMoreContent() {
         let url = URL(string: "https://news.ycombinator.com/\(listingType)?p=\(currentPage)")!
         currentPage = currentPage + 1
@@ -45,7 +45,7 @@ class HNListing: ObservableObject {
                     print("Couldn't load \(url)")
                     return
                 }
-                
+
                 let newItems = self.parseItems(data: data)
 
                 DispatchQueue.main.sync {
@@ -56,25 +56,25 @@ class HNListing: ObservableObject {
             dataTask.resume()
         }
     }
-    
+
     func parseItems(data: Data) -> [HNItem] {
         do {
             let doc = try HTMLDocument(data: data)
             let itemList = doc.css("table.itemlist tr.athing")
 
             var newItems: [HNItem] = []
-            
+
             for node in itemList {
                 if let item = HNItem(withXmlNode: node) {
                     newItems.append(item)
                 }
             }
-            
+
             return newItems
         } catch {
             print("Error:", error)
             return []
         }
     }
-    
+
 }

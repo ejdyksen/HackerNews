@@ -20,7 +20,7 @@ struct ItemDetailContainerView: View {
 
 struct ItemDetailView: View {
     @ObservedObject var item: HNItem
-    
+
     var body: some View {
         List {
             VStack(alignment: .leading) {
@@ -32,7 +32,7 @@ struct ItemDetailView: View {
                     .font(.caption)
                     .foregroundColor(.secondary)
             }
-                            
+
             ForEach(item.comments) { comment in
                 CommentCell(comment: comment)
             }

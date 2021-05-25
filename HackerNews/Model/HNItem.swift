@@ -16,12 +16,12 @@ class HNItem: ObservableObject, Identifiable {
     let domain: String
     let age: String
     let author: String?
-    
+
     var score: Int?
     var commentCount: Int
-    
+
     @Published var comments: [HNComment] = []
-    
+
     var itemLink: URL {
         return URL(string: "https://news.ycombinator.com/item?id=\(self.id)")!
     }
@@ -48,7 +48,7 @@ class HNItem: ObservableObject, Identifiable {
         self.score = score ?? 0
         self.commentCount = commentCount ?? 0
     }
-    
+
     init?(withXmlNode node: Fuzi.XMLElement) {
         // Gather some additional XMLNodes
         guard
@@ -57,33 +57,33 @@ class HNItem: ObservableObject, Identifiable {
         else {
             return nil
         }
-        
+
         // Get an item ID, which is required
         guard let idString = node.attributes["id"], let id = Int(idString) else {
             return nil
         }
         self.id = id
-        
+
         // Link and title, which are required
         guard let href = storyLinkNode.attributes["href"], let storyLink = URL(string: href) else {
             return nil
         }
         self.storyLink = storyLink
         self.title = storyLinkNode.stringValue
-        
+
         if let domainNode = node.firstChild(css: ".sitestr")  {
             self.domain = domainNode.stringValue
         } else {
             self.domain = ""
         }
-        
+
         // Age, required
         guard let ageNode = adjacentItem.firstChild(css: ".age") else {
             return nil
         }
         self.age = ageNode.stringValue
-        
-        
+
+
         // Score, optional
         if
             let scoreString = adjacentItem.firstChild(css: "#score_\(self.id)")?.stringValue,
@@ -93,10 +93,10 @@ class HNItem: ObservableObject, Identifiable {
         } else {
             self.score = nil
         }
-        
+
         // Author, optional
         self.author = adjacentItem.firstChild(css: ".hnuser")?.stringValue
-        
+
         // Comment count, optional
         if let commentCountString = adjacentItem.firstChild(xpath: "./td/a[last()]")?.stringValue {
             let delimiterSet = CharacterSet.whitespaces
@@ -108,7 +108,7 @@ class HNItem: ObservableObject, Identifiable {
             self.commentCount = 0
         }
     }
-    
+
     func loadDetails() {
         DispatchQueue.global(qos: .userInteractive).async {
             let dataTask = URLSession.shared.dataTask(with: self.itemLink) { data, response, error in
@@ -136,5 +136,4 @@ class HNItem: ObservableObject, Identifiable {
             dataTask.resume()
         }
     }
-
 }
