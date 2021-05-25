@@ -36,6 +36,10 @@ struct CommentCell: View {
 
 struct CommentCell_Previews: PreviewProvider {
     static var previews: some View {
-        CommentCell(comment: comment1)
+        Group {
+            CommentCell(comment: comment3)
+                .previewLayout(.sizeThatFits)
+                .padding(10)
+        }
     }
 }

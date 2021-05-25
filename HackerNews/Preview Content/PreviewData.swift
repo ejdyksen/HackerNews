@@ -11,12 +11,12 @@
 import Foundation
 
 var itemOne = HNItem(id: 123,
-                   title: "This is a story",
+                   title: "This is a story with a particularly long title that I built in one day",
                    storyLink: URL(string: "https://www.example.com")!,
                    domain: "example.com",
                    age: "2 hours ago",
                    author: "ejdyksen",
-                   score: nil,
+                   score: 123,
                    commentCount: 123)
 
 var itemTwo = HNItem(id: 456,
@@ -42,18 +42,20 @@ let longStringOne = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\nS
 let longStringTwo = "Quid enim est a Chrysippo praetermissum in Stoicis? Quicquid enim a sapientia proficiscitur, id continuo debet expletum esse omnibus suis partibus; Ac ne plura complectar-sunt enim innumerabilia-, bene laudata virtus voluptatis aditus intercludat necesse est. Nam cui proposito sit conservatio sui, necesse est huic partes quoque sui caras suo genere laudabiles. Atque hoc loco similitudines eas, quibus illi uti solent, dissimillimas proferebas. Summus dolor plures dies manere non potest? Ut necesse sit omnium rerum, quae natura vigeant, similem esse finem, non eundem. Sic consequentibus vestris sublatis prima tolluntur. An haec ab eo non dicuntur? Tu quidem reddes"
 
 let comment1 = HNComment(id: 1, body: longStringOne, author: "ejd", indentLevel: 0)
-let comment2 = HNComment(id: 2, body: longStringTwo, author: "ejd", indentLevel: 0)
-let comment3 = HNComment(id: 3, body: longStringOne, author: "ejd", indentLevel: 0)
+let comment2 = HNComment(id: 2, body: longStringTwo, author: "ejdyksen", indentLevel: 0)
+let comment3 = HNComment(id: 3, body: longStringOne, author: "zepherhillis", indentLevel: 0)
 let comment4 = HNComment(id: 4, body: longStringTwo, author: "ejd", indentLevel: 0)
 let comment5 = HNComment(id: 5, body: longStringOne, author: "ejd", indentLevel: 0)
 let comment6 = HNComment(id: 6, body: longStringTwo, author: "ejd", indentLevel: 0)
 let comment7 = HNComment(id: 7, body: longStringOne, author: "ejd", indentLevel: 0)
 let comment8 = HNComment(id: 8, body: longStringTwo, author: "ejd", indentLevel: 0)
 
-func itemWithComments() -> HNItem {
-    let itemWithComments = itemOne
-//    itemWithComments.comments = [comment1, comment2, comment3, comment4, comment5, comment6, comment7, comment8]
-    return itemWithComments
+extension HNComment {
+    static func itemWithComments() -> HNItem {
+        let itemWithComments = itemOne
+        itemWithComments.comments = [comment1, comment2, comment3, comment4, comment5, comment6, comment7, comment8]
+        return itemWithComments
+    }
 }
 
 #endif

@@ -11,7 +11,7 @@ import SwiftUI
 struct ListingView: View {
     @ObservedObject var listing: HNListing
     let title: String
-    
+
     var body: some View {
         NavigationView {
             List(listing.items) { item in
@@ -66,11 +66,8 @@ struct ShowListing: View {
     }
 }
 
-#if DEBUG
-//struct ContentView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ContentView()
-//            .environmentObject(HackerNewsService.exampleService())
-//    }
-//}
-#endif
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ListingView(listing: HNListing.exampleService(), title: "Top Stories")
+    }
+}

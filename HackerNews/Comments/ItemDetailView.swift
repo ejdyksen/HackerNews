@@ -8,9 +8,19 @@
 
 import SwiftUI
 
-struct ItemDetailView: View {
+struct ItemDetailContainerView: View {
     @ObservedObject var item: HNItem
 
+    var body: some View {
+        ItemDetailView(item: item).onAppear {
+            item.loadDetails()
+        }
+    }
+}
+
+struct ItemDetailView: View {
+    @ObservedObject var item: HNItem
+    
     var body: some View {
         List {
             VStack(alignment: .leading) {
@@ -29,20 +39,19 @@ struct ItemDetailView: View {
         }
         .navigationTitle("\(item.commentCount) comments")
         .navigationBarTitleDisplayMode(.inline)
-        .onAppear {
-            item.loadDetails()
-        }
     }
 
 }
 
 
-//#if DEBUG
-//struct DetailView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        NavigationView {
-//            CommentView(item: itemWithComments())
-//        }
-//    }
-//}
-//#endif
+#if DEBUG
+struct ItemDetailView_Previews: PreviewProvider {
+    static var previews: some View {
+        Group {
+            NavigationView {
+                ItemDetailView(item: HNComment.itemWithComments())
+            }
+        }
+    }
+}
+#endif

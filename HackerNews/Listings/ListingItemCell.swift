@@ -11,7 +11,7 @@ struct ListingItemCell: View {
     var item: HNItem
 
     var body: some View {
-        NavigationLink(destination: ItemDetailView(item: item)) {
+        NavigationLink(destination: ItemDetailContainerView(item: item)) {
             HStack {
                 VStack(alignment: .leading) {
                     Text(item.title)

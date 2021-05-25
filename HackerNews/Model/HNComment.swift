@@ -13,25 +13,22 @@ struct HNComment: Identifiable {
     let id: Int
     let author: String
     let indentLevel: Int
-    var body: String = ""
     var paragraphs: [String] = []
-    
+
     init(id: Int, body: String, author: String, indentLevel: Int) {
         self.id = id
-        self.body = body
+        self.paragraphs = [body]
         self.author = author
         self.indentLevel = indentLevel
     }
-    
-    
+
+
     init?(withNode node: Fuzi.XMLElement) {
         self.id = Int(node.attr("id")!)!
         guard let textNode = node.firstChild(css: ".commtext") else {
             return nil
         }
-                    
-        self.body = textNode.stringValue
-        
+
         for child in textNode.childNodes(ofTypes: [.Element, .Text]) {
             if child.type == .Text {
                 paragraphs.append(child.stringValue.trimmingCharacters(in: .newlines))
@@ -41,12 +38,12 @@ struct HNComment: Identifiable {
                 assert(false, "unhandled element type")
             }
         }
-        
+
         self.author = node.firstChild(css: ".hnuser")!.stringValue
-        
+
         let indentWidth = Int(node.firstChild(css: ".ind img")!.attr("width")!)!
         let indentLevel: Int = indentWidth / 40
         self.indentLevel = indentLevel
     }
-    
+
 }

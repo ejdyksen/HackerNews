@@ -426,6 +426,7 @@
 				CODE_SIGN_ENTITLEMENTS = HackerNews/HackerNews.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_ASSET_PATHS = "HackerNews/Preview\\ Content";
 				DEVELOPMENT_TEAM = U2522N6WMG;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = HackerNews/Info.plist;
@@ -453,6 +454,7 @@
 				CODE_SIGN_ENTITLEMENTS = HackerNews/HackerNews.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_ASSET_PATHS = "HackerNews/Preview\\ Content";
 				DEVELOPMENT_TEAM = U2522N6WMG;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = HackerNews/Info.plist;
