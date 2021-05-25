@@ -17,7 +17,7 @@ struct ListingItemCell: View {
                     Text(item.title)
                         .font(.headline)
                         .foregroundColor(.primary)
-                    + Text("  (\(item.domain))")
+                    + Text(item.domainString)
                         .font(.caption)
                         .foregroundColor(.secondary)
 

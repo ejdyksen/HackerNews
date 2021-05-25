@@ -18,6 +18,7 @@ struct CommentCell: View {
                 .font(.system(size: 15))
                 .foregroundColor(.accentColor)
                 .padding(.vertical, 1)
+
             ForEach(comment.paragraphs, id: \.self) { paragraph in
                 Text(paragraph)
                     .font(bodyFont)

@@ -14,6 +14,15 @@ class HNItem: ObservableObject, Identifiable {
     let title: String
     let storyLink: URL
     let domain: String
+
+    var domainString: String {
+        if (self.domain == "") {
+            return ""
+        } else {
+            return "  (\(self.domain))"
+        }
+    }
+
     let age: String
     let author: String?
 
@@ -21,6 +30,8 @@ class HNItem: ObservableObject, Identifiable {
     var commentCount: Int
 
     @Published var comments: [HNComment] = []
+    @Published var paragraphs: [String] = []
+
 
     var itemLink: URL {
         return URL(string: "https://news.ycombinator.com/item?id=\(self.id)")!
@@ -114,6 +125,27 @@ class HNItem: ObservableObject, Identifiable {
             let dataTask = URLSession.shared.dataTask(with: self.itemLink) { data, response, error in
                 do {
                     let doc = try HTMLDocument(data: data!)
+
+                    var paragraphsToAdd = [String]()
+                    let itemNode = doc.xpath("//table[@class=\"fatitem\"]//tr[4]")
+
+                    if !itemNode.isEmpty {
+                        for child in itemNode[0].childNodes(ofTypes: [.Element, .Text]) {
+                            var childString = ""
+                            if child.type == .Text {
+                                childString = child.stringValue.trimmingCharacters(in: .newlines)
+                            } else if child.type == .Element {
+                                childString = child.stringValue.trimmingCharacters(in: .newlines)
+                            } else {
+                                assert(false, "unhandled element type")
+                            }
+                            if (!childString.isEmpty) {
+                                paragraphsToAdd.append(childString)
+                            }
+
+                        }
+                    }
+
                     let nodeList = doc.css("table.comment-tree tr.athing")
 
                     var newComments: [HNComment] = []
@@ -127,6 +159,7 @@ class HNItem: ObservableObject, Identifiable {
 
                     DispatchQueue.main.sync {
                         self.comments = newComments
+                        self.paragraphs = paragraphsToAdd
                     }
 
                 } catch let error {
