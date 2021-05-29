@@ -23,21 +23,22 @@ struct ItemDetailView: View {
 
     var body: some View {
         List {
-            VStack(alignment: .leading, spacing: 0) {
-                Text(item.title)
-                    .font(.headline)
-                    .foregroundColor(.primary)
-                    .padding(.bottom, 3)
-
-                Text(item.subheading)
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-
-                ForEach(item.paragraphs, id: \.self) { paragraph in
-                    Text(paragraph)
+            NavigationLink(destination: WebView(initialUrl: item.storyLink)) {
+                VStack(alignment: .leading, spacing: 0) {
+                    Text(item.title)
+                        .font(.headline)
+                        .foregroundColor(.primary)
                         .padding(.bottom, 3)
-                }
 
+                    Text(item.subheading)
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
+            }
+
+            ForEach(item.paragraphs, id: \.self) { paragraph in
+                Text(paragraph)
+                    .padding(.bottom, 3)
             }
 
             ForEach(item.comments) { comment in

@@ -10,6 +10,7 @@ import SwiftUI
 
 struct ListingView: View {
     @ObservedObject var listing: HNListing
+    
     let title: String
 
     var body: some View {
@@ -22,22 +23,25 @@ struct ListingView: View {
 
             }
             .listStyle(PlainListStyle())
-            .navigationTitle(Text(title) )
-            .toolbar {
-                ToolbarItem(placement: .automatic) {
-                    Button("Reload") {
-                        print("Reload?")
+            .navigationTitle(Text(title))
+            .navigationBarItems(leading:
+                HStack {
+                    Button {
+                        print("NYI")
+                    } label: {
+                        Image(systemName: "person")
                     }
-                }
-            }
-
-            if (listing.items.count > 0 ) {
-                ItemDetailView(item: listing.items.first!)
-            }
+                }, trailing:
+                    HStack {
+                        Button {
+                            print("NYI")
+                        } label: {
+                            Image(systemName: "newspaper")
+                        }
+                    }
+            )
         }
-        .navigationViewStyle(DoubleColumnNavigationViewStyle())
     }
-
 }
 
 struct NewsListing: View {
