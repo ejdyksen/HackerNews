@@ -21,32 +21,53 @@ struct ItemDetailContainerView: View {
 struct ItemDetailView: View {
     @ObservedObject var item: HNItem
 
+    let bodyFont = Font.system(size: 15)
+
     var body: some View {
-        List {
-            NavigationLink(destination: WebView(initialUrl: item.storyLink)) {
-                VStack(alignment: .leading, spacing: 0) {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 6) {
+
+                NavigationLink(destination: WebView(initialUrl: item.storyLink)) {
                     Text(item.title)
                         .font(.headline)
                         .foregroundColor(.primary)
-                        .padding(.bottom, 3)
+                        .lineLimit(3)
+                        .padding(.top, 10)
+                }
 
-                    Text(item.subheading)
-                        .font(.caption)
-                        .foregroundColor(.secondary)
+                
+
+                Text(item.subheading)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+
+                Divider()
+                if (item.paragraphs.count > 0) {
+                    VStack(alignment: .leading, spacing: 4) {
+                        ForEach(item.paragraphs, id: \.self) { paragraph in
+                            Text(paragraph)
+                                .padding(.bottom, 3)
+                                .font(.body)
+                                .fixedSize(horizontal: false, vertical: true)
+
+                        }
+                    }
+                    Divider()
+                }
+
+            }
+
+            LazyVStack(alignment: .leading) {
+                ForEach(item.comments) { comment in
+                    CommentCell(comment: comment)
+                    Divider()
                 }
             }
-
-            ForEach(item.paragraphs, id: \.self) { paragraph in
-                Text(paragraph)
-                    .padding(.bottom, 3)
-            }
-
-            ForEach(item.comments) { comment in
-                CommentCell(comment: comment)
-            }
         }
+        .padding(.horizontal)
         .navigationTitle("\(item.commentCount) comments")
         .navigationBarTitleDisplayMode(.inline)
+
     }
 
 }

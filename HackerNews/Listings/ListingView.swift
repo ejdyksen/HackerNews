@@ -34,9 +34,9 @@ struct ListingView: View {
                 }, trailing:
                     HStack {
                         Button {
-                            print("NYI")
+                            listing.reload()
                         } label: {
-                            Image(systemName: "newspaper")
+                            Image(systemName: "arrow.clockwise")
                         }
                     }
             )

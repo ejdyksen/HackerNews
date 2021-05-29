@@ -133,9 +133,9 @@ class HNItem: ObservableObject, Identifiable {
                         for child in itemNode[0].childNodes(ofTypes: [.Element, .Text]) {
                             var childString = ""
                             if child.type == .Text {
-                                childString = child.stringValue.trimmingCharacters(in: .newlines)
+                                childString = child.stringValue.trimmingCharacters(in: .whitespacesAndNewlines)
                             } else if child.type == .Element {
-                                childString = child.stringValue.trimmingCharacters(in: .newlines)
+                                childString = child.stringValue.trimmingCharacters(in: .whitespacesAndNewlines)
                             } else {
                                 assert(false, "unhandled element type")
                             }

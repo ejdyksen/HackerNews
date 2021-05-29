@@ -24,6 +24,12 @@ class HNListing: ObservableObject {
         loadMoreContent()
     }
 
+    func reload() {
+        self.items = []
+        self.currentPage = 1
+        loadMoreContent()
+    }
+
     func loadMoreContentIfNeeded(currentItem item: HNItem?) {
       guard let item = item else {
         loadMoreContent()

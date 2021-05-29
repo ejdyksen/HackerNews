@@ -10,10 +10,8 @@ import SwiftUI
 struct CommentCell: View {
     var comment: HNComment
 
-    let bodyFont = Font.system(size: 14)
-
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 8) {
             Text(comment.author)
                 .font(.system(size: 15))
                 .foregroundColor(.accentColor)
@@ -21,18 +19,11 @@ struct CommentCell: View {
 
             ForEach(comment.paragraphs, id: \.self) { paragraph in
                 Text(paragraph)
-                    .font(bodyFont)
-                    .padding(.bottom, 1)
             }
             .padding(.bottom, 2)
-        }.padding(.leading, self.indentPixels(comment.indentLevel))
+        }.padding(.leading, CGFloat(comment.indentLevel * 12))
 
     }
-
-    func indentPixels(_ level: Int) -> CGFloat {
-        return 12 * CGFloat(level)
-    }
-
 }
 
 struct CommentCell_Previews: PreviewProvider {

@@ -19,6 +19,8 @@ var itemOne = HNItem(id: 123,
                    score: 123,
                    commentCount: 123)
 
+
+
 var itemTwo = HNItem(id: 456,
                    title: "This is also a story",
                    storyLink: URL(string: "https://www.example.com")!,
@@ -54,6 +56,8 @@ extension HNComment {
     static func itemWithComments() -> HNItem {
         let itemWithComments = itemOne
         itemWithComments.comments = [comment1, comment2, comment3, comment4, comment5, comment6, comment7, comment8]
+        itemWithComments.paragraphs = ["This is the text of my story. It might not be much, but it's mine, and that's good enough for me.", "Thanks, everyone"]
+        
         return itemWithComments
     }
 }
