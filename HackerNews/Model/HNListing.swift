@@ -30,22 +30,12 @@ class HNListing: ObservableObject {
         loadMoreContent()
     }
 
-    func loadMoreContentIfNeeded(currentItem item: HNItem?) {
-      guard let item = item else {
-        loadMoreContent()
-        return
-      }
-
-      let thresholdIndex = items.index(items.endIndex, offsetBy: -5)
-      if items.firstIndex(where: { $0.id == item.id }) == thresholdIndex {
-        loadMoreContent()
-      }
-    }
-
     func loadMoreContent() {
-        let url = URL(string: "https://news.ycombinator.com/\(listingType)?p=\(currentPage)")!
-        currentPage = currentPage + 1
         DispatchQueue.global(qos: .userInitiated).async {
+            let url = URL(string: "https://news.ycombinator.com/\(self.listingType)?p=\(self.currentPage)")!
+            self.isLoading = true
+            self.currentPage = self.currentPage + 1
+
             let dataTask = URLSession.shared.dataTask(with: url) { data, response, error in
                 guard let data = data else {
                     print("Couldn't load \(url)")

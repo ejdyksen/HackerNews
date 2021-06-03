@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		29477E97263608AC00F8EB1B /* Fuzi in Frameworks */ = {isa = PBXBuildFile; productRef = 29477E96263608AC00F8EB1B /* Fuzi */; };
+		298551CF26691EBF00258A8A /* ItemDetailHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 298551CE26691EBF00258A8A /* ItemDetailHeader.swift */; };
+		298551D026691EBF00258A8A /* ItemDetailHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 298551CE26691EBF00258A8A /* ItemDetailHeader.swift */; };
 		29D1D905265DAC07005D934A /* WebViewWraper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D1D904265DAC07005D934A /* WebViewWraper.swift */; };
 		29D8F8F7256B5FB500E37E1E /* HackerNewsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D8F8CE256B5FB300E37E1E /* HackerNewsApp.swift */; };
 		29D8F8F8256B5FB500E37E1E /* HackerNewsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D8F8CE256B5FB300E37E1E /* HackerNewsApp.swift */; };
@@ -36,6 +38,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		298551CE26691EBF00258A8A /* ItemDetailHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailHeader.swift; sourceTree = "<group>"; };
 		29C6A13D264F17F900C33F36 /* HackerNews.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HackerNews.entitlements; sourceTree = "<group>"; };
 		29D1D904265DAC07005D934A /* WebViewWraper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewWraper.swift; sourceTree = "<group>"; };
 		29D8F8CE256B5FB300E37E1E /* HackerNewsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HackerNewsApp.swift; sourceTree = "<group>"; };
@@ -153,6 +156,7 @@
 			isa = PBXGroup;
 			children = (
 				29D8F90F256B610300E37E1E /* ItemDetailView.swift */,
+				298551CE26691EBF00258A8A /* ItemDetailHeader.swift */,
 				29EE31E7265B3E1000CE2569 /* CommentCell.swift */,
 			);
 			path = Comments;
@@ -278,6 +282,7 @@
 				29D8F92E256B615B00E37E1E /* HNComment.swift in Sources */,
 				29F947B8265955CA00578039 /* ListingItemCell.swift in Sources */,
 				29EE31E8265B3E1000CE2569 /* CommentCell.swift in Sources */,
+				298551CF26691EBF00258A8A /* ItemDetailHeader.swift in Sources */,
 				29D8F8F9256B5FB500E37E1E /* ListingView.swift in Sources */,
 				29FDFB24266082BA0096CA7D /* WebView.swift in Sources */,
 				29D8F910256B610300E37E1E /* ItemDetailView.swift in Sources */,
@@ -300,6 +305,7 @@
 				29EE31E9265B3E1000CE2569 /* CommentCell.swift in Sources */,
 				29D8F8FA256B5FB500E37E1E /* ListingView.swift in Sources */,
 				29D8F911256B610300E37E1E /* ItemDetailView.swift in Sources */,
+				298551D026691EBF00258A8A /* ItemDetailHeader.swift in Sources */,
 				29D8F929256B615300E37E1E /* HNListing.swift in Sources */,
 				29D8F935256B615D00E37E1E /* HNItem.swift in Sources */,
 				29D8F8F8256B5FB500E37E1E /* HackerNewsApp.swift in Sources */,

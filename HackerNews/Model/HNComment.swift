@@ -9,41 +9,64 @@
 import Foundation
 import Fuzi
 
-struct HNComment: Identifiable {
+class HNComment: Identifiable {
     let id: Int
     let author: String
+    let age: String
     let indentLevel: Int
-    var paragraphs: [String] = []
+    let paragraphs: [String]
+    var children: [HNComment] = []
 
-    init(id: Int, body: String, author: String, indentLevel: Int) {
+    init(id: Int, author: String, age: String, indentLevel: Int, paragraphs: [String]) {
         self.id = id
-        self.paragraphs = [body]
         self.author = author
+        self.age = age
         self.indentLevel = indentLevel
+        self.paragraphs = paragraphs
     }
 
+    static func createCommentTree(nodes: NodeSet) -> [HNComment] {
+        var rootComments: [HNComment] = []
 
-    init?(withNode node: Fuzi.XMLElement) {
-        self.id = Int(node.attr("id")!)!
-        guard let textNode = node.firstChild(css: ".commtext") else {
-            return nil
-        }
+        var lastCommentAtLevel = [Int: HNComment]()
 
-        for child in textNode.childNodes(ofTypes: [.Element, .Text]) {
-            if child.type == .Text {
-                paragraphs.append(child.stringValue.trimmingCharacters(in: .newlines))
-            } else if child.type == .Element {
-                paragraphs.append(child.stringValue.trimmingCharacters(in: .newlines))
+        for node in nodes {
+            let id = Int(node.attr("id")!)!
+            guard let textNode = node.firstChild(css: ".commtext") else {
+                continue
+            }
+
+            var paragraphs: [String] = []
+
+            for child in textNode.childNodes(ofTypes: [.Element, .Text]) {
+                if child.type == .Text {
+                    paragraphs.append(child.stringValue.trimmingCharacters(in: .newlines))
+                } else if child.type == .Element {
+                    paragraphs.append(child.stringValue.trimmingCharacters(in: .newlines))
+                } else {
+                    assert(false, "unhandled element type")
+                }
+            }
+
+            let author = node.firstChild(css: ".hnuser")!.stringValue
+
+            let age = node.firstChild(css: ".age")!.stringValue
+
+            let indentWidth = Int(node.firstChild(css: ".ind img")!.attr("width")!)!
+            let indentLevel: Int = indentWidth / 40
+
+            let newComment = HNComment(id: id, author: author, age: age, indentLevel: indentLevel, paragraphs: paragraphs)
+
+            lastCommentAtLevel[indentLevel] = newComment
+
+            if (indentLevel > 0) {
+                lastCommentAtLevel[indentLevel - 1]?.children.append(newComment)
             } else {
-                assert(false, "unhandled element type")
+                rootComments.append(newComment)
             }
         }
 
-        self.author = node.firstChild(css: ".hnuser")!.stringValue
-
-        let indentWidth = Int(node.firstChild(css: ".ind img")!.attr("width")!)!
-        let indentLevel: Int = indentWidth / 40
-        self.indentLevel = indentLevel
+        return rootComments
     }
 
 }

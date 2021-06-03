@@ -15,6 +15,9 @@ class HNItem: ObservableObject, Identifiable {
     let storyLink: URL
     let domain: String
 
+    private var currentPage = 1
+    var canLoadMore = true
+
     var domainString: String {
         if (self.domain == "") {
             return ""
@@ -29,8 +32,9 @@ class HNItem: ObservableObject, Identifiable {
     var score: Int?
     var commentCount: Int
 
-    @Published var comments: [HNComment] = []
+    @Published var rootComments: [HNComment] = []
     @Published var paragraphs: [String] = []
+    @Published var fullyLoaded = false
 
 
     var itemLink: URL {
@@ -120,9 +124,13 @@ class HNItem: ObservableObject, Identifiable {
         }
     }
 
-    func loadDetails() {
+
+    func loadMoreContent() {
         DispatchQueue.global(qos: .userInteractive).async {
-            let dataTask = URLSession.shared.dataTask(with: self.itemLink) { data, response, error in
+            let url = URL(string: "https://news.ycombinator.com/item?id=\(self.id)&p=\(self.currentPage)")!
+            self.currentPage = self.currentPage + 1
+
+            let dataTask = URLSession.shared.dataTask(with: url) { data, response, error in
                 do {
                     let doc = try HTMLDocument(data: data!)
 
@@ -147,19 +155,18 @@ class HNItem: ObservableObject, Identifiable {
                     }
 
                     let nodeList = doc.css("table.comment-tree tr.athing")
+                    let newComments = HNComment.createCommentTree(nodes: nodeList)
 
-                    var newComments: [HNComment] = []
-
-                    for node in nodeList {
-                        let newComment = HNComment(withNode: node)
-                        if (newComment != nil) {
-                            newComments.append(newComment!)
-                        }
+                    if (doc.css(".morelink").isEmpty) {
+                        self.canLoadMore = false
+                    } else {
+                        self.canLoadMore = true
                     }
 
                     DispatchQueue.main.sync {
-                        self.comments = newComments
+                        self.rootComments = self.rootComments + newComments
                         self.paragraphs = paragraphsToAdd
+                        self.fullyLoaded = true
                     }
 
                 } catch let error {

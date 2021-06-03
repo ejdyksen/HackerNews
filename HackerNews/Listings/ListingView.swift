@@ -15,12 +15,15 @@ struct ListingView: View {
 
     var body: some View {
         NavigationView {
-            List(listing.items) { item in
-                ListingItemCell(item: item)
-                    .onAppear {
-                        listing.loadMoreContentIfNeeded(currentItem: item)
-                    }
-
+            List {
+                ForEach(listing.items) { item in
+                    ListingItemCell(item: item)
+                }
+                HStack(alignment: .center, spacing: 10) {
+                    ProgressView()
+                    Text("Loading").foregroundColor(.secondary)
+                }.onAppear { listing.loadMoreContent() }
+                
             }
             .listStyle(PlainListStyle())
             .navigationTitle(Text(title))

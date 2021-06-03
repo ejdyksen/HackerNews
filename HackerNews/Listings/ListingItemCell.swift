@@ -11,7 +11,7 @@ struct ListingItemCell: View {
     var item: HNItem
 
     var body: some View {
-        NavigationLink(destination: ItemDetailContainerView(item: item)) {
+        NavigationLink(destination: ItemDetailView(item: item)) {
             HStack {
                 VStack(alignment: .leading, spacing: 0) {
                     Text(item.title)
@@ -28,7 +28,7 @@ struct ListingItemCell: View {
                         .padding(.top, 4)
 
                 }
-                .padding(.vertical, 3)
+                .padding(.vertical, 4)
                 Spacer()
                 Text(String(item.commentCount))
                     .font(.subheadline)
@@ -40,6 +40,7 @@ struct ListingItemCell: View {
 
 }
 
+#if DEBUG
 struct ListingItemCell_Previews: PreviewProvider {
     static var previews: some View {
         Group {
@@ -49,3 +50,4 @@ struct ListingItemCell_Previews: PreviewProvider {
         }
     }
 }
+#endif
