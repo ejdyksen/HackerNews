@@ -23,14 +23,11 @@ class HNListing: ObservableObject {
         loadMoreContent()
     }
 
-    func reload() {
-        self.items = []
-        self.currentPage = 1
-        loadMoreContent()
-    }
-
-    func loadMoreContent() {
+    func loadMoreContent(reload: Bool = false, completion: (() -> Void)? = nil) {
         isLoading = true
+        if (reload) {
+            self.currentPage = 1
+        }
 
         DispatchQueue.global(qos: .userInitiated).async {
             let url = URL(string: "https://news.ycombinator.com/\(self.listingType)?p=\(self.currentPage)")!
@@ -45,8 +42,15 @@ class HNListing: ObservableObject {
                 let newItems = self.parseItems(data: data)
 
                 DispatchQueue.main.sync {
-                    self.items.append(contentsOf: newItems)
+                    if (reload) {
+                        self.items = newItems
+                    } else {
+                        self.items.append(contentsOf: newItems)
+                    }
                     self.isLoading = false
+                    if let completion = completion {
+                        completion()
+                    }
                 }
             }
             dataTask.resume()

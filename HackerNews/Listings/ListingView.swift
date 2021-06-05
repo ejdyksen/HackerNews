@@ -7,26 +7,39 @@
 //
 
 import SwiftUI
+import SwiftUIRefresh
+
 
 struct ListingView: View {
     @ObservedObject var listing: HNListing
+
+    @State private var showRefresh = false
     
     let title: String
 
     var body: some View {
+
         NavigationView {
             List {
                 ForEach(listing.items) { item in
                     ListingItemCell(item: item)
                 }
-                HStack(alignment: .center, spacing: 10) {
-                    ProgressView()
-                    Text("Loading").foregroundColor(.secondary)
-                }.onAppear { listing.loadMoreContent() }
+                if (!showRefresh) {
+                    HStack(alignment: .center, spacing: 10) {
+                        ProgressView()
+                        Text("Loading").foregroundColor(.secondary)
+                    }.onAppear { listing.loadMoreContent() }
+                }
                 
+            }
+            .pullToRefresh(isShowing: $showRefresh) {
+                listing.loadMoreContent(reload: true) {
+                    self.showRefresh = false
+                }
             }
             .listStyle(PlainListStyle())
             .navigationTitle(Text(title))
+            .navigationBarTitleDisplayMode(.inline)
             .navigationBarItems(leading:
                 HStack {
                     Button {
@@ -37,7 +50,7 @@ struct ListingView: View {
                 }, trailing:
                     HStack {
                         Button {
-                            listing.reload()
+                            listing.loadMoreContent(reload: true)
                         } label: {
                             Image(systemName: "arrow.clockwise").frame(width: 44, height: 44)
                         }
