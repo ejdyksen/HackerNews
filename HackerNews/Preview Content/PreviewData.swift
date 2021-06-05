@@ -56,7 +56,6 @@ extension HNComment {
         itemWithComments.rootComments = [comment1, comment2, comment3, comment4, comment5, comment6]
         comment1.children = [comment7, comment8]
         itemWithComments.paragraphs = ["This is the text of my story. It might not be much, but it's mine, and that's good enough for me.", "Thanks, everyone"]
-        itemWithComments.fullyLoaded = true
         
         return itemWithComments
     }

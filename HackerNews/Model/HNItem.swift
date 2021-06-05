@@ -34,8 +34,6 @@ class HNItem: ObservableObject, Identifiable {
 
     @Published var rootComments: [HNComment] = []
     @Published var paragraphs: [String] = []
-    @Published var fullyLoaded = false
-
 
     var itemLink: URL {
         return URL(string: "https://news.ycombinator.com/item?id=\(self.id)")!
@@ -166,7 +164,6 @@ class HNItem: ObservableObject, Identifiable {
                     DispatchQueue.main.sync {
                         self.rootComments = self.rootComments + newComments
                         self.paragraphs = paragraphsToAdd
-                        self.fullyLoaded = true
                     }
 
                 } catch let error {
