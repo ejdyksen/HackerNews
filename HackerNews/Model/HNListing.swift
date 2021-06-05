@@ -17,7 +17,6 @@ class HNListing: ObservableObject {
     @Published var isLoading = true
 
     private var currentPage = 1
-    private var canLoadMorePages = true
 
     init(listingType: String) {
         self.listingType = listingType
@@ -31,9 +30,10 @@ class HNListing: ObservableObject {
     }
 
     func loadMoreContent() {
+        isLoading = true
+
         DispatchQueue.global(qos: .userInitiated).async {
             let url = URL(string: "https://news.ycombinator.com/\(self.listingType)?p=\(self.currentPage)")!
-            self.isLoading = true
             self.currentPage = self.currentPage + 1
 
             let dataTask = URLSession.shared.dataTask(with: url) { data, response, error in

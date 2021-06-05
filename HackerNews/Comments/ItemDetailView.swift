@@ -13,7 +13,7 @@ struct ItemDetailView: View {
 
     var body: some View {
         ScrollView {
-            LazyVStack(alignment: .leading, spacing: 8) {
+            LazyVStack(alignment: .leading, spacing: 10) {
                 ItemDetailHeader(item: item)
 
                 ForEach(item.rootComments) { rootComment in

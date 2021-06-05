@@ -39,7 +39,7 @@ struct ListingView: View {
                         Button {
                             listing.reload()
                         } label: {
-                            Image(systemName: "arrow.clockwise")
+                            Image(systemName: "arrow.clockwise").frame(width: 44, height: 44)
                         }
                     }
             )

@@ -11,11 +11,13 @@ import SwiftUI
 struct WebView: View {
     var initialUrl: URL
 
+    var title: String
+
     @StateObject var webViewState = WebViewState()
 
     var body: some View {
         WebViewWraper(url: initialUrl, webViewState: webViewState)
-            .navigationTitle("WebView")
+//            .navigationTitle(title)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {Text("")}
@@ -71,7 +73,7 @@ struct WebBrowser_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
 
-            WebView(initialUrl: url)
+            WebView(initialUrl: url, title: "Apple")
         }
     }
 }

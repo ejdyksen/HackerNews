@@ -20,6 +20,7 @@ struct ListingItemCell: View {
                     + Text(item.domainString)
                         .font(.caption)
                         .foregroundColor(.secondary)
+                        .baselineOffset(1)
 
                     Text(item.subheading)
                         .font(.footnote)
@@ -27,12 +28,13 @@ struct ListingItemCell: View {
                         .lineLimit(1)
                         .padding(.top, 4)
 
-                }
-                .padding(.vertical, 4)
+                }.padding(.vertical, 4)
+
                 Spacer()
+
                 Text(String(item.commentCount))
                     .font(.subheadline)
-                    .foregroundColor(Color.gray)
+                    .foregroundColor(.secondary)
                     .padding(.leading)
             }
         }

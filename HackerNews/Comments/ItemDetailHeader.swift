@@ -12,32 +12,27 @@ struct ItemDetailHeader: View {
     @ObservedObject var item: HNItem
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
+        VStack(alignment: .leading, spacing: 10) {
 
-            NavigationLink(destination: WebView(initialUrl: item.storyLink)) {
+            NavigationLink(destination: WebView(initialUrl: item.storyLink, title: item.title)) {
                 Text(item.title)
-                    .font(.headline)
+                    .font(.title2)
                     .foregroundColor(.primary)
-                    .lineLimit(3)
-                    .padding(.top, 10)
+                    .padding(.top, 12)
+
             }
 
             Text(item.subheading)
-                .font(.caption)
+                .font(.subheadline)
                 .foregroundColor(.secondary)
 
             Divider()
 
             if (item.paragraphs.count > 0) {
-                VStack(alignment: .leading, spacing: 4) {
-                    ForEach(item.paragraphs, id: \.self) { paragraph in
-                        Text(paragraph)
-                            .padding(.bottom, 3)
-                            .font(.body)
-                            .fixedSize(horizontal: false, vertical: true)
-
-                    }
+                ForEach(item.paragraphs, id: \.self) { paragraph in
+                    Text(paragraph)
                 }
+
 
                 Divider()
             }
