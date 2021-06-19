@@ -10,7 +10,6 @@
 		29477E97263608AC00F8EB1B /* Fuzi in Frameworks */ = {isa = PBXBuildFile; productRef = 29477E96263608AC00F8EB1B /* Fuzi */; };
 		298551CF26691EBF00258A8A /* ItemDetailHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 298551CE26691EBF00258A8A /* ItemDetailHeader.swift */; };
 		298551D026691EBF00258A8A /* ItemDetailHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 298551CE26691EBF00258A8A /* ItemDetailHeader.swift */; };
-		29C284B1266AFB5C003DF8B0 /* SwiftUIRefresh in Frameworks */ = {isa = PBXBuildFile; productRef = 29C284B0266AFB5C003DF8B0 /* SwiftUIRefresh */; };
 		29D1D905265DAC07005D934A /* WebViewWraper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D1D904265DAC07005D934A /* WebViewWraper.swift */; };
 		29D8F8F7256B5FB500E37E1E /* HackerNewsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D8F8CE256B5FB300E37E1E /* HackerNewsApp.swift */; };
 		29D8F8F8256B5FB500E37E1E /* HackerNewsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D8F8CE256B5FB300E37E1E /* HackerNewsApp.swift */; };
@@ -67,7 +66,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				29C284B1266AFB5C003DF8B0 /* SwiftUIRefresh in Frameworks */,
 				29D8F940256B618B00E37E1E /* Fuzi in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -192,7 +190,6 @@
 			name = "HackerNews (iOS)";
 			packageProductDependencies = (
 				29D8F93F256B618B00E37E1E /* Fuzi */,
-				29C284B0266AFB5C003DF8B0 /* SwiftUIRefresh */,
 			);
 			productName = "HackerNews (iOS)";
 			productReference = 29D8F8D5256B5FB400E37E1E /* HackerNews.app */;
@@ -246,7 +243,6 @@
 			mainGroup = 29D8F8C8256B5FB300E37E1E;
 			packageReferences = (
 				29D8F93E256B618B00E37E1E /* XCRemoteSwiftPackageReference "Fuzi" */,
-				29C284AF266AFB5C003DF8B0 /* XCRemoteSwiftPackageReference "SwiftUIRefresh" */,
 			);
 			productRefGroup = 29D8F8D6256B5FB400E37E1E /* Products */;
 			projectDirPath = "";
@@ -442,7 +438,7 @@
 				DEVELOPMENT_TEAM = U2522N6WMG;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = HackerNews/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -470,7 +466,7 @@
 				DEVELOPMENT_TEAM = U2522N6WMG;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = HackerNews/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -566,14 +562,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		29C284AF266AFB5C003DF8B0 /* XCRemoteSwiftPackageReference "SwiftUIRefresh" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/siteline/SwiftUIRefresh";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.0.3;
-			};
-		};
 		29D8F93E256B618B00E37E1E /* XCRemoteSwiftPackageReference "Fuzi" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/cezheng/Fuzi";
@@ -589,11 +577,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 29D8F93E256B618B00E37E1E /* XCRemoteSwiftPackageReference "Fuzi" */;
 			productName = Fuzi;
-		};
-		29C284B0266AFB5C003DF8B0 /* SwiftUIRefresh */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 29C284AF266AFB5C003DF8B0 /* XCRemoteSwiftPackageReference "SwiftUIRefresh" */;
-			productName = SwiftUIRefresh;
 		};
 		29D8F93F256B618B00E37E1E /* Fuzi */ = {
 			isa = XCSwiftPackageProductDependency;

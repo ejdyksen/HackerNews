@@ -7,14 +7,13 @@
 //
 
 import SwiftUI
-import SwiftUIRefresh
 
 
 struct ListingView: View {
     @ObservedObject var listing: HNListing
 
     @State private var showRefresh = false
-    
+
     let title: String
 
     var body: some View {
@@ -30,13 +29,18 @@ struct ListingView: View {
                         Text("Loading").foregroundColor(.secondary)
                     }.onAppear { listing.loadMoreContent() }
                 }
-                
+
             }
-            .pullToRefresh(isShowing: $showRefresh) {
+            .refreshable {
+                showRefresh = true
                 listing.loadMoreContent(reload: true) {
-                    self.showRefresh = false
+                    showRefresh = false
                 }
+                }
+            .task {
+                listing.loadMoreContent()
             }
+
             .listStyle(PlainListStyle())
             .navigationTitle(Text(title))
             .navigationBarTitleDisplayMode(.inline)
