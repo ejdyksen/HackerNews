@@ -14,7 +14,7 @@ struct ItemDetailHeader: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
 
-            NavigationLink(destination: WebView(initialUrl: item.storyLink, title: item.title)) {
+            NavigationLink(destination: WebView(url: item.storyLink)) {
                 Text(item.title)
                     .font(.title2)
                     .foregroundColor(.primary)

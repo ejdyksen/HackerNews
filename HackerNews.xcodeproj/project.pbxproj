@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		29477E97263608AC00F8EB1B /* Fuzi in Frameworks */ = {isa = PBXBuildFile; productRef = 29477E96263608AC00F8EB1B /* Fuzi */; };
+		294AD4472682752E001AE269 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294AD4462682752E001AE269 /* ActivityView.swift */; };
 		298551CF26691EBF00258A8A /* ItemDetailHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 298551CE26691EBF00258A8A /* ItemDetailHeader.swift */; };
 		298551D026691EBF00258A8A /* ItemDetailHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 298551CE26691EBF00258A8A /* ItemDetailHeader.swift */; };
 		29D1D905265DAC07005D934A /* WebViewWraper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D1D904265DAC07005D934A /* WebViewWraper.swift */; };
@@ -38,6 +39,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		294AD4462682752E001AE269 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		298551CE26691EBF00258A8A /* ItemDetailHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailHeader.swift; sourceTree = "<group>"; };
 		29C6A13D264F17F900C33F36 /* HackerNews.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HackerNews.entitlements; sourceTree = "<group>"; };
 		29D1D904265DAC07005D934A /* WebViewWraper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewWraper.swift; sourceTree = "<group>"; };
@@ -81,6 +83,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		294AD445268274F7001AE269 /* UIKit Views */ = {
+			isa = PBXGroup;
+			children = (
+				29D1D903265DABFB005D934A /* WebView */,
+				294AD4462682752E001AE269 /* ActivityView.swift */,
+			);
+			path = "UIKit Views";
+			sourceTree = "<group>";
+		};
 		29D1D903265DABFB005D934A /* WebView */ = {
 			isa = PBXGroup;
 			children = (
@@ -107,7 +118,7 @@
 				29EE31F8265B697700CE2569 /* Model */,
 				29EE31E2265B3C4A00CE2569 /* Listings */,
 				29EE31E3265B3C5100CE2569 /* Comments */,
-				29D1D903265DABFB005D934A /* WebView */,
+				294AD445268274F7001AE269 /* UIKit Views */,
 				29D8F91A256B612B00E37E1E /* Preview Content */,
 				29D8F8CE256B5FB300E37E1E /* HackerNewsApp.swift */,
 				29C6A13D264F17F900C33F36 /* HackerNews.entitlements */,
@@ -286,6 +297,7 @@
 				29D8F8F9256B5FB500E37E1E /* ListingView.swift in Sources */,
 				29FDFB24266082BA0096CA7D /* WebView.swift in Sources */,
 				29D8F910256B610300E37E1E /* ItemDetailView.swift in Sources */,
+				294AD4472682752E001AE269 /* ActivityView.swift in Sources */,
 				29D8F928256B615300E37E1E /* HNListing.swift in Sources */,
 				29FDFB2826608B6E0096CA7D /* WebViewCoordinator.swift in Sources */,
 				29D8F934256B615D00E37E1E /* HNItem.swift in Sources */,

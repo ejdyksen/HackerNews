@@ -11,8 +11,6 @@ import WebKit
 struct WebViewWraper : UIViewRepresentable {
     let url: URL
 
-//    let title: String?
-
     @ObservedObject var webViewState: WebViewState
 
     func makeUIView(context: Context) -> WKWebView  {
@@ -44,10 +42,3 @@ struct WebViewWraper : UIViewRepresentable {
     }
 
 }
-
-//struct WebView_Previews : PreviewProvider {
-//    static var previews: some View {
-//        let url = URL(string: "https://www.apple.com/")!
-//        WebViewWraper(url: url)
-//    }
-//}

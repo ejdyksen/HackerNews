@@ -9,15 +9,17 @@ import SwiftUI
 
 
 struct WebView: View {
-    var initialUrl: URL
-
-    var title: String
+    var url: URL
 
     @StateObject var webViewState = WebViewState()
 
+    @State private var isSharePresented: Bool = false
+
+    @Environment(\.openURL) var openURL
+
     var body: some View {
-        WebViewWraper(url: initialUrl, webViewState: webViewState)
-//            .navigationTitle(title)
+        WebViewWraper(url: url, webViewState: webViewState)
+            .navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {Text("")}
@@ -44,27 +46,30 @@ struct WebView: View {
                 ToolbarItem(placement: .bottomBar) { Spacer() }
                 ToolbarItem(placement: .bottomBar) {
                     Button {
-                        actionSheet()
+                        self.isSharePresented = true
                     } label: {
                         Image(systemName: "square.and.arrow.up")
                     }
+                    .sheet(isPresented: $isSharePresented, onDismiss: {
+                        print("Dismiss")
+                    }, content: {
+                        ActivityView(activityItems: [URL(string: "https://www.apple.com")!])
+                    })
+
                 }
                 ToolbarItem(placement: .bottomBar) { Spacer() }
                 ToolbarItem(placement: .bottomBar) {
                     Button {
-                        print("not yet implemented")
+                        if (webViewState.url != nil) {
+                            openURL(webViewState.url!)
+                        }
                     } label: {
                         Image(systemName: "safari")
-                    }
+                    }.disabled(self.webViewState.url == nil)
                 }
 
             }.accentColor(.accentColor)
     }
-
-    func actionSheet() {
-            let activityVC = UIActivityViewController(activityItems: [initialUrl], applicationActivities: nil)
-            UIApplication.shared.windows.first?.rootViewController?.present(activityVC, animated: true, completion: nil)
-        }
 }
 
 struct WebBrowser_Previews: PreviewProvider {
@@ -72,8 +77,7 @@ struct WebBrowser_Previews: PreviewProvider {
 
     static var previews: some View {
         NavigationView {
-
-            WebView(initialUrl: url, title: "Apple")
+            WebView(url: url)
         }
     }
 }
