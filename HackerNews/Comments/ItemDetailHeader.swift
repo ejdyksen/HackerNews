@@ -19,7 +19,7 @@ struct ItemDetailHeader: View {
                     .font(.title2)
                     .foregroundColor(.primary)
                     .padding(.top, 12)
-
+                    .multilineTextAlignment(.leading) // TODO: doesn't seem like I should need this.
             }
 
             Text(item.subheading)
