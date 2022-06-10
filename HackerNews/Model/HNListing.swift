@@ -10,15 +10,22 @@ import Foundation
 import Combine
 import Fuzi
 
+enum ListingType: String {
+    case news
+    case ask
+    case show
+    case new
+}
+
 class HNListing: ObservableObject {
-    let listingType: String
+    let listingType: ListingType
 
     @Published var items: [HNItem] = []
     @Published var isLoading = true
 
     private var currentPage = 1
 
-    init(listingType: String) {
+    init(_ listingType: ListingType) {
         self.listingType = listingType
         loadMoreContent()
     }
@@ -60,7 +67,7 @@ class HNListing: ObservableObject {
     func parseItems(data: Data) -> [HNItem] {
         do {
             let doc = try HTMLDocument(data: data)
-            let itemList = doc.css("table.itemlist tr.athing")
+            let itemList = doc.css("tr.athing")
 
             var newItems: [HNItem] = []
 

@@ -11,6 +11,7 @@
 		294AD4472682752E001AE269 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294AD4462682752E001AE269 /* ActivityView.swift */; };
 		298551CF26691EBF00258A8A /* ItemDetailHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 298551CE26691EBF00258A8A /* ItemDetailHeader.swift */; };
 		298551D026691EBF00258A8A /* ItemDetailHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 298551CE26691EBF00258A8A /* ItemDetailHeader.swift */; };
+		299647E42682D80000EF7D07 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 299647E32682D80000EF7D07 /* HomeView.swift */; };
 		29D1D905265DAC07005D934A /* WebViewWraper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D1D904265DAC07005D934A /* WebViewWraper.swift */; };
 		29D8F8F7256B5FB500E37E1E /* HackerNewsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D8F8CE256B5FB300E37E1E /* HackerNewsApp.swift */; };
 		29D8F8F8256B5FB500E37E1E /* HackerNewsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D8F8CE256B5FB300E37E1E /* HackerNewsApp.swift */; };
@@ -41,6 +42,7 @@
 /* Begin PBXFileReference section */
 		294AD4462682752E001AE269 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		298551CE26691EBF00258A8A /* ItemDetailHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailHeader.swift; sourceTree = "<group>"; };
+		299647E32682D80000EF7D07 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		29C6A13D264F17F900C33F36 /* HackerNews.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HackerNews.entitlements; sourceTree = "<group>"; };
 		29D1D904265DAC07005D934A /* WebViewWraper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewWraper.swift; sourceTree = "<group>"; };
 		29D8F8CE256B5FB300E37E1E /* HackerNewsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HackerNewsApp.swift; sourceTree = "<group>"; };
@@ -86,10 +88,17 @@
 		294AD445268274F7001AE269 /* UIKit Views */ = {
 			isa = PBXGroup;
 			children = (
-				29D1D903265DABFB005D934A /* WebView */,
 				294AD4462682752E001AE269 /* ActivityView.swift */,
 			);
 			path = "UIKit Views";
+			sourceTree = "<group>";
+		};
+		299647E22682D7E900EF7D07 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				299647E32682D80000EF7D07 /* HomeView.swift */,
+			);
+			path = Home;
 			sourceTree = "<group>";
 		};
 		29D1D903265DABFB005D934A /* WebView */ = {
@@ -116,8 +125,10 @@
 			isa = PBXGroup;
 			children = (
 				29EE31F8265B697700CE2569 /* Model */,
+				299647E22682D7E900EF7D07 /* Home */,
 				29EE31E2265B3C4A00CE2569 /* Listings */,
 				29EE31E3265B3C5100CE2569 /* Comments */,
+				29D1D903265DABFB005D934A /* WebView */,
 				294AD445268274F7001AE269 /* UIKit Views */,
 				29D8F91A256B612B00E37E1E /* Preview Content */,
 				29D8F8CE256B5FB300E37E1E /* HackerNewsApp.swift */,
@@ -303,6 +314,7 @@
 				29D8F934256B615D00E37E1E /* HNItem.swift in Sources */,
 				29FDFB26266086F80096CA7D /* WebViewState.swift in Sources */,
 				29D8F8F7256B5FB500E37E1E /* HackerNewsApp.swift in Sources */,
+				299647E42682D80000EF7D07 /* HomeView.swift in Sources */,
 				29D1D905265DAC07005D934A /* WebViewWraper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -444,8 +456,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = HackerNews/HackerNews.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "HackerNews/Preview\\ Content";
 				DEVELOPMENT_TEAM = U2522N6WMG;
 				ENABLE_PREVIEWS = YES;
@@ -457,7 +469,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.ejdyksen.hackernews.app;
 				PRODUCT_NAME = HackerNews;
-				PROVISIONING_PROFILE_SPECIFIER = "Hacker News";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
@@ -472,8 +484,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = HackerNews/HackerNews.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "HackerNews/Preview\\ Content";
 				DEVELOPMENT_TEAM = U2522N6WMG;
 				ENABLE_PREVIEWS = YES;
@@ -485,7 +497,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.ejdyksen.hackernews.app;
 				PRODUCT_NAME = HackerNews;
-				PROVISIONING_PROFILE_SPECIFIER = "Hacker News";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;

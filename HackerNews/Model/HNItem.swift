@@ -66,7 +66,7 @@ class HNItem: ObservableObject, Identifiable {
         // Gather some additional XMLNodes
         guard
             let adjacentItem = node.firstChild(xpath: "./following-sibling::tr[1]"),
-            let storyLinkNode = node.firstChild(xpath: ".//a[@class='storylink']")
+            let storyLinkNode = node.firstChild(xpath: ".//a[@class='titlelink']")
         else {
             return nil
         }
@@ -84,7 +84,7 @@ class HNItem: ObservableObject, Identifiable {
         self.storyLink = storyLink
         self.title = storyLinkNode.stringValue
 
-        if let domainNode = node.firstChild(css: ".sitestr")  {
+        if let domainNode = node.firstChild(css: ".sitebit")  {
             self.domain = domainNode.stringValue
         } else {
             self.domain = ""
@@ -99,7 +99,7 @@ class HNItem: ObservableObject, Identifiable {
 
         // Score, optional
         if
-            let scoreString = adjacentItem.firstChild(css: "#score_\(self.id)")?.stringValue,
+            let scoreString = adjacentItem.firstChild(css: ".score")?.stringValue,
             let scoreStringComponent = scoreString.split(separator: " ").first,
             let score = Int(scoreStringComponent) {
             self.score = score

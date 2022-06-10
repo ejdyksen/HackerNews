@@ -38,7 +38,13 @@ class HNComment: Identifiable {
 
             var paragraphs: [String] = []
 
-            for child in textNode.childNodes(ofTypes: [.Element, .Text]) {
+            for (_, child) in textNode.childNodes(ofTypes: [.Element, .Text]).enumerated() {
+//                let childElement = child.toElement()
+//
+//                if childElement.type == .Text {
+//                    paragraphs.append(childElement.)
+//                }
+
                 if child.type == .Text {
                     paragraphs.append(child.stringValue.trimmingCharacters(in: .newlines))
                 } else if child.type == .Element {

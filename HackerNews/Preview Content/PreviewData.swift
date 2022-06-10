@@ -32,7 +32,7 @@ let sampleItems = [itemOne, itemTwo, itemOne, itemTwo, itemOne, itemTwo, itemOne
 
 extension HNListing {
     static func exampleService() -> HNListing {
-        let service = HNListing(listingType: "news")
+        let service = HNListing(.news)
         service.items = sampleItems
         return service
     }

@@ -17,55 +17,45 @@ struct ListingView: View {
     let title: String
 
     var body: some View {
-
-        NavigationView {
-            List {
-                ForEach(listing.items) { item in
-                    ListingItemCell(item: item)
-                }
-                if (!showRefresh) {
-                    HStack(alignment: .center, spacing: 10) {
-                        ProgressView()
-                        Text("Loading").foregroundColor(.secondary)
-                    }.onAppear { listing.loadMoreContent() }
-                }
-
+        List {
+            ForEach(listing.items) { item in
+                ListingItemCell(item: item)
             }
-            .refreshable {
-                showRefresh = true
-                listing.loadMoreContent(reload: true) {
-                    showRefresh = false
-                }
-                }
-            .task {
-                listing.loadMoreContent()
+            if (!showRefresh) {
+                HStack(alignment: .center, spacing: 10) {
+                    ProgressView()
+                    Text("Loading").foregroundColor(.secondary)
+                }.onAppear { listing.loadMoreContent() }
             }
 
-            .listStyle(PlainListStyle())
-            .navigationTitle(Text(title))
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationBarItems(leading:
+        }
+        .refreshable {
+            showRefresh = true
+            listing.loadMoreContent(reload: true) {
+                showRefresh = false
+            }
+            }
+        .task {
+            listing.loadMoreContent()
+        }
+
+        .listStyle(PlainListStyle())
+        .navigationTitle(Text(title))
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarItems(trailing:
                 HStack {
                     Button {
-                        print("NYI")
+                        listing.loadMoreContent(reload: true)
                     } label: {
-                        Image(systemName: "person")
+                        Image(systemName: "arrow.clockwise").frame(width: 44, height: 44)
                     }
-                }, trailing:
-                    HStack {
-                        Button {
-                            listing.loadMoreContent(reload: true)
-                        } label: {
-                            Image(systemName: "arrow.clockwise").frame(width: 44, height: 44)
-                        }
-                    }
-            )
-        }
+                }
+        )
     }
 }
 
 struct NewsListing: View {
-    @StateObject var listingDataSource = HNListing(listingType: "news")
+    @StateObject var listingDataSource = HNListing(.news)
 
     var body: some View {
         ListingView(listing: listingDataSource, title: "Top Stories")
@@ -73,7 +63,7 @@ struct NewsListing: View {
 }
 
 struct AskListing: View {
-    @StateObject var listingDataSource = HNListing(listingType: "ask")
+    @StateObject var listingDataSource = HNListing(.ask)
 
     var body: some View {
         ListingView(listing: listingDataSource, title: "Ask HN")
@@ -81,7 +71,7 @@ struct AskListing: View {
 }
 
 struct ShowListing: View {
-    @StateObject var listingDataSource = HNListing(listingType: "show")
+    @StateObject var listingDataSource = HNListing(.show)
 
     var body: some View {
         ListingView(listing: listingDataSource, title: "Show HN")
@@ -90,6 +80,8 @@ struct ShowListing: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ListingView(listing: HNListing.exampleService(), title: "Top Stories")
+        NavigationView() {
+            ListingView(listing: HNListing.exampleService(), title: "Top Stories")
+        }
     }
 }

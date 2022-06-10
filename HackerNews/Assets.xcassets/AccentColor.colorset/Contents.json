@@ -5,7 +5,21 @@
         "platform" : "ios",
         "reference" : "systemOrangeColor"
       },
-      "idiom" : "universal"
+      "idiom" : "iphone"
+    },
+    {
+      "color" : {
+        "platform" : "ios",
+        "reference" : "systemOrangeColor"
+      },
+      "idiom" : "ipad"
+    },
+    {
+      "color" : {
+        "platform" : "osx",
+        "reference" : "systemOrangeColor"
+      },
+      "idiom" : "mac"
     }
   ],
   "info" : {
