@@ -66,7 +66,7 @@ class HNItem: ObservableObject, Identifiable {
         // Gather some additional XMLNodes
         guard
             let adjacentItem = node.firstChild(xpath: "./following-sibling::tr[1]"),
-            let storyLinkNode = node.firstChild(xpath: ".//a[@class='titlelink']")
+            let storyLinkNode = node.firstChild(xpath: ".//*[@class='titleline']//a")
         else {
             return nil
         }
@@ -111,7 +111,7 @@ class HNItem: ObservableObject, Identifiable {
         self.author = adjacentItem.firstChild(css: ".hnuser")?.stringValue
 
         // Comment count, optional
-        if let commentCountString = adjacentItem.firstChild(xpath: "./td/a[last()]")?.stringValue {
+        if let commentCountString = adjacentItem.firstChild(xpath: ".//a[last()]")?.stringValue {
             let delimiterSet = CharacterSet.whitespaces
             let commentCountComponent = commentCountString.components(separatedBy: delimiterSet)
             let firstComponent = commentCountComponent.first!
