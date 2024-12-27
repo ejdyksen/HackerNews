@@ -7,28 +7,37 @@
 
 import SwiftUI
 
+enum HomeDestination {
+    case news
+    case ask
+}
 struct HomeView: View {
     @SceneStorage("ContentView.selectedProduct") private var selectedListing: String?
+    @State private var path = NavigationPath()
 
     var body: some View {
-        NavigationView {
+        NavigationStack(path: $path) {
             List {
-                Section() {
-                    NavigationLink("Top stories", tag: "news", selection: $selectedListing) {
-                        NewsListing()
+                Section {
+                    NavigationLink(value: HomeDestination.news) {
+                        Text("Top stories")
                     }
-                    NavigationLink("Ask HN", tag: "ask", selection: $selectedListing) {
-                        AskListing()
+                    NavigationLink(value: HomeDestination.ask) {
+                        Text("Ask HN")
                     }
-
                 }
-
-
             }
             .navigationTitle("Home")
             .listStyle(.grouped)
+            .navigationDestination(for: HomeDestination.self) { destination in
+                switch destination {
+                case .news:
+                    NewsListing()
+                case .ask:
+                    AskListing()
+                }
+            }
         }
-
     }
 }
 
