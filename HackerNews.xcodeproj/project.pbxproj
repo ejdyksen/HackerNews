@@ -461,7 +461,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "HackerNews/Preview\\ Content";
-				DEVELOPMENT_TEAM = U2522N6WMG;
+				DEVELOPMENT_TEAM = 5XT3U2N96X;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = HackerNews/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
@@ -469,7 +469,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ejdyksen.hackernews.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ejdyksen.test.hackernews;
 				PRODUCT_NAME = HackerNews;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
@@ -489,7 +489,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "HackerNews/Preview\\ Content";
-				DEVELOPMENT_TEAM = U2522N6WMG;
+				DEVELOPMENT_TEAM = 5XT3U2N96X;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = HackerNews/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
@@ -497,7 +497,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ejdyksen.hackernews.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ejdyksen.test.hackernews;
 				PRODUCT_NAME = HackerNews;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
