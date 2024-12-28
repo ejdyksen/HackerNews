@@ -18,6 +18,8 @@ enum HomeDestination {
 struct HomeView: View {
     @SceneStorage("ContentView.selectedProduct") private var selectedListing: String?
     @State private var path = NavigationPath()
+    @StateObject private var authController = AuthController.shared
+    @State private var showingLoginSheet = false
 
     var body: some View {
         NavigationStack(path: $path) {
@@ -39,6 +41,24 @@ struct HomeView: View {
                         Text("Jobs")
                     }
                 }
+
+                Section {
+                    if authController.isLoggedIn {
+                        HStack {
+                            Text(authController.username ?? "User")
+                                .font(.subheadline)
+                            Spacer()
+                        }
+                        Button("Logout") {
+                            authController.logout()
+                        }
+                        .foregroundColor(.red)
+                    } else {
+                        Button("Login") {
+                            showingLoginSheet = true
+                        }
+                    }
+                }
             }
             .navigationTitle("Home")
             .listStyle(.grouped)
@@ -55,6 +75,9 @@ struct HomeView: View {
                 case .jobs:
                     JobsListing()
                 }
+            }
+            .sheet(isPresented: $showingLoginSheet) {
+                LoginView()
             }
         }
     }
