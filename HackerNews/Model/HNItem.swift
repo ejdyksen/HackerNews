@@ -84,7 +84,7 @@ class HNItem: ObservableObject, Identifiable {
         self.storyLink = storyLink
         self.title = storyLinkNode.stringValue
 
-        if let domainNode = node.firstChild(css: ".sitebit")  {
+        if let domainNode = node.firstChild(css: ".sitestr")  {
             self.domain = domainNode.stringValue
         } else {
             self.domain = ""
@@ -111,12 +111,18 @@ class HNItem: ObservableObject, Identifiable {
         self.author = adjacentItem.firstChild(css: ".hnuser")?.stringValue
 
         // Comment count, optional
-        if let commentCountString = adjacentItem.firstChild(xpath: ".//a[last()]")?.stringValue {
-            let delimiterSet = CharacterSet.whitespaces
-            let commentCountComponent = commentCountString.components(separatedBy: delimiterSet)
-            let firstComponent = commentCountComponent.first!
-            let parseCount = Int(firstComponent)
-            self.commentCount = parseCount ?? 0
+        if let commentString = adjacentItem.firstChild(xpath: ".//a[contains(text(), 'comment') or text()='discuss']")?.stringValue {
+            if commentString == "discuss" {
+                self.commentCount = 0
+            } else {
+                // Parse "N comments" format, handling &nbsp;
+                let components = commentString.components(separatedBy: .whitespaces)
+                if let first = components.first, let count = Int(first) {
+                    self.commentCount = count
+                } else {
+                    self.commentCount = 0
+                }
+            }
         } else {
             self.commentCount = 0
         }
