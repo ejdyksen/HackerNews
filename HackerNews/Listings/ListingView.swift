@@ -78,6 +78,22 @@ struct ShowListing: View {
     }
 }
 
+struct NewListing: View {
+    @StateObject var listingDataSource = HNListing(.newest)
+
+    var body: some View {
+        ListingView(listing: listingDataSource, title: "New Stories")
+    }
+}
+
+struct JobsListing: View {
+    @StateObject var listingDataSource = HNListing(.jobs)
+
+    var body: some View {
+        ListingView(listing: listingDataSource, title: "Jobs")
+    }
+}
+
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView() {

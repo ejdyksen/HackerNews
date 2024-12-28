@@ -10,7 +10,11 @@ import SwiftUI
 enum HomeDestination {
     case news
     case ask
+    case newest
+    case show
+    case jobs
 }
+
 struct HomeView: View {
     @SceneStorage("ContentView.selectedProduct") private var selectedListing: String?
     @State private var path = NavigationPath()
@@ -22,8 +26,17 @@ struct HomeView: View {
                     NavigationLink(value: HomeDestination.news) {
                         Text("Top stories")
                     }
+                    NavigationLink(value: HomeDestination.newest) {
+                        Text("New Stories")
+                    }
                     NavigationLink(value: HomeDestination.ask) {
                         Text("Ask HN")
+                    }
+                    NavigationLink(value: HomeDestination.show) {
+                        Text("Show HN")
+                    }
+                    NavigationLink(value: HomeDestination.jobs) {
+                        Text("Jobs")
                     }
                 }
             }
@@ -35,6 +48,12 @@ struct HomeView: View {
                     NewsListing()
                 case .ask:
                     AskListing()
+                case .newest:
+                    NewListing()
+                case .show:
+                    ShowListing()
+                case .jobs:
+                    JobsListing()
                 }
             }
         }

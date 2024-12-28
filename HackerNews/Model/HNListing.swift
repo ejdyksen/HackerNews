@@ -14,7 +14,8 @@ enum ListingType: String {
     case news
     case ask
     case show
-    case new
+    case newest
+    case jobs
 }
 
 class HNListing: ObservableObject {
