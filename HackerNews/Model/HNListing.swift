@@ -1,9 +1,9 @@
 //
-//  Data.swift
+//  HNListing.swift
 //  HackerNews
 //
 //  Created by ejd on 9/23/19.
-//  Copyright © 2019 ejd. All rights reserved.
+//  Copyright 2019 ejd. All rights reserved.
 //
 
 import Foundation
@@ -24,7 +24,7 @@ class HNListing: ObservableObject {
     @Published var items: [HNItem] = []
     @Published var isLoading = true
 
-    private var currentPage = 1
+    private var nextPageUrl: String?
 
     init(_ listingType: ListingType) {
         self.listingType = listingType
@@ -34,16 +34,15 @@ class HNListing: ObservableObject {
     func loadMoreContent(reload: Bool = false, completion: (() -> Void)? = nil) {
         isLoading = true
         if (reload) {
-            self.currentPage = 1
+            self.nextPageUrl = nil
         }
 
         Task {
             do {
-                let url = "https://news.ycombinator.com/\(self.listingType)?p=\(self.currentPage)"
-                self.currentPage = self.currentPage + 1
-
+                let url = self.nextPageUrl ?? "https://news.ycombinator.com/\(self.listingType)"
                 let doc = try await RequestController.shared.makeRequest(endpoint: url)
                 let newItems = self.parseItems(doc: doc)
+                self.nextPageUrl = self.parseMoreLink(doc: doc)
 
                 await MainActor.run {
                     if (reload) {
@@ -76,4 +75,13 @@ class HNListing: ObservableObject {
         return newItems
     }
 
+    func parseMoreLink(doc: HTMLDocument) -> String? {
+        // Find the last <tr> in the table that contains the "More" link
+        if let moreLink = doc.css("a").first(where: { $0.stringValue.trimmingCharacters(in: .whitespaces) == "More" }) {
+            if let href = moreLink["href"] {
+                return "https://news.ycombinator.com/\(href)"
+            }
+        }
+        return nil
+    }
 }
