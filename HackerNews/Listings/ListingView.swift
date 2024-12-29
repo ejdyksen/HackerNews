@@ -1,13 +1,4 @@
-//
-//  ContentView.swift
-//  HackerNews
-//
-//  Created by ejd on 9/22/19.
-//  Copyright 2019 ejd. All rights reserved.
-//
-
 import SwiftUI
-
 
 struct ListingView: View {
     @ObservedObject var listing: HNListing

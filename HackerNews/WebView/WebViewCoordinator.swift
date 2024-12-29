@@ -1,11 +1,3 @@
-//
-//  WebViewCoordinator.swift
-//  HackerNews (iOS)
-//
-//  Created by E.J. Dyksen on 5/27/21.
-//
-
-import Foundation
 import SwiftUI
 import WebKit
 

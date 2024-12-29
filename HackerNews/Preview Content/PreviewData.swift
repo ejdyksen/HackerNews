@@ -1,11 +1,3 @@
-//
-//  PreviewData.swift
-//  HackerNews
-//
-//  Created by ejd on 9/29/19.
-//  Copyright 2019 ejd. All rights reserved.
-//
-
 import Foundation
 
 var itemOne = HNItem(id: 123,

@@ -1,12 +1,4 @@
-//
-//  WebBrowser.swift
-//  HackerNews (iOS)
-//
-//  Created by E.J. Dyksen on 5/27/21.
-//
-
 import SwiftUI
-
 
 struct WebView: View {
     var url: URL

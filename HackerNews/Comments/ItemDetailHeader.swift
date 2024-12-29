@@ -1,12 +1,4 @@
-//
-//  ItemDetailHeader.swift
-//  HackerNews
-//
-//  Created by E.J. Dyksen on 6/3/21.
-//
-
 import SwiftUI
-
 
 struct ItemDetailHeader: View {
     @ObservedObject var item: HNItem
@@ -33,13 +25,11 @@ struct ItemDetailHeader: View {
                     Text(paragraph)
                 }
 
-
                 Divider()
             }
         }
     }
 }
-
 
 struct ItemDetailHeader_Previews: PreviewProvider {
     static var previews: some View {

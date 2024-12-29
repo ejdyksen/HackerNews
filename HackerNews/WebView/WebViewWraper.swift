@@ -1,10 +1,3 @@
-//
-//  WebView.swift
-//  HackerNews (iOS)
-//
-//  Created by E.J. Dyksen on 5/25/21.
-//
-
 import SwiftUI
 import WebKit
 

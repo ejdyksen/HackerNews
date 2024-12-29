@@ -1,13 +1,4 @@
-//
-//  HNListing.swift
-//  HackerNews
-//
-//  Created by ejd on 9/23/19.
-//  Copyright 2019 ejd. All rights reserved.
-//
-
 import Foundation
-import Combine
 import Fuzi
 
 enum ListingType: String {

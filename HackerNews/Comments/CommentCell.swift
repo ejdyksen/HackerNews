@@ -1,15 +1,8 @@
-//
-//  CommentCell.swift
-//  HackerNews
-//
-//  Created by E.J. Dyksen on 5/23/21.
-//
-
 import SwiftUI
 
 struct CommentCell: View {
     var comment: HNComment
-    
+
     @State var expanded = true
     @State private var isPressed = false
 
@@ -60,13 +53,13 @@ struct CommentCell: View {
             }) {
                 Label("Upvote", systemImage: "arrow.up")
             }
-            
+
             Button(action: {
                 // View profile action to be implemented
             }) {
                 Label("View Profile", systemImage: "person")
             }
-            
+
             Button(action: {
                 // Reply action to be implemented
             }) {
@@ -95,7 +88,7 @@ struct CommentCell: View {
 }
 
 struct CommentCell_Previews: PreviewProvider {
-    
+
     static var previews: some View {
         Group {
             CommentCell(comment: HNComment.itemWithComments().rootComments[0])

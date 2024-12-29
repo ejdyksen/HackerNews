@@ -1,10 +1,3 @@
-//
-//  ActivityView.swift
-//  HackerNews (iOS)
-//
-//  Created by E.J. Dyksen on 6/22/21.
-//
-
 import SwiftUI
 
 struct ActivityView: UIViewControllerRepresentable {

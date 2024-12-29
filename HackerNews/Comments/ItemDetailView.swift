@@ -1,11 +1,3 @@
-//
-//  DetailView.swift
-//  HackerNews
-//
-//  Created by ejd on 9/29/19.
-//  Copyright 2019 ejd. All rights reserved.
-//
-
 import SwiftUI
 
 struct ItemDetailView: View {
