@@ -13,21 +13,25 @@ struct ItemDetailView: View {
 
     var body: some View {
         ScrollView {
-            LazyVStack(alignment: .leading, spacing: 10) {
+            VStack(alignment: .leading, spacing: 0) {
                 ItemDetailHeader(item: item)
+                    .padding(.bottom, 10)
 
                 ForEach(item.rootComments) { rootComment in
                     CommentCell(comment: rootComment)
                 }
 
-                if (item.canLoadMore) {
+                if item.canLoadMore {
                     HStack(alignment: .center, spacing: 10) {
                         ProgressView()
                         Text("Loading").foregroundColor(.secondary)
-                    }.onAppear { item.loadMoreContent() }
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 10)
+                    .onAppear { item.loadMoreContent() }
                 }
-
-            }.padding(.horizontal)
+            }
+            .padding(.horizontal)
 
         }
         .navigationTitle("\(item.commentCount) comments")
