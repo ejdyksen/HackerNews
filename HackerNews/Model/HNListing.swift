@@ -22,16 +22,24 @@ class HNListing: ObservableObject {
     let listingType: ListingType
 
     @Published var items: [HNItem] = []
-    @Published var isLoading = true
+    @Published var isLoading = false
+    @Published var hasMoreContent = false
 
     private var nextPageUrl: String?
 
     init(_ listingType: ListingType) {
         self.listingType = listingType
-        loadMoreContent()
+    }
+
+    func loadInitialContent() {
+        if items.isEmpty {
+            loadMoreContent()
+        }
     }
 
     func loadMoreContent(reload: Bool = false, completion: (() -> Void)? = nil) {
+        guard !isLoading else { return }
+
         isLoading = true
         if (reload) {
             self.nextPageUrl = nil
@@ -45,6 +53,8 @@ class HNListing: ObservableObject {
                 self.nextPageUrl = self.parseMoreLink(doc: doc)
 
                 await MainActor.run {
+                    self.hasMoreContent = self.nextPageUrl != nil
+
                     if (reload) {
                         self.items = newItems
                     } else {

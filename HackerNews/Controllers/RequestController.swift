@@ -27,12 +27,21 @@ class RequestController {
         endpoint: String,
         method: String = "GET",
         body: Data? = nil,
-        retryCount: Int = 0
+        shouldRetry: Bool = false
+    ) async throws -> HTMLDocument {
+        return try await makeRequestWithRetry(endpoint: endpoint, method: method, body: body, retryCount: 0, shouldRetry: shouldRetry)
+    }
+
+    private func makeRequestWithRetry(
+        endpoint: String,
+        method: String,
+        body: Data?,
+        retryCount: Int,
+        shouldRetry: Bool
     ) async throws -> HTMLDocument {
         // Rate limiting check
         if let lastRequestTime = rateLimitQueue[endpoint],
            Date().timeIntervalSince(lastRequestTime) < minimumRequestInterval {
-            showToast(message: "Please wait before making another request")
             throw RequestError.rateLimitExceeded
         }
 
@@ -67,32 +76,28 @@ class RequestController {
                 }
 
             case 503:
-                if retryCount < maxRetries {
+                if shouldRetry && retryCount < maxRetries {
                     // Exponential backoff
                     let delay = baseDelay * pow(2.0, Double(retryCount))
-                    showToast(message: "Server is busy. Retrying...")
-
                     try await Task.sleep(nanoseconds: UInt64(delay * 1_000_000_000))
-                    return try await makeRequest(
+                    return try await makeRequestWithRetry(
                         endpoint: endpoint,
                         method: method,
                         body: body,
-                        retryCount: retryCount + 1
+                        retryCount: retryCount + 1,
+                        shouldRetry: shouldRetry
                     )
                 } else {
-                    showToast(message: "Service unavailable. Please try again later")
-                    throw RequestError.maxRetriesExceeded
+                    throw RequestError.serverError(httpResponse.statusCode)
                 }
 
             default:
-                showToast(message: "Error: HTTP \(httpResponse.statusCode)")
                 throw RequestError.serverError(httpResponse.statusCode)
             }
         } catch {
             if let requestError = error as? RequestError {
                 throw requestError
             }
-            showToast(message: "Network error: \(error.localizedDescription)")
             throw RequestError.networkError(error)
         }
     }

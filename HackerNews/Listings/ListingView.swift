@@ -3,7 +3,7 @@
 //  HackerNews
 //
 //  Created by ejd on 9/22/19.
-//  Copyright © 2019 ejd. All rights reserved.
+//  Copyright 2019 ejd. All rights reserved.
 //
 
 import SwiftUI
@@ -22,21 +22,30 @@ struct ListingView: View {
                 ListingItemCell(item: item)
             }
             if (!showRefresh) {
-                HStack(alignment: .center, spacing: 10) {
-                    ProgressView()
-                    Text("Loading").foregroundColor(.secondary)
-                }.onAppear { listing.loadMoreContent() }
+                if listing.items.isEmpty {
+                    HStack(alignment: .center, spacing: 10) {
+                        ProgressView()
+                        Text("Loading").foregroundColor(.secondary)
+                    }
+                } else if listing.hasMoreContent {
+                    HStack(alignment: .center, spacing: 10) {
+                        ProgressView()
+                        Text("Loading more...").foregroundColor(.secondary)
+                    }
+                    .onAppear {
+                        listing.loadMoreContent()
+                    }
+                }
             }
-
         }
         .refreshable {
             showRefresh = true
             listing.loadMoreContent(reload: true) {
                 showRefresh = false
             }
-            }
+        }
         .task {
-            listing.loadMoreContent()
+            listing.loadInitialContent()
         }
 
         .listStyle(PlainListStyle())
