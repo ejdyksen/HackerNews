@@ -1,5 +1,6 @@
 import Foundation
 import Security
+import Fuzi
 
 class AuthController: ObservableObject {
     @Published var isLoggedIn = false
@@ -13,15 +14,13 @@ class AuthController: ObservableObject {
     }
 
     func login(username: String, password: String) async throws -> Bool {
-        let url = URL(string: "https://news.ycombinator.com/login")!
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-
-        request.setValue("https://news.ycombinator.com/", forHTTPHeaderField: "referer")
-
-        // Include the goto parameter in the form data
         let body = "acct=\(username)&pw=\(password)"
-        request.httpBody = body.data(using: .utf8)
+
+        let _ = try await RequestController.shared.makeRequest(
+            endpoint: "https://news.ycombinator.com/login",
+            method: "POST",
+            body: body.data(using: .utf8)
+        )
 
         if let cookies = HTTPCookieStorage.shared.cookies?.filter({ $0.domain.contains("ycombinator.com") }),
            let userCookie = cookies.first(where: { $0.name == "user" }) {

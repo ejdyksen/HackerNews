@@ -130,15 +130,15 @@ class HNItem: ObservableObject, Identifiable {
 
 
     func loadMoreContent() {
-        DispatchQueue.global(qos: .userInteractive).async {
-            let url = URL(string: "https://news.ycombinator.com/item?id=\(self.id)&p=\(self.currentPage)")!
-            self.currentPage = self.currentPage + 1
+        Task {
+            do {
+                let url = "https://news.ycombinator.com/item?id=\(self.id)&p=\(self.currentPage)"
+                self.currentPage = self.currentPage + 1
 
-            let dataTask = URLSession.shared.dataTask(with: url) { data, response, error in
-                do {
-                    let doc = try HTMLDocument(data: data!)
+                let doc = try await RequestController.shared.makeRequest(endpoint: url)
 
-                    var paragraphsToAdd = [String]()
+                let paragraphs: [String] = {
+                    var result = [String]()
                     let itemNode = doc.xpath("//table[@class=\"fatitem\"]//tr[4]")
 
                     if !itemNode.isEmpty {
@@ -152,31 +152,26 @@ class HNItem: ObservableObject, Identifiable {
                                 assert(false, "unhandled element type")
                             }
                             if (!childString.isEmpty) {
-                                paragraphsToAdd.append(childString)
+                                result.append(childString)
                             }
-
                         }
                     }
+                    return result
+                }()
 
-                    let nodeList = doc.css("table.comment-tree tr.athing")
-                    let newComments = HNComment.createCommentTree(nodes: nodeList)
+                let nodeList = doc.css("table.comment-tree tr.athing")
+                let newComments = HNComment.createCommentTree(nodes: nodeList)
 
-                    if (doc.css(".morelink").isEmpty) {
-                        self.canLoadMore = false
-                    } else {
-                        self.canLoadMore = true
-                    }
+                let canLoadMoreValue = !doc.css(".morelink").isEmpty
 
-                    DispatchQueue.main.sync {
-                        self.rootComments = self.rootComments + newComments
-                        self.paragraphs = paragraphsToAdd
-                    }
-
-                } catch let error {
-                  print(error)
+                await MainActor.run {
+                    self.rootComments = self.rootComments + newComments
+                    self.paragraphs = paragraphs
+                    self.canLoadMore = canLoadMoreValue
                 }
+            } catch {
+                print(error)
             }
-            dataTask.resume()
         }
     }
 }

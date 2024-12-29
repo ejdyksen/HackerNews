@@ -37,52 +37,43 @@ class HNListing: ObservableObject {
             self.currentPage = 1
         }
 
-        DispatchQueue.global(qos: .userInitiated).async {
-            let url = URL(string: "https://news.ycombinator.com/\(self.listingType)?p=\(self.currentPage)")!
-            self.currentPage = self.currentPage + 1
+        Task {
+            do {
+                let url = "https://news.ycombinator.com/\(self.listingType)?p=\(self.currentPage)"
+                self.currentPage = self.currentPage + 1
 
-            let dataTask = URLSession.shared.dataTask(with: url) { data, response, error in
-                guard let data = data else {
-                    print("Couldn't load \(url)")
-                    return
-                }
+                let doc = try await RequestController.shared.makeRequest(endpoint: url)
+                let newItems = self.parseItems(doc: doc)
 
-                let newItems = self.parseItems(data: data)
-
-                DispatchQueue.main.sync {
+                await MainActor.run {
                     if (reload) {
                         self.items = newItems
                     } else {
                         self.items.append(contentsOf: newItems)
                     }
                     self.isLoading = false
-                    if let completion = completion {
-                        completion()
-                    }
+                    completion?()
+                }
+            } catch {
+                await MainActor.run {
+                    self.isLoading = false
+                    completion?()
                 }
             }
-            dataTask.resume()
         }
     }
 
-    func parseItems(data: Data) -> [HNItem] {
-        do {
-            let doc = try HTMLDocument(data: data)
-            let itemList = doc.css("tr.athing")
+    func parseItems(doc: HTMLDocument) -> [HNItem] {
+        let itemList = doc.css("tr.athing")
+        var newItems: [HNItem] = []
 
-            var newItems: [HNItem] = []
-
-            for node in itemList {
-                if let item = HNItem(withXmlNode: node) {
-                    newItems.append(item)
-                }
+        for node in itemList {
+            if let item = HNItem(withXmlNode: node) {
+                newItems.append(item)
             }
-
-            return newItems
-        } catch {
-            print("Error:", error)
-            return []
         }
+
+        return newItems
     }
 
 }
