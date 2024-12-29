@@ -13,7 +13,7 @@ struct CommentCell: View {
                     Text(comment.author)
                         .font(.headline)
                         .foregroundColor(.accentColor)
-                    Text(expanded ? comment.age : comment.paragraphs[0])
+                    Text(expanded ? comment.age : String(comment.content.characters.prefix(50)))
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                 }
@@ -21,13 +21,9 @@ struct CommentCell: View {
                 .padding(.leading, CGFloat(comment.indentLevel * 12))
 
                 if expanded {
-                    VStack(alignment: .leading, spacing: 8) {
-                        ForEach(comment.paragraphs, id: \.self) { paragraph in
-                            Text(paragraph)
-                        }
-                    }
-                    .padding(.leading, CGFloat(comment.indentLevel * 12))
-                    .transition(.opacity.combined(with: .move(edge: .top)))
+                    Text(comment.content)
+                        .padding(.leading, CGFloat(comment.indentLevel * 12))
+                        .transition(.opacity.combined(with: .move(edge: .top)))
                 }
             }
             .padding(.vertical, 8)
@@ -90,10 +86,12 @@ struct CommentCell: View {
 struct CommentCell_Previews: PreviewProvider {
 
     static var previews: some View {
-        Group {
-            CommentCell(comment: HNComment.itemWithComments().rootComments[0])
-                .previewLayout(.sizeThatFits)
-                .padding(10)
+        NavigationView {
+            ItemDetailView(item: HNItem.itemWithComments())
         }
+
+        CommentCell(comment: HNItem.itemWithComments().rootComments[0])
+            .previewLayout(.sizeThatFits)
     }
+
 }

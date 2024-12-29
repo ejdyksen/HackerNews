@@ -36,7 +36,7 @@ struct ItemDetailView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             NavigationView {
-                ItemDetailView(item: HNComment.itemWithComments())
+                ItemDetailView(item: HNItem.itemWithComments())
             }
         }
     }

@@ -35,7 +35,6 @@ struct ListingItemCell: View {
 
 }
 
-#if DEBUG
 struct ListingItemCell_Previews: PreviewProvider {
     static var previews: some View {
         Group {
@@ -45,4 +44,3 @@ struct ListingItemCell_Previews: PreviewProvider {
         }
     }
 }
-#endif

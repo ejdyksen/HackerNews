@@ -33,6 +33,6 @@ struct ItemDetailHeader: View {
 
 struct ItemDetailHeader_Previews: PreviewProvider {
     static var previews: some View {
-        ItemDetailHeader(item: HNComment.itemWithComments())
+        ItemDetailHeader(item: HNItem.itemWithComments())
     }
 }
