@@ -3,7 +3,7 @@
 //  HackerNews
 //
 //  Created by ejd on 9/27/19.
-//  Copyright © 2019 ejd. All rights reserved.
+//  Copyright 2019 ejd. All rights reserved.
 //
 
 import Foundation
