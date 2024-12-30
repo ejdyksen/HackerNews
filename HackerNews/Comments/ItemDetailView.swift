@@ -7,7 +7,7 @@ struct ItemDetailView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
                 ItemDetailHeader(item: item)
-                    .padding(.bottom, 10)
+                    .padding(.horizontal)
 
                 ForEach(item.rootComments) { rootComment in
                     CommentCell(comment: rootComment)
@@ -23,7 +23,7 @@ struct ItemDetailView: View {
                     .onAppear { item.loadMoreContent() }
                 }
             }
-            .padding(.horizontal)
+
 
         }
         .navigationTitle("\(item.commentCount) comments")

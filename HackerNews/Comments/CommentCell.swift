@@ -27,6 +27,7 @@ struct CommentCell: View {
                 }
             }
             .padding(.vertical, 8)
+            .padding(.horizontal, 16)
 
             Divider()
 
@@ -36,12 +37,14 @@ struct CommentCell: View {
                 }
             }
         }
+        .padding(.horizontal, 1)
         .clipped()
         .contentShape(Rectangle())
         .background(
             Rectangle()
                 .fill(Color.gray.opacity(0.1))
                 .opacity(isPressed ? 1 : 0)
+                .ignoresSafeArea(.container, edges: .horizontal)
         )
         .contextMenu {
             Button(action: {
@@ -76,7 +79,12 @@ struct CommentCell: View {
                 }
                 .onEnded { _ in
                     withAnimation(.easeInOut(duration: 0.1)) {
-                        isPressed = false
+                        isPressed = true
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                            withAnimation(.easeInOut(duration: 0.1)) {
+                                isPressed = false
+                            }
+                        }
                     }
                 }
         )
