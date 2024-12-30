@@ -9,14 +9,24 @@
 import Foundation
 import Fuzi
 import SwiftUI
+import Combine
 
-class HNComment: Identifiable {
+class HNComment: Identifiable, ObservableObject {
     let id: Int
     let author: String
     let age: String
     let indentLevel: Int
     let content: AttributedString
     var children: [HNComment] = []
+    private var upvoteAuth: String?
+    private var upvoteEndpoint: String?
+    private var downvoteAuth: String?
+    private var downvoteEndpoint: String?
+    @Published var isUpvoted: Bool = false
+    @Published var isDownvoted: Bool = false
+    
+    var canUpvote: Bool { upvoteAuth != nil }
+    var canDownvote: Bool { downvoteAuth != nil }
 
     init(id: Int, author: String, age: String, indentLevel: Int, content: AttributedString) {
         self.id = id
@@ -24,6 +34,13 @@ class HNComment: Identifiable {
         self.age = age
         self.indentLevel = indentLevel
         self.content = content
+    }
+    
+    func setVoteAuth(upvoteAuth: String?, upvoteEndpoint: String?, downvoteAuth: String?, downvoteEndpoint: String?) {
+        self.upvoteAuth = upvoteAuth
+        self.upvoteEndpoint = upvoteEndpoint
+        self.downvoteAuth = downvoteAuth
+        self.downvoteEndpoint = downvoteEndpoint
     }
 
     static func parseText(_ node: XMLElement) -> AttributedString {
@@ -89,8 +106,27 @@ class HNComment: Identifiable {
             let author = node.firstChild(css: ".comhead .hnuser")?.stringValue ?? ""
             let age = node.firstChild(css: ".comhead .age")?.stringValue ?? ""
             let indentLevel = (node.firstChild(css: ".ind img")?["width"].flatMap(Int.init) ?? 0) / 40
+            
+            // Extract auth tokens from upvote/downvote links if they exist
+            var upvoteAuth: String? = nil
+            var downvoteAuth: String? = nil
+            
+            if let upvoteLink = node.firstChild(css: "#up_\(id)")?.attr("href"),
+               let upvoteUrl = URL(string: "https://news.ycombinator.com/\(upvoteLink)"),
+               let components = URLComponents(url: upvoteUrl, resolvingAgainstBaseURL: false),
+               let auth = components.queryItems?.first(where: { $0.name == "auth" })?.value {
+                upvoteAuth = auth
+            }
+            
+            if let downvoteLink = node.firstChild(css: "#down_\(id)")?.attr("href"),
+               let downvoteUrl = URL(string: "https://news.ycombinator.com/\(downvoteLink)"),
+               let components = URLComponents(url: downvoteUrl, resolvingAgainstBaseURL: false),
+               let auth = components.queryItems?.first(where: { $0.name == "auth" })?.value {
+                downvoteAuth = auth
+            }
 
             let comment = HNComment(id: id, author: author, age: age, indentLevel: indentLevel, content: content)
+            comment.setVoteAuth(upvoteAuth: upvoteAuth, upvoteEndpoint: nil, downvoteAuth: downvoteAuth, downvoteEndpoint: nil)
 
             if indentLevel == 0 {
                 rootComments.append(comment)
@@ -102,5 +138,34 @@ class HNComment: Identifiable {
         }
 
         return rootComments
+    }
+
+    // Add upvoting functionality
+    func upvote() async throws {
+        guard let auth = upvoteAuth else { return }
+        
+        let voteEndpoint = "https://news.ycombinator.com/vote?id=\(id)&how=up&auth=\(auth)&goto=item%3Fid%3D\(id)&js=t"
+        _ = try await RequestController.shared.makeRequest(endpoint: voteEndpoint)
+        isUpvoted = true
+        isDownvoted = false
+    }
+    
+    func downvote() async throws {
+        guard let auth = downvoteAuth else { return }
+        
+        let voteEndpoint = "https://news.ycombinator.com/vote?id=\(id)&how=down&auth=\(auth)&goto=item%3Fid%3D\(id)&js=t"
+        _ = try await RequestController.shared.makeRequest(endpoint: voteEndpoint)
+        isDownvoted = true
+        isUpvoted = false
+    }
+    
+    func unvote() async throws {
+        // Use the appropriate auth token based on current vote state
+        guard let auth = isUpvoted ? upvoteAuth : downvoteAuth else { return }
+        
+        let voteEndpoint = "https://news.ycombinator.com/vote?id=\(id)&how=un&auth=\(auth)&goto=item%3Fid%3D\(id)&js=t"
+        _ = try await RequestController.shared.makeRequest(endpoint: voteEndpoint)
+        isUpvoted = false
+        isDownvoted = false
     }
 }

@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct CommentCell: View {
-    var comment: HNComment
+    @ObservedObject var comment: HNComment
 
     @State var expanded = true
     @State private var isPressed = false
@@ -16,6 +16,19 @@ struct CommentCell: View {
             }) {
                 VStack(alignment: .leading, spacing: 8) {
                     HStack(alignment: .lastTextBaseline) {
+                        if comment.canUpvote {
+                            Group {
+                                if comment.isUpvoted {
+                                    Image(systemName: "hand.thumbsup.fill")
+                                        .foregroundColor(.orange)
+                                } else if comment.isDownvoted {
+                                    Image(systemName: "hand.thumbsdown.fill")
+                                        .foregroundColor(.gray)
+                                }
+                            }
+                            .font(.caption)
+                            .frame(width: 12, height: 12)
+                        }
                         Text(comment.author)
                             .font(.headline)
                             .foregroundColor(.accentColor)
@@ -61,12 +74,40 @@ struct CommentCell: View {
                     }
             )
             .contextMenu {
-                Button(action: {
-                    // Upvote action to be implemented
-                }) {
-                    Label("Upvote", systemImage: "arrow.up")
+                if comment.canUpvote {
+                    if !comment.isUpvoted && !comment.isDownvoted {
+                        Button(action: {
+                            Task {
+                                try? await comment.upvote()
+                            }
+                        }) {
+                            Label("Upvote", systemImage: "hand.thumbsup")
+                        }
+                        
+                        Button(action: {
+                            Task {
+                                try? await comment.downvote()
+                            }
+                        }) {
+                            Label("Downvote", systemImage: "hand.thumbsdown")
+                        }
+                    } else {
+                        Button(action: {
+                            Task {
+                                try? await comment.unvote()
+                            }
+                        }) {
+                            Label("Unvote", systemImage: "arrow.uturn.backward")
+                        }
+                    }
                 }
-
+                
+                Button(action: {
+                    UIPasteboard.general.string = comment.content.description
+                }) {
+                    Label("Copy Text", systemImage: "doc.on.doc")
+                }
+                
                 Button(action: {
                     // View profile action to be implemented
                 }) {
