@@ -32,7 +32,7 @@ struct CommentCell: View {
                         Text(comment.author)
                             .font(.headline)
                             .foregroundColor(.accentColor)
-                        Text(expanded ? comment.age : String(comment.content.characters.prefix(50)))
+                        Text(expanded ? comment.age : String(comment.content.prefix(50)))
                             .font(.subheadline)
                             .foregroundColor(.secondary)
                     }
@@ -40,7 +40,7 @@ struct CommentCell: View {
                     .padding(.leading, CGFloat(comment.indentLevel * 12))
 
                     if expanded {
-                        Text(comment.content)
+                        Text(.init(comment.content))
                             .padding(.leading, CGFloat(comment.indentLevel * 12))
                             .transition(.opacity.combined(with: .move(edge: .top)))
                     }
@@ -49,75 +49,45 @@ struct CommentCell: View {
                 .padding(.horizontal, 16)
                 .background(
                     Rectangle()
-                        .fill(Color(.systemBackground))
-                        .opacity(isPressed ? 1 : 0)
+                        .fill(Color(UIColor.systemBackground))
+                        .shadow(color: Color.black.opacity(0.1), radius: 1, x: 0, y: 1)
                 )
-                .contentShape(Rectangle())
             }
-            .buttonStyle(.plain)
-            .simultaneousGesture(
-                DragGesture(minimumDistance: 0)
-                    .onChanged { _ in
-                        withAnimation(.easeInOut(duration: 0.1)) {
-                            isPressed = true
-                        }
-                    }
-                    .onEnded { _ in
-                        withAnimation(.easeInOut(duration: 0.1)) {
-                            isPressed = true
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                                withAnimation(.easeInOut(duration: 0.1)) {
-                                    isPressed = false
-                                }
-                            }
-                        }
-                    }
-            )
-            .contextMenu {
-                if comment.canUpvote {
-                    if !comment.isUpvoted && !comment.isDownvoted {
-                        Button(action: {
-                            Task {
-                                try? await comment.upvote()
-                            }
-                        }) {
-                            Label("Upvote", systemImage: "hand.thumbsup")
-                        }
-                        
-                        Button(action: {
-                            Task {
-                                try? await comment.downvote()
-                            }
-                        }) {
-                            Label("Downvote", systemImage: "hand.thumbsdown")
-                        }
-                    } else {
-                        Button(action: {
-                            Task {
-                                try? await comment.unvote()
-                            }
-                        }) {
-                            Label("Unvote", systemImage: "arrow.uturn.backward")
-                        }
-                    }
-                }
-                
-                Button(action: {
-                    UIPasteboard.general.string = comment.content.description
-                }) {
-                    Label("Copy Text", systemImage: "doc.on.doc")
-                }
-                
-                Button(action: {
-                    // View profile action to be implemented
-                }) {
-                    Label("View Profile", systemImage: "person")
-                }
+            .buttonStyle(PlainButtonStyle())
 
-                Button(action: {
-                    // Reply action to be implemented
-                }) {
-                    Label("Reply", systemImage: "arrowshape.turn.up.left")
+            if expanded {
+                Menu {
+                    if comment.canUpvote {
+                        if !comment.isUpvoted && !comment.isDownvoted {
+                            Button(action: {
+                                Task {
+                                    try? await comment.upvote()
+                                }
+                            }) {
+                                Label("Upvote", systemImage: "hand.thumbsup")
+                            }
+                            
+                            Button(action: {
+                                Task {
+                                    try? await comment.downvote()
+                                }
+                            }) {
+                                Label("Downvote", systemImage: "hand.thumbsdown")
+                            }
+                        } else {
+                            Button(action: {
+                                Task {
+                                    try? await comment.unvote()
+                                }
+                            }) {
+                                Label("Unvote", systemImage: "arrow.uturn.backward")
+                            }
+                        }
+                    }
+                } label: {
+                    Color.clear
+                        .contentShape(Rectangle())
+                        .frame(maxWidth: .infinity, maxHeight: 44)
                 }
             }
 
