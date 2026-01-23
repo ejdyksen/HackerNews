@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		29A1B2C32D69010100000003 /* URLHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29A1B2C32D69010100000001 /* URLHandler.swift */; };
+		29A1B2C32D69010100000004 /* URLHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29A1B2C32D69010100000001 /* URLHandler.swift */; };
 		291930B32D207EC2008756BB /* AuthController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291930B02D207EC2008756BB /* AuthController.swift */; };
 		291930B42D207EC2008756BB /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291930B12D207EC2008756BB /* LoginView.swift */; };
 		291930B52D207EC2008756BB /* AuthController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291930B02D207EC2008756BB /* AuthController.swift */; };
@@ -46,6 +48,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		29A1B2C32D69010100000001 /* URLHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLHandler.swift; sourceTree = "<group>"; };
 		291930B02D207EC2008756BB /* AuthController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthController.swift; sourceTree = "<group>"; };
 		291930B12D207EC2008756BB /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		294AD4462682752E001AE269 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
@@ -94,6 +97,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		29A1B2C32D69010100000002 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				29A1B2C32D69010100000001 /* URLHandler.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
 		291930B22D207EC2008756BB /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -143,6 +154,7 @@
 		29D8F8CD256B5FB300E37E1E /* HackerNews */ = {
 			isa = PBXGroup;
 			children = (
+				29A1B2C32D69010100000002 /* App */,
 				291930B22D207EC2008756BB /* Controllers */,
 				29EE31F8265B697700CE2569 /* Model */,
 				299647E22682D7E900EF7D07 /* Home */,
@@ -321,6 +333,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				29A1B2C32D69010100000003 /* URLHandler.swift in Sources */,
 				291930B52D207EC2008756BB /* AuthController.swift in Sources */,
 				291930B62D207EC2008756BB /* LoginView.swift in Sources */,
 				29D8F94D256B620600E37E1E /* PreviewData.swift in Sources */,
@@ -347,6 +360,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				29A1B2C32D69010100000004 /* URLHandler.swift in Sources */,
 				29D8F952256B620600E37E1E /* PreviewData.swift in Sources */,
 				29D8F933256B615B00E37E1E /* HNComment.swift in Sources */,
 				29F947B9265955CA00578039 /* ListingItemCell.swift in Sources */,

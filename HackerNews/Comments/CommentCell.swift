@@ -32,7 +32,7 @@ struct CommentCell: View {
                         Text(comment.author)
                             .font(.headline)
                             .foregroundColor(.accentColor)
-                        Text(expanded ? comment.age : String(comment.content.prefix(50)))
+                        Text(expanded ? comment.age : String(comment.content.characters.prefix(50)))
                             .font(.subheadline)
                             .foregroundColor(.secondary)
                     }
@@ -40,7 +40,7 @@ struct CommentCell: View {
                     .padding(.leading, CGFloat(comment.indentLevel * 12))
 
                     if expanded {
-                        Text(.init(comment.content))
+                        Text(comment.content)
                             .padding(.leading, CGFloat(comment.indentLevel * 12))
                             .transition(.opacity.combined(with: .move(edge: .top)))
                     }
