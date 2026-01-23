@@ -7,13 +7,9 @@ struct ListingItemCell: View {
         NavigationLink(destination: ItemDetailView(item: item)) {
             HStack {
                 VStack(alignment: .leading, spacing: 0) {
-                    Text(item.title)
+                    Text("\(item.title)\(Text(item.domainString).font(.caption).foregroundColor(.secondary).baselineOffset(1))")
                         .font(.headline)
                         .foregroundColor(.primary)
-                    + Text(item.domainString)
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                        .baselineOffset(1)
 
                     Text(item.subheading)
                         .font(.footnote)
