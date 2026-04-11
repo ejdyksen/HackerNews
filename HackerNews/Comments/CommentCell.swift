@@ -2,16 +2,14 @@ import SwiftUI
 
 struct CommentCell: View {
     @ObservedObject var comment: HNComment
-
-    @State var expanded = true
-    @State private var isPressed = false
+    let isCollapsed: Bool
+    let onToggle: () -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            // Comment content section
             Button(action: {
                 withAnimation(.easeInOut(duration: 0.2)) {
-                    self.expanded.toggle()
+                    onToggle()
                 }
             }) {
                 VStack(alignment: .leading, spacing: 8) {
@@ -32,14 +30,14 @@ struct CommentCell: View {
                         Text(comment.author)
                             .font(.headline)
                             .foregroundColor(.accentColor)
-                        Text(expanded ? comment.age : String(comment.content.characters.prefix(50)))
+                        Text(isCollapsed ? String(comment.content.characters.prefix(50)) : comment.age)
                             .font(.subheadline)
                             .foregroundColor(.secondary)
                     }
                     .lineLimit(1)
                     .padding(.leading, CGFloat(comment.indentLevel * 12))
 
-                    if expanded {
+                    if !isCollapsed {
                         Text(comment.content)
                             .padding(.leading, CGFloat(comment.indentLevel * 12))
                             .transition(.opacity.combined(with: .move(edge: .top)))
@@ -55,33 +53,18 @@ struct CommentCell: View {
             }
             .buttonStyle(PlainButtonStyle())
 
-            if expanded {
+            if !isCollapsed && comment.canUpvote {
                 Menu {
-                    if comment.canUpvote {
-                        if !comment.isUpvoted && !comment.isDownvoted {
-                            Button(action: {
-                                Task {
-                                    try? await comment.upvote()
-                                }
-                            }) {
-                                Label("Upvote", systemImage: "hand.thumbsup")
-                            }
-                            
-                            Button(action: {
-                                Task {
-                                    try? await comment.downvote()
-                                }
-                            }) {
-                                Label("Downvote", systemImage: "hand.thumbsdown")
-                            }
-                        } else {
-                            Button(action: {
-                                Task {
-                                    try? await comment.unvote()
-                                }
-                            }) {
-                                Label("Unvote", systemImage: "arrow.uturn.backward")
-                            }
+                    if !comment.isUpvoted && !comment.isDownvoted {
+                        Button(action: { Task { try? await comment.upvote() } }) {
+                            Label("Upvote", systemImage: "hand.thumbsup")
+                        }
+                        Button(action: { Task { try? await comment.downvote() } }) {
+                            Label("Downvote", systemImage: "hand.thumbsdown")
+                        }
+                    } else {
+                        Button(action: { Task { try? await comment.unvote() } }) {
+                            Label("Unvote", systemImage: "arrow.uturn.backward")
                         }
                     }
                 } label: {
@@ -92,13 +75,6 @@ struct CommentCell: View {
             }
 
             Divider()
-
-            // Children section
-            if expanded && comment.children.count > 0 {
-                ForEach(comment.children) { child in
-                    CommentCell(comment: child)
-                }
-            }
         }
         .padding(.horizontal, 1)
         .clipped()
@@ -106,14 +82,16 @@ struct CommentCell: View {
 }
 
 struct CommentCell_Previews: PreviewProvider {
-
     static var previews: some View {
         NavigationView {
             ItemDetailView(item: HNItem.itemWithComments())
         }
 
-        CommentCell(comment: HNItem.itemWithComments().rootComments[0])
-            .previewLayout(.sizeThatFits)
+        CommentCell(
+            comment: HNItem.itemWithComments().rootComments[0],
+            isCollapsed: false,
+            onToggle: {}
+        )
+        .previewLayout(.sizeThatFits)
     }
-
 }

@@ -28,6 +28,18 @@ class HNItem: ObservableObject, Identifiable {
     @Published var rootComments: [HNComment] = []
     @Published var body: AttributedString? = nil
 
+    var flatComments: [HNComment] {
+        var result: [HNComment] = []
+        func traverse(_ comments: [HNComment]) {
+            for comment in comments {
+                result.append(comment)
+                traverse(comment.children)
+            }
+        }
+        traverse(rootComments)
+        return result
+    }
+
     var itemLink: URL {
         return URL(string: "https://news.ycombinator.com/item?id=\(self.id)")!
     }

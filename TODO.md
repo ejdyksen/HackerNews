@@ -60,6 +60,7 @@ Reading experience comes first. Participation features come after the app is a g
 ## iPad & Accessibility
 
 - [ ] **iPad split view** — sidebar listing + detail column using `NavigationSplitView`
+- [x] **Flat comment rendering** — replaced recursive `CommentCell` tree with a `LazyVStack` over a pre-order flat list; collapse/expand state centralised in `ItemDetailView`
 - [ ] **Keyboard navigation** — arrow keys to move between stories/comments on iPad with keyboard
 - [ ] **VoiceOver labels** on vote buttons and collapse/expand controls
 - [ ] **Reduced motion** — respect `accessibilityReduceMotion` in comment collapse animation

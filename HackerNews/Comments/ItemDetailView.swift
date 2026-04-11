@@ -2,6 +2,27 @@ import SwiftUI
 
 struct ItemDetailView: View {
     @ObservedObject var item: HNItem
+    @State private var collapsedIDs: Set<Int> = []
+
+    private var visibleComments: [HNComment] {
+        var result: [HNComment] = []
+        var hiddenBelowLevel: Int? = nil
+
+        for comment in item.flatComments {
+            if let hideLevel = hiddenBelowLevel {
+                if comment.indentLevel > hideLevel {
+                    continue
+                } else {
+                    hiddenBelowLevel = nil
+                }
+            }
+            result.append(comment)
+            if collapsedIDs.contains(comment.id) {
+                hiddenBelowLevel = comment.indentLevel
+            }
+        }
+        return result
+    }
 
     var body: some View {
         ScrollView {
@@ -9,8 +30,20 @@ struct ItemDetailView: View {
                 ItemDetailHeader(item: item)
                     .padding(.horizontal)
 
-                ForEach(item.rootComments) { rootComment in
-                    CommentCell(comment: rootComment)
+                LazyVStack(spacing: 0) {
+                    ForEach(visibleComments) { comment in
+                        CommentCell(
+                            comment: comment,
+                            isCollapsed: collapsedIDs.contains(comment.id),
+                            onToggle: {
+                                if collapsedIDs.contains(comment.id) {
+                                    collapsedIDs.remove(comment.id)
+                                } else {
+                                    collapsedIDs.insert(comment.id)
+                                }
+                            }
+                        )
+                    }
                 }
 
                 if item.canLoadMore {
@@ -23,13 +56,10 @@ struct ItemDetailView: View {
                     .onAppear { item.loadMoreContent() }
                 }
             }
-
-
         }
         .navigationTitle("\(item.commentCount) comments")
         .navigationBarTitleDisplayMode(.inline)
     }
-
 }
 
 struct ItemDetailView_Previews: PreviewProvider {
