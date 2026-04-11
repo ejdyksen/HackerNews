@@ -3,7 +3,7 @@ import SwiftUI
 struct AdaptiveHomeView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @State private var selectedListing: ListingType? = .news
-    @State private var selectedItem: HNItem? = nil
+    @State private var selectedItem: HNItem?
     @StateObject private var authController = AuthController.shared
     @State private var showingLoginSheet = false
 
@@ -14,24 +14,24 @@ struct AdaptiveHomeView: View {
             NavigationSplitView {
                 sidebarView
             } content: {
-                ListingContentColumn(
-                    listingType: currentListing,
-                    selectedItem: $selectedItem
-                )
-                .id(currentListing)
+                ListingContentColumn(listingType: currentListing, selectedItem: $selectedItem)
+                    .id(currentListing)
             } detail: {
-                if let item = selectedItem {
-                    ItemDetailView(item: item)
-                } else {
-                    ContentUnavailableView {
-                        Label("Select a story", systemImage: "newspaper")
-                    } description: {
-                        Text("Choose a story from the list.")
+                NavigationStack {
+                    if let item = selectedItem {
+                        ItemDetailView(item: item)
+                    } else {
+                        ContentUnavailableView {
+                            Label("Select a story", systemImage: "newspaper")
+                        } description: {
+                            Text("Choose a story from the list.")
+                        }
                     }
                 }
+                .id(selectedItem?.id)
             }
             .navigationSplitViewStyle(.balanced)
-            .onChange(of: selectedListing) { _, _ in
+            .onChange(of: selectedListing) {
                 selectedItem = nil
             }
             .sheet(isPresented: $showingLoginSheet) {
@@ -84,10 +84,19 @@ struct ListingContentColumn: View {
     }
 
     var body: some View {
-        List(selection: $selectedItem) {
+        List {
             ForEach(listing.items) { item in
-                ListingItemCellContent(item: item)
-                    .tag(item as HNItem?)
+                Button {
+                    selectedItem = item
+                } label: {
+                    ListingItemCellContent(item: item)
+                }
+                .buttonStyle(.plain)
+                .listRowBackground(
+                    selectedItem?.id == item.id
+                        ? Color.accentColor.opacity(0.12)
+                        : nil
+                )
             }
             if listing.hasMoreContent {
                 HStack {

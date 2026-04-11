@@ -42,6 +42,9 @@ struct ListingView: View {
         .listStyle(PlainListStyle())
         .navigationTitle(Text(title))
         .navigationBarTitleDisplayMode(.inline)
+        .navigationDestination(for: HNItem.self) { item in
+            ItemDetailView(item: item)
+        }
         .navigationBarItems(trailing:
                 HStack {
                     Button {

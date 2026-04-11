@@ -32,7 +32,7 @@ struct ListingItemCell: View {
     var item: HNItem
 
     var body: some View {
-        NavigationLink(destination: ItemDetailView(item: item)) {
+        NavigationLink(value: item) {
             ListingItemCellContent(item: item)
         }
     }

@@ -59,6 +59,9 @@ struct ItemDetailView: View {
         }
         .navigationTitle("\(item.commentCount) comments")
         .navigationBarTitleDisplayMode(.inline)
+        .navigationDestination(for: URL.self) { url in
+            WebView(url: url)
+        }
     }
 }
 
