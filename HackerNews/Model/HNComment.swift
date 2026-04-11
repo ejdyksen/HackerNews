@@ -94,7 +94,7 @@ class HNComment: Identifiable, ObservableObject {
         var lastCommentAtLevel = [Int: HNComment]()
 
         for node in nodes {
-            let id = Int(node.attr("id")!)!
+            guard let idString = node.attr("id"), let id = Int(idString) else { continue }
             guard let textNode = node.firstChild(css: ".commtext") else {
                 continue
             }

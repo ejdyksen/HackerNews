@@ -26,9 +26,10 @@ class HNItem: ObservableObject, Identifiable, Hashable, Equatable {
     var commentCount: Int
 
     @Published var rootComments: [HNComment] = []
+    @Published var flatComments: [HNComment] = []
     @Published var body: AttributedString? = nil
 
-    var flatComments: [HNComment] {
+    private static func buildFlatComments(_ root: [HNComment]) -> [HNComment] {
         var result: [HNComment] = []
         func traverse(_ comments: [HNComment]) {
             for comment in comments {
@@ -36,7 +37,7 @@ class HNItem: ObservableObject, Identifiable, Hashable, Equatable {
                 traverse(comment.children)
             }
         }
-        traverse(rootComments)
+        traverse(root)
         return result
     }
 
@@ -158,7 +159,9 @@ class HNItem: ObservableObject, Identifiable, Hashable, Equatable {
                 let canLoadMoreValue = !doc.css(".morelink").isEmpty
 
                 await MainActor.run {
-                    self.rootComments = self.rootComments + newComments
+                    let updatedRoot = self.rootComments + newComments
+                    self.rootComments = updatedRoot
+                    self.flatComments = Self.buildFlatComments(updatedRoot)
                     self.body = body
                     self.canLoadMore = canLoadMoreValue
                 }

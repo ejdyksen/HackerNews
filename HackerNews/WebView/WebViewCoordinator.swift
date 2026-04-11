@@ -2,7 +2,7 @@ import SwiftUI
 import WebKit
 
 class WebViewCoordinator: NSObject {
-    @ObservedObject var webViewState: WebViewState
+    var webViewState: WebViewState
 
     init(webViewState: WebViewState) {
         self.webViewState = webViewState
