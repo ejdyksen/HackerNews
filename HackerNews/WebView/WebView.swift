@@ -10,7 +10,7 @@ struct WebView: View {
     @Environment(\.openURL) var openURL
 
     var body: some View {
-        WebViewWraper(url: url, webViewState: webViewState)
+        WebViewWrapper(url: url, webViewState: webViewState)
             .navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -45,7 +45,7 @@ struct WebView: View {
                     .sheet(isPresented: $isSharePresented, onDismiss: {
                         print("Dismiss")
                     }, content: {
-                        ActivityView(activityItems: [URL(string: "https://www.apple.com")!])
+                        ActivityView(activityItems: [webViewState.url ?? url])
                     })
 
                 }

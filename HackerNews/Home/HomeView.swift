@@ -1,15 +1,6 @@
 import SwiftUI
 
-enum HomeDestination {
-    case news
-    case ask
-    case newest
-    case show
-    case jobs
-}
-
 struct HomeView: View {
-    @SceneStorage("ContentView.selectedProduct") private var selectedListing: String?
     @State private var path = NavigationPath()
     @StateObject private var authController = AuthController.shared
     @State private var showingLoginSheet = false
@@ -18,19 +9,19 @@ struct HomeView: View {
         NavigationStack(path: $path) {
             List {
                 Section {
-                    NavigationLink(value: HomeDestination.news) {
+                    NavigationLink(value: ListingType.news) {
                         Text("Top stories")
                     }
-                    NavigationLink(value: HomeDestination.newest) {
+                    NavigationLink(value: ListingType.newest) {
                         Text("New Stories")
                     }
-                    NavigationLink(value: HomeDestination.ask) {
+                    NavigationLink(value: ListingType.ask) {
                         Text("Ask HN")
                     }
-                    NavigationLink(value: HomeDestination.show) {
+                    NavigationLink(value: ListingType.show) {
                         Text("Show HN")
                     }
-                    NavigationLink(value: HomeDestination.jobs) {
+                    NavigationLink(value: ListingType.jobs) {
                         Text("Jobs")
                     }
                 }
@@ -55,7 +46,7 @@ struct HomeView: View {
             }
             .navigationTitle("Home")
             .listStyle(.grouped)
-            .navigationDestination(for: HomeDestination.self) { destination in
+            .navigationDestination(for: ListingType.self) { destination in
                 switch destination {
                 case .news:
                     NewsListing()

@@ -20,10 +20,8 @@ struct ItemDetailHeader: View {
 
             Divider()
 
-            if (item.paragraphs.count > 0) {
-                ForEach(item.paragraphs, id: \.self) { paragraph in
-                    Text(paragraph)
-                }
+            if let body = item.body {
+                Text(body)
 
                 Divider()
             }

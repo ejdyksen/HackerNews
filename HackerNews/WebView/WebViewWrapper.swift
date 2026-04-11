@@ -1,7 +1,7 @@
 import SwiftUI
 import WebKit
 
-struct WebViewWraper : UIViewRepresentable {
+struct WebViewWrapper: UIViewRepresentable {
     let url: URL
 
     @ObservedObject var webViewState: WebViewState
@@ -17,7 +17,7 @@ struct WebViewWraper : UIViewRepresentable {
         return webview
     }
 
-    func updateUIView(_ webView: WKWebView, context: UIViewRepresentableContext<WebViewWraper>) {
+    func updateUIView(_ webView: WKWebView, context: UIViewRepresentableContext<WebViewWrapper>) {
         if webView.canGoBack, webViewState.requestGoBack {
             webView.goBack()
             webViewState.requestGoBack = false

@@ -1,4 +1,4 @@
-import UIKit
+import Foundation
 import Fuzi
 
 enum RequestError: Error {
@@ -101,46 +101,4 @@ class RequestController {
         }
     }
 
-    private func showToast(message: String) {
-        print("Toast: \(message)")
-        DispatchQueue.main.async {
-            guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                  let window = windowScene.windows.first else { return }
-
-            let toastContainer = UIView()
-            toastContainer.backgroundColor = .black.withAlphaComponent(0.7)
-            toastContainer.layer.cornerRadius = 10
-            toastContainer.translatesAutoresizingMaskIntoConstraints = false
-
-            let messageLabel = UILabel()
-            messageLabel.text = message
-            messageLabel.textColor = .white
-            messageLabel.textAlignment = .center
-            messageLabel.numberOfLines = 0
-            messageLabel.translatesAutoresizingMaskIntoConstraints = false
-
-            toastContainer.addSubview(messageLabel)
-            window.addSubview(toastContainer)
-
-            NSLayoutConstraint.activate([
-                messageLabel.leadingAnchor.constraint(equalTo: toastContainer.leadingAnchor, constant: 16),
-                messageLabel.trailingAnchor.constraint(equalTo: toastContainer.trailingAnchor, constant: -16),
-                messageLabel.topAnchor.constraint(equalTo: toastContainer.topAnchor, constant: 8),
-                messageLabel.bottomAnchor.constraint(equalTo: toastContainer.bottomAnchor, constant: -8),
-
-                toastContainer.centerXAnchor.constraint(equalTo: window.centerXAnchor),
-                toastContainer.bottomAnchor.constraint(equalTo: window.safeAreaLayoutGuide.bottomAnchor, constant: -20)
-            ])
-
-            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn, animations: {
-                toastContainer.alpha = 1
-            }) { _ in
-                UIView.animate(withDuration: 0.3, delay: 2, options: .curveEaseOut, animations: {
-                    toastContainer.alpha = 0
-                }) { _ in
-                    toastContainer.removeFromSuperview()
-                }
-            }
-        }
-    }
 }

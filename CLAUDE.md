@@ -11,6 +11,10 @@ iOS client for Hacker News, built with SwiftUI. Scrapes the HN website directly 
 - **Dependency**: [Fuzi](https://github.com/cezheng/Fuzi) 3.1.3 — XPath/CSS HTML parsing
 - **No tests** exist currently
 
+## Active Work
+
+See `TODO.md` for the full feature roadmap. Check it at the start of each session to understand current priorities.
+
 ## Build & Run
 
 Open `HackerNews.xcodeproj` in Xcode and run on simulator or device. No external build tools. SPM packages are managed by Xcode.

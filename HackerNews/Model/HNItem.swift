@@ -1,5 +1,6 @@
 import Foundation
 import Fuzi
+import SwiftUI
 
 class HNItem: ObservableObject, Identifiable {
     let id: Int
@@ -25,7 +26,7 @@ class HNItem: ObservableObject, Identifiable {
     var commentCount: Int
 
     @Published var rootComments: [HNComment] = []
-    @Published var paragraphs: [String] = []
+    @Published var body: AttributedString? = nil
 
     var itemLink: URL {
         return URL(string: "https://news.ycombinator.com/item?id=\(self.id)")!
@@ -129,26 +130,11 @@ class HNItem: ObservableObject, Identifiable {
 
                 let doc = try await RequestController.shared.makeRequest(endpoint: url)
 
-                let paragraphs: [String] = {
-                    var result = [String]()
-                    let itemNode = doc.xpath("//table[@class=\"fatitem\"]//tr[4]")
-
-                    if !itemNode.isEmpty {
-                        for child in itemNode[0].childNodes(ofTypes: [.Element, .Text]) {
-                            var childString = ""
-                            if child.type == .Text {
-                                childString = child.stringValue.trimmingCharacters(in: .whitespacesAndNewlines)
-                            } else if child.type == .Element {
-                                childString = child.stringValue.trimmingCharacters(in: .whitespacesAndNewlines)
-                            } else {
-                                assert(false, "unhandled element type")
-                            }
-                            if (!childString.isEmpty) {
-                                result.append(childString)
-                            }
-                        }
-                    }
-                    return result
+                let body: AttributedString? = {
+                    let itemNodes = doc.xpath("//table[@class=\"fatitem\"]//tr[4]")
+                    guard !itemNodes.isEmpty else { return nil }
+                    let parsed = HNComment.parseText(itemNodes[0])
+                    return parsed.characters.isEmpty ? nil : parsed
                 }()
 
                 let nodeList = doc.css("table.comment-tree tr.athing")
@@ -158,7 +144,7 @@ class HNItem: ObservableObject, Identifiable {
 
                 await MainActor.run {
                     self.rootComments = self.rootComments + newComments
-                    self.paragraphs = paragraphs
+                    self.body = body
                     self.canLoadMore = canLoadMoreValue
                 }
             } catch {

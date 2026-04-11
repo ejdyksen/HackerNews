@@ -76,7 +76,7 @@ class AuthController: ObservableObject {
            let cookieData = result as? Data,
            let cookieValue = String(data: cookieData, encoding: .utf8) {
 
-            let username = cookieValue.split(separator: "&").first.map(String.init) // Extract username
+            let username = cookieValue.components(separatedBy: "&").first.flatMap { $0.isEmpty ? nil : $0 }
 
             let properties: [HTTPCookiePropertyKey: Any] = [
                 .name: "user",

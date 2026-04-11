@@ -6,12 +6,12 @@ struct ActivityView: UIViewControllerRepresentable {
     
     var applicationActivities: [UIActivity]? = nil
 
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) var dismiss
 
     func makeUIViewController(context: UIViewControllerRepresentableContext<ActivityView>) -> UIActivityViewController {
         let controller = UIActivityViewController(activityItems: activityItems, applicationActivities: applicationActivities)
         controller.completionWithItemsHandler = { (activityType, completed, returnedItems, error) in
-            self.presentationMode.wrappedValue.dismiss()
+            self.dismiss()
         }
         return controller
     }
