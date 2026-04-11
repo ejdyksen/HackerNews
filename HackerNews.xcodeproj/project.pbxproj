@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		290B8F662F8AB35E0096C1D6 /* AdaptiveHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 290B8F652F8AB35E0096C1D6 /* AdaptiveHomeView.swift */; };
+		290B8F672F8AB35E0096C1D6 /* AdaptiveHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 290B8F652F8AB35E0096C1D6 /* AdaptiveHomeView.swift */; };
 		291930B32D207EC2008756BB /* AuthController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291930B02D207EC2008756BB /* AuthController.swift */; };
 		291930B42D207EC2008756BB /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291930B12D207EC2008756BB /* LoginView.swift */; };
 		291930B52D207EC2008756BB /* AuthController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291930B02D207EC2008756BB /* AuthController.swift */; };
@@ -48,6 +50,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		290B8F652F8AB35E0096C1D6 /* AdaptiveHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptiveHomeView.swift; sourceTree = "<group>"; };
 		291930B02D207EC2008756BB /* AuthController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthController.swift; sourceTree = "<group>"; };
 		291930B12D207EC2008756BB /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		294AD4462682752E001AE269 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
@@ -127,6 +130,7 @@
 			isa = PBXGroup;
 			children = (
 				29A1B2C32D69010100000001 /* URLHandler.swift */,
+				290B8F652F8AB35E0096C1D6 /* AdaptiveHomeView.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -347,6 +351,7 @@
 				294AD4472682752E001AE269 /* ActivityView.swift in Sources */,
 				29D8F928256B615300E37E1E /* HNListing.swift in Sources */,
 				29FDFB2826608B6E0096CA7D /* WebViewCoordinator.swift in Sources */,
+				290B8F662F8AB35E0096C1D6 /* AdaptiveHomeView.swift in Sources */,
 				29D8F934256B615D00E37E1E /* HNItem.swift in Sources */,
 				29FDFB26266086F80096CA7D /* WebViewState.swift in Sources */,
 				29D8F8F7256B5FB500E37E1E /* HackerNewsApp.swift in Sources */,
@@ -368,6 +373,7 @@
 				29EE31E9265B3E1000CE2569 /* CommentCell.swift in Sources */,
 				291930B32D207EC2008756BB /* AuthController.swift in Sources */,
 				291930B42D207EC2008756BB /* LoginView.swift in Sources */,
+				290B8F672F8AB35E0096C1D6 /* AdaptiveHomeView.swift in Sources */,
 				29D8F8FA256B5FB500E37E1E /* ListingView.swift in Sources */,
 				29D8F911256B610300E37E1E /* ItemDetailView.swift in Sources */,
 				298551D026691EBF00258A8A /* ItemDetailHeader.swift in Sources */,

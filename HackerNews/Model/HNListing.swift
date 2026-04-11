@@ -1,12 +1,32 @@
 import Foundation
 import Fuzi
 
-enum ListingType: String {
+enum ListingType: String, CaseIterable {
     case news
     case ask
     case show
     case newest
     case jobs
+
+    var displayName: String {
+        switch self {
+        case .news: return "Top Stories"
+        case .ask: return "Ask HN"
+        case .show: return "Show HN"
+        case .newest: return "New Stories"
+        case .jobs: return "Jobs"
+        }
+    }
+
+    var iconName: String {
+        switch self {
+        case .news: return "arrow.up.circle"
+        case .ask: return "questionmark.bubble"
+        case .show: return "eye"
+        case .newest: return "clock"
+        case .jobs: return "briefcase"
+        }
+    }
 }
 
 class HNListing: ObservableObject {

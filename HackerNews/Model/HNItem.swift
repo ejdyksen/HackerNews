@@ -2,7 +2,7 @@ import Foundation
 import Fuzi
 import SwiftUI
 
-class HNItem: ObservableObject, Identifiable {
+class HNItem: ObservableObject, Identifiable, Hashable, Equatable {
     let id: Int
     let title: String
     let storyLink: URL
@@ -133,6 +133,9 @@ class HNItem: ObservableObject, Identifiable {
         }
     }
 
+
+    static func == (lhs: HNItem, rhs: HNItem) -> Bool { lhs.id == rhs.id }
+    func hash(into hasher: inout Hasher) { hasher.combine(id) }
 
     func loadMoreContent() {
         Task {
