@@ -40,7 +40,7 @@ HackerNews/
 │   ├── HomeView.swift               iPhone-only: NavigationStack with listing type menu
 │   └── LoginView.swift              Sheet: username/password form
 ├── Listings/
-│   ├── ListingView.swift            List + per-type wrappers (NewsListing, AskListing, …)
+│   ├── ListingView.swift            List parameterized by ListingType (owns its HNListing via @StateObject)
 │   └── ListingItemCell.swift        Row: title + domain, subheading, comment count
 ├── Comments/
 │   ├── ItemDetailView.swift         ScrollView: header + flat LazyVStack comment list

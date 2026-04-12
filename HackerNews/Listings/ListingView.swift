@@ -1,11 +1,14 @@
 import SwiftUI
 
 struct ListingView: View {
-    @ObservedObject var listing: HNListing
-
+    let listingType: ListingType
+    @StateObject private var listing: HNListing
     @State private var showRefresh = false
 
-    let title: String
+    init(listingType: ListingType) {
+        self.listingType = listingType
+        self._listing = StateObject(wrappedValue: HNListing(listingType))
+    }
 
     var body: some View {
         List {
@@ -41,57 +44,17 @@ struct ListingView: View {
             }
         }
         .listStyle(PlainListStyle())
-        .navigationTitle(title)
+        .navigationTitle(listingType.displayName)
         .navigationDestination(for: HNItem.self) { item in
             ItemDetailView(item: item)
         }
     }
 }
 
-struct NewsListing: View {
-    @StateObject var listingDataSource = HNListing(.news)
-
-    var body: some View {
-        ListingView(listing: listingDataSource, title: "Top Stories")
-    }
-}
-
-struct AskListing: View {
-    @StateObject var listingDataSource = HNListing(.ask)
-
-    var body: some View {
-        ListingView(listing: listingDataSource, title: "Ask HN")
-    }
-}
-
-struct ShowListing: View {
-    @StateObject var listingDataSource = HNListing(.show)
-
-    var body: some View {
-        ListingView(listing: listingDataSource, title: "Show HN")
-    }
-}
-
-struct NewListing: View {
-    @StateObject var listingDataSource = HNListing(.newest)
-
-    var body: some View {
-        ListingView(listing: listingDataSource, title: "New Stories")
-    }
-}
-
-struct JobsListing: View {
-    @StateObject var listingDataSource = HNListing(.jobs)
-
-    var body: some View {
-        ListingView(listing: listingDataSource, title: "Jobs")
-    }
-}
-
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationView() {
-            ListingView(listing: HNListing.exampleService(), title: "Top Stories")
+        NavigationStack {
+            ListingView(listingType: .news)
         }
     }
 }

@@ -10,7 +10,7 @@ enum ListingType: String, CaseIterable {
 
     var displayName: String {
         switch self {
-        case .news: return "Top Stories"
+        case .news: return "Top stories"
         case .ask: return "Ask HN"
         case .show: return "Show HN"
         case .newest: return "New Stories"

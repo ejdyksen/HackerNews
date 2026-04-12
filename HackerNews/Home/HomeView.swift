@@ -10,20 +10,10 @@ struct HomeView: View {
         NavigationStack(path: $path) {
             List {
                 Section {
-                    NavigationLink(value: ListingType.news) {
-                        Text("Top stories")
-                    }
-                    NavigationLink(value: ListingType.newest) {
-                        Text("New Stories")
-                    }
-                    NavigationLink(value: ListingType.ask) {
-                        Text("Ask HN")
-                    }
-                    NavigationLink(value: ListingType.show) {
-                        Text("Show HN")
-                    }
-                    NavigationLink(value: ListingType.jobs) {
-                        Text("Jobs")
+                    ForEach(ListingType.allCases, id: \.self) { listingType in
+                        NavigationLink(value: listingType) {
+                            Text(listingType.displayName)
+                        }
                     }
                 }
 
@@ -51,19 +41,8 @@ struct HomeView: View {
                 path.append(HNItem(id: id))
                 appState.deepLinkItemID = nil
             }
-            .navigationDestination(for: ListingType.self) { destination in
-                switch destination {
-                case .news:
-                    NewsListing()
-                case .ask:
-                    AskListing()
-                case .newest:
-                    NewListing()
-                case .show:
-                    ShowListing()
-                case .jobs:
-                    JobsListing()
-                }
+            .navigationDestination(for: ListingType.self) { listingType in
+                ListingView(listingType: listingType)
             }
             .sheet(isPresented: $showingLoginSheet) {
                 LoginView()
