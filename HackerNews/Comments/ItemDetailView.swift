@@ -4,6 +4,7 @@ struct ItemDetailView: View {
     @ObservedObject var item: HNItem
     @State private var collapsedIDs: Set<Int> = []
     @State private var showScrolledTitle = false
+    @State private var scrollPosition = ScrollPosition()
     var onToggleFullScreen: (() -> Void)? = nil
     var isFullScreen: Bool = false
 
@@ -105,19 +106,26 @@ struct ItemDetailView: View {
             }
             ToolbarItem(placement: .principal) {
                 if showScrolledTitle {
-                    VStack(alignment: .leading, spacing: 1) {
-                        Text(truncatedTitle)
-                            .font(.headline)
-                            .foregroundStyle(.primary)
-                        Text("\(item.commentCount) comments")
-                            .font(.caption2)
-                            .foregroundStyle(.secondary)
+                    Button {
+                        withAnimation {
+                            scrollPosition.scrollTo(edge: .top)
+                        }
+                    } label: {
+                        VStack(spacing: 1) {
+                            Text(truncatedTitle)
+                                .font(.headline)
+                                .foregroundStyle(.primary)
+                            Text("\(item.commentCount) comments")
+                                .font(.caption2)
+                                .foregroundStyle(.secondary)
+                        }
                     }
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .buttonStyle(.plain)
                     .transition(.opacity.combined(with: .move(edge: .top)))
                 }
             }
         }
+        .scrollPosition($scrollPosition)
         .refreshable {
             await withCheckedContinuation { continuation in
                 item.loadMoreContent(reload: true) {
