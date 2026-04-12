@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ItemDetailView: View {
     @ObservedObject var item: HNItem
+    @EnvironmentObject private var cache: AppCache
     @State private var collapsedIDs: Set<Int> = []
     @State private var showScrolledTitle = false
     @State private var scrollPosition = ScrollPosition()
@@ -36,61 +37,66 @@ struct ItemDetailView: View {
         return result
     }
 
+    @ViewBuilder
+    private var scrollContent: some View {
+        ItemDetailHeader(item: item)
+            .padding(.horizontal)
+            .onGeometryChange(for: CGFloat.self) { proxy in
+                proxy.frame(in: .scrollView).maxY
+            } action: { maxY in
+                let shouldShow = maxY < 0
+                if shouldShow != showScrolledTitle {
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        showScrolledTitle = shouldShow
+                    }
+                }
+            }
+
+        LazyVStack(spacing: 0) {
+            ForEach(visibleComments) { comment in
+                CommentCell(
+                    comment: comment,
+                    isCollapsed: collapsedIDs.contains(comment.id),
+                    onToggle: {
+                        if collapsedIDs.contains(comment.id) {
+                            collapsedIDs.remove(comment.id)
+                        } else {
+                            collapsedIDs.insert(comment.id)
+                        }
+                    }
+                )
+            }
+        }
+
+        if let error = item.loadError {
+            VStack(spacing: 12) {
+                Text("Failed to load comments")
+                    .foregroundColor(.secondary)
+                Text(error)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                    .multilineTextAlignment(.center)
+                Button("Retry") { item.loadMoreContent() }
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 20)
+        } else if item.canLoadMore {
+            ProgressView()
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 10)
+                .onAppear { item.loadMoreContent() }
+        } else if item.flatComments.isEmpty {
+            Text("No comments yet")
+                .foregroundColor(.secondary)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 20)
+        }
+    }
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
-                ItemDetailHeader(item: item)
-                    .padding(.horizontal)
-                    .onGeometryChange(for: CGFloat.self) { proxy in
-                        proxy.frame(in: .scrollView).maxY
-                    } action: { maxY in
-                        let shouldShow = maxY < 0
-                        if shouldShow != showScrolledTitle {
-                            withAnimation(.easeInOut(duration: 0.2)) {
-                                showScrolledTitle = shouldShow
-                            }
-                        }
-                    }
-
-                LazyVStack(spacing: 0) {
-                    ForEach(visibleComments) { comment in
-                        CommentCell(
-                            comment: comment,
-                            isCollapsed: collapsedIDs.contains(comment.id),
-                            onToggle: {
-                                if collapsedIDs.contains(comment.id) {
-                                    collapsedIDs.remove(comment.id)
-                                } else {
-                                    collapsedIDs.insert(comment.id)
-                                }
-                            }
-                        )
-                    }
-                }
-
-                if let error = item.loadError {
-                    VStack(spacing: 12) {
-                        Text("Failed to load comments")
-                            .foregroundColor(.secondary)
-                        Text(error)
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                            .multilineTextAlignment(.center)
-                        Button("Retry") { item.loadMoreContent() }
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 20)
-                } else if item.canLoadMore {
-                    ProgressView()
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 10)
-                        .onAppear { item.loadMoreContent() }
-                } else if item.flatComments.isEmpty {
-                    Text("No comments yet")
-                        .foregroundColor(.secondary)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 20)
-                }
+                scrollContent
             }
         }
         .navigationBarTitleDisplayMode(.inline)
@@ -134,12 +140,16 @@ struct ItemDetailView: View {
         }
         .scrollPosition($scrollPosition)
         .refreshable {
-            await withCheckedContinuation { continuation in
-                item.loadMoreContent(reload: true) {
-                    continuation.resume()
-                }
-            }
+            await item.loadMoreContent(reload: true)
         }
+        .onAppear {
+            cache.rememberItem(item)
+            item.refreshIfOlderThan(Freshness.navigationRefreshThreshold)
+        }
+        .onForegroundActivation {
+            item.refreshIfStale()
+        }
+        .lastUpdatedToast(item.lastUpdated, source: "item/\(item.id)")
     }
 }
 
@@ -148,6 +158,7 @@ struct ItemDetailView_Previews: PreviewProvider {
         Group {
             NavigationView {
                 ItemDetailView(item: HNItem.itemWithComments())
+                    .environmentObject(AppCache())
             }
         }
     }

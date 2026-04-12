@@ -2,13 +2,20 @@ import SwiftUI
 
 struct ListingView: View {
     let listingType: ListingType
-    @StateObject private var listing: HNListing
-    @State private var showRefresh = false
+    @EnvironmentObject private var cache: AppCache
 
-    init(listingType: ListingType) {
-        self.listingType = listingType
-        self._listing = StateObject(wrappedValue: HNListing(listingType))
+    var body: some View {
+        ListingViewBody(
+            listingType: listingType,
+            listing: cache.listing(for: listingType)
+        )
     }
+}
+
+private struct ListingViewBody: View {
+    let listingType: ListingType
+    @ObservedObject var listing: HNListing
+    @State private var showRefresh = false
 
     var body: some View {
         List {
@@ -23,12 +30,15 @@ struct ListingView: View {
         }
         .refreshable {
             showRefresh = true
-            listing.loadMoreContent(reload: true) {
-                showRefresh = false
-            }
+            await listing.loadMoreContent(reload: true)
+            showRefresh = false
         }
         .task {
             listing.loadInitialContent()
+            listing.refreshIfStale()
+        }
+        .onForegroundActivation {
+            listing.refreshIfStale()
         }
         .overlay {
             if listing.isLoading && listing.items.isEmpty {
@@ -54,9 +64,7 @@ struct ListingView: View {
                 }
             }
         }
-        .navigationDestination(for: HNItem.self) { item in
-            ItemDetailView(item: item)
-        }
+        .lastUpdatedToast(listing.lastUpdated, source: "listing/\(listingType)")
     }
 }
 
@@ -64,6 +72,7 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
             ListingView(listingType: .news)
+                .environmentObject(AppCache())
         }
     }
 }

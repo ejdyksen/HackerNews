@@ -36,11 +36,14 @@ enum ListingType: String, CaseIterable {
     @Published var isLoading = false
     @Published var hasMoreContent = false
     @Published var loadError: String?
+    @Published private(set) var lastUpdated: Date?
 
     private var nextPageUrl: String?
+    weak var cache: AppCache?
 
-    init(_ listingType: ListingType) {
+    init(_ listingType: ListingType, cache: AppCache? = nil) {
         self.listingType = listingType
+        self.cache = cache
     }
 
     func loadInitialContent() {
@@ -49,9 +52,31 @@ enum ListingType: String, CaseIterable {
         }
     }
 
+    func staleRefresh() {
+        guard !isLoading else { return }
+        items = []
+        nextPageUrl = nil
+        hasMoreContent = false
+        loadMoreContent(reload: true)
+    }
+
+    func refreshIfStale() {
+        if case .stale = Freshness(for: lastUpdated) {
+            debugLog("listing/\(listingType)", "stale -> refresh")
+            staleRefresh()
+        }
+    }
+
+    func loadMoreContent(reload: Bool = false) async {
+        await withCheckedContinuation { continuation in
+            loadMoreContent(reload: reload) { continuation.resume() }
+        }
+    }
+
     func loadMoreContent(reload: Bool = false, completion: (() -> Void)? = nil) {
         guard !isLoading else { return }
 
+        let isFirstPageFetch = reload || items.isEmpty
         isLoading = true
         loadError = nil
         if reload {
@@ -71,11 +96,16 @@ enum ListingType: String, CaseIterable {
                 } else {
                     self.items.append(contentsOf: newItems)
                 }
+                if isFirstPageFetch {
+                    self.lastUpdated = .now
+                    debugLog("listing/\(self.listingType)", "loaded \(self.items.count) items\(reload ? " (reload)" : "")")
+                }
                 self.isLoading = false
                 completion?()
             } catch {
                 self.isLoading = false
                 self.loadError = error.localizedDescription
+                debugLog("listing/\(self.listingType)", "load error: \(error.localizedDescription)")
                 completion?()
             }
         }
@@ -86,8 +116,9 @@ enum ListingType: String, CaseIterable {
         var newItems: [HNItem] = []
 
         for node in itemList {
-            if let item = HNItem(withXmlNode: node) {
-                newItems.append(item)
+            if let parsed = HNItem(withXmlNode: node) {
+                let canonical = cache?.canonicalize(parsed) ?? parsed
+                newItems.append(canonical)
             }
         }
 

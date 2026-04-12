@@ -10,12 +10,14 @@ import SwiftUI
 @main
 struct HackerNewsApp: App {
     @StateObject private var appState = AppState()
+    @StateObject private var cache = AppCache()
 
     var body: some Scene {
         WindowGroup {
             AdaptiveHomeView()
                 .handleURLs()
                 .environmentObject(appState)
+                .environmentObject(cache)
         }
     }
 }

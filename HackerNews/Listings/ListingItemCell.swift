@@ -23,9 +23,10 @@ struct ListingItemCellContent: View {
             .font(.headline)
             .foregroundStyle(.primary)
         guard !item.domain.isEmpty else { return title }
-        return title + Text(" (\(item.domain))")
+        let domain = Text(" (\(item.domain))")
             .font(.caption)
             .foregroundStyle(.secondary)
+        return Text("\(title)\(domain)")
     }
 
     private var metadata: String {

@@ -22,6 +22,7 @@ import SwiftUI
     @Published var rootComments: [HNComment] = []
     @Published var flatComments: [HNComment] = []
     @Published var body: AttributedString? = nil
+    @Published private(set) var lastUpdated: Date?
 
     @MainActor private static func buildFlatComments(_ root: [HNComment]) -> [HNComment] {
         var result: [HNComment] = []
@@ -145,6 +146,39 @@ import SwiftUI
     nonisolated static func == (lhs: HNItem, rhs: HNItem) -> Bool { lhs.id == rhs.id }
     nonisolated func hash(into hasher: inout Hasher) { hasher.combine(id) }
 
+    func updateMetadata(from other: HNItem) {
+        self.objectWillChange.send()
+        self.title = other.title
+        self.storyLink = other.storyLink
+        self.domain = other.domain
+        self.age = other.age
+        if let author = other.author { self.author = author }
+        if let score = other.score { self.score = score }
+        if other.commentCount > 0 { self.commentCount = other.commentCount }
+    }
+
+    func refreshIfStale() {
+        if case .stale = Freshness(for: lastUpdated) {
+            debugLog("item/\(id)", "stale -> refresh")
+            loadMoreContent(reload: true)
+        }
+    }
+
+    func refreshIfOlderThan(_ threshold: TimeInterval) {
+        guard let lastUpdated else { return }
+        let age = Date.now.timeIntervalSince(lastUpdated)
+        if age > threshold {
+            debugLog("item/\(id)", "nav refresh: age=\(Int(age))s > \(Int(threshold))s")
+            loadMoreContent(reload: true)
+        }
+    }
+
+    func loadMoreContent(reload: Bool = false) async {
+        await withCheckedContinuation { continuation in
+            loadMoreContent(reload: reload) { continuation.resume() }
+        }
+    }
+
     func loadMoreContent(reload: Bool = false, completion: (() -> Void)? = nil) {
         if reload {
             currentPage = 1
@@ -188,6 +222,10 @@ import SwiftUI
                 self.flatComments = Self.buildFlatComments(updatedRoot)
                 self.body = parsedBody
                 self.canLoadMore = canLoadMoreValue
+                if page == 1 {
+                    self.lastUpdated = .now
+                    debugLog("item/\(self.id)", "loaded \(self.flatComments.count) comments\(reload ? " (reload)" : "")")
+                }
                 self.currentPage = page + 1
                 self.isLoading = false
                 self.loadError = nil
@@ -195,6 +233,7 @@ import SwiftUI
             } catch {
                 self.isLoading = false
                 self.loadError = error.localizedDescription
+                debugLog("item/\(self.id)", "load error: \(error.localizedDescription)")
                 completion?()
             }
         }

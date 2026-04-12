@@ -3,6 +3,7 @@ import SwiftUI
 struct AdaptiveHomeView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @EnvironmentObject private var appState: AppState
+    @EnvironmentObject private var cache: AppCache
     @State private var selectedListing: ListingType? = .news
     @State private var selectedItem: HNItem?
     @State private var columnVisibility: NavigationSplitViewVisibility = .all
@@ -17,7 +18,6 @@ struct AdaptiveHomeView: View {
                 sidebarView
             } content: {
                 ListingContentColumn(listingType: currentListing, selectedItem: $selectedItem)
-                    .id(currentListing)
             } detail: {
                 NavigationStack {
                     if let item = selectedItem {
@@ -46,7 +46,13 @@ struct AdaptiveHomeView: View {
             }
             .onChange(of: appState.deepLinkItemID) { _, id in
                 guard let id else { return }
-                selectedItem = HNItem(id: id)
+                if let cached = cache.item(for: id) {
+                    selectedItem = cached
+                } else {
+                    let stub = HNItem(id: id)
+                    cache.rememberItem(stub)
+                    selectedItem = stub
+                }
                 columnVisibility = .detailOnly
                 appState.deepLinkItemID = nil
             }
@@ -91,13 +97,21 @@ struct AdaptiveHomeView: View {
 struct ListingContentColumn: View {
     let listingType: ListingType
     @Binding var selectedItem: HNItem?
-    @StateObject private var listing: HNListing
+    @EnvironmentObject private var cache: AppCache
 
-    init(listingType: ListingType, selectedItem: Binding<HNItem?>) {
-        self.listingType = listingType
-        self._selectedItem = selectedItem
-        self._listing = StateObject(wrappedValue: HNListing(listingType))
+    var body: some View {
+        ListingContentColumnBody(
+            listingType: listingType,
+            listing: cache.listing(for: listingType),
+            selectedItem: $selectedItem
+        )
     }
+}
+
+private struct ListingContentColumnBody: View {
+    let listingType: ListingType
+    @ObservedObject var listing: HNListing
+    @Binding var selectedItem: HNItem?
 
     var body: some View {
         List {
@@ -121,13 +135,15 @@ struct ListingContentColumn: View {
             }
         }
         .navigationTitle(listingType.displayName)
-        .task { listing.loadInitialContent() }
+        .task {
+            listing.loadInitialContent()
+            listing.refreshIfStale()
+        }
+        .onForegroundActivation {
+            listing.refreshIfStale()
+        }
         .refreshable {
-            await withCheckedContinuation { continuation in
-                listing.loadMoreContent(reload: true) {
-                    continuation.resume()
-                }
-            }
+            await listing.loadMoreContent(reload: true)
         }
         .overlay {
             if listing.isLoading && listing.items.isEmpty {
@@ -142,5 +158,6 @@ struct ListingContentColumn: View {
                 }
             }
         }
+        .lastUpdatedToast(listing.lastUpdated, source: "column/\(listingType)")
     }
 }

@@ -2,6 +2,7 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject private var appState: AppState
+    @EnvironmentObject private var cache: AppCache
     @State private var path = NavigationPath()
     @StateObject private var authController = AuthController.shared
     @State private var showingLoginSheet = false
@@ -38,7 +39,15 @@ struct HomeView: View {
             }
             .onChange(of: appState.deepLinkItemID) { _, id in
                 guard let id else { return }
-                path.append(HNItem(id: id))
+                let target: HNItem
+                if let cached = cache.item(for: id) {
+                    target = cached
+                } else {
+                    let stub = HNItem(id: id)
+                    cache.rememberItem(stub)
+                    target = stub
+                }
+                path.append(target)
                 appState.deepLinkItemID = nil
             }
             .navigationDestination(for: ListingType.self) { listingType in
@@ -54,5 +63,7 @@ struct HomeView: View {
 struct Home_Previews: PreviewProvider {
     static var previews: some View {
         HomeView()
+            .environmentObject(AppState())
+            .environmentObject(AppCache())
     }
 }
