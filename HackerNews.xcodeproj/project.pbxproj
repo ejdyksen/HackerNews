@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		290B8F662F8AB35E0096C1D6 /* AdaptiveHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 290B8F652F8AB35E0096C1D6 /* AdaptiveHomeView.swift */; };
 		290B8F672F8AB35E0096C1D6 /* AdaptiveHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 290B8F652F8AB35E0096C1D6 /* AdaptiveHomeView.swift */; };
-		290B8F692F8B37D70096C1D6 /* SafariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 290B8F682F8B37D70096C1D6 /* SafariView.swift */; };
-		290B8F6A2F8B37D70096C1D6 /* SafariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 290B8F682F8B37D70096C1D6 /* SafariView.swift */; };
 		291930B32D207EC2008756BB /* AuthController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291930B02D207EC2008756BB /* AuthController.swift */; };
 		291930B42D207EC2008756BB /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291930B12D207EC2008756BB /* LoginView.swift */; };
 		291930B52D207EC2008756BB /* AuthController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291930B02D207EC2008756BB /* AuthController.swift */; };
@@ -48,7 +46,6 @@
 
 /* Begin PBXFileReference section */
 		290B8F652F8AB35E0096C1D6 /* AdaptiveHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptiveHomeView.swift; sourceTree = "<group>"; };
-		290B8F682F8B37D70096C1D6 /* SafariView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariView.swift; sourceTree = "<group>"; };
 		291930B02D207EC2008756BB /* AuthController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthController.swift; sourceTree = "<group>"; };
 		291930B12D207EC2008756BB /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		298551CE26691EBF00258A8A /* ItemDetailHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailHeader.swift; sourceTree = "<group>"; };
@@ -130,7 +127,6 @@
 		29D1D903265DABFB005D934A /* WebView */ = {
 			isa = PBXGroup;
 			children = (
-				290B8F682F8B37D70096C1D6 /* SafariView.swift */,
 			);
 			path = WebView;
 			sourceTree = "<group>";
@@ -338,7 +334,6 @@
 				29D8F910256B610300E37E1E /* ItemDetailView.swift in Sources */,
 				29D8F928256B615300E37E1E /* HNListing.swift in Sources */,
 				290B8F662F8AB35E0096C1D6 /* AdaptiveHomeView.swift in Sources */,
-				290B8F692F8B37D70096C1D6 /* SafariView.swift in Sources */,
 				29D8F934256B615D00E37E1E /* HNItem.swift in Sources */,
 				29D8F8F7256B5FB500E37E1E /* HackerNewsApp.swift in Sources */,
 				29AF7F552D20D76200A36931 /* RequestController.swift in Sources */,
@@ -362,7 +357,6 @@
 				29D8F8FA256B5FB500E37E1E /* ListingView.swift in Sources */,
 				29D8F911256B610300E37E1E /* ItemDetailView.swift in Sources */,
 				298551D026691EBF00258A8A /* ItemDetailHeader.swift in Sources */,
-				290B8F6A2F8B37D70096C1D6 /* SafariView.swift in Sources */,
 				29D8F929256B615300E37E1E /* HNListing.swift in Sources */,
 				29D8F935256B615D00E37E1E /* HNItem.swift in Sources */,
 				29D8F8F8256B5FB500E37E1E /* HackerNewsApp.swift in Sources */,
