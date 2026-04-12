@@ -5,25 +5,29 @@ struct ListingItemCellContent: View {
 
     var body: some View {
         HStack {
-            VStack(alignment: .leading, spacing: 0) {
-                Text("\(item.title)\(Text(item.domainString).font(.caption).foregroundColor(.secondary).baselineOffset(1))")
+            VStack(alignment: .leading, spacing: 2) {
+                Text(item.title)
                     .font(.headline)
                     .foregroundColor(.primary)
+                    .lineLimit(2)
+
+                if !item.domain.isEmpty {
+                    Text(item.domain)
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
 
                 Text(item.subheading)
-                    .font(.footnote)
+                    .font(.subheadline)
                     .foregroundColor(.secondary)
                     .lineLimit(1)
-                    .padding(.top, 4)
-
-            }.padding(.vertical, 4)
+            }
 
             Spacer()
 
             Text(String(item.commentCount))
                 .font(.subheadline)
                 .foregroundColor(.secondary)
-                .padding(.leading)
         }
     }
 }

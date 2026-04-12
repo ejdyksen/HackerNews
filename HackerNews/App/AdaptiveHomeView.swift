@@ -115,16 +115,12 @@ struct ListingContentColumn: View {
                 )
             }
             if listing.hasMoreContent {
-                HStack {
-                    Spacer()
-                    ProgressView()
-                    Spacer()
-                }
-                .onAppear { listing.loadMoreContent() }
+                ProgressView()
+                    .frame(maxWidth: .infinity)
+                    .onAppear { listing.loadMoreContent() }
             }
         }
         .navigationTitle(listingType.displayName)
-        .navigationBarTitleDisplayMode(.inline)
         .task { listing.loadInitialContent() }
         .refreshable {
             await withCheckedContinuation { continuation in

@@ -29,6 +29,7 @@ Reading experience comes first. Participation features come after the app is a g
 - [x] "No comments yet" empty state in `ItemDetailView`
 - [x] Retry button on failed loads
 - [x] Handle the case where login POST succeeds but no `user` cookie is set (e.g. wrong password with no clear feedback path)
+- [ ] **Refresh failure indicator** — when pull-to-refresh fails with items already loaded, the error is currently silent. Add a toast or subtle nav-bar indicator (Mail-style) so the user knows why nothing changed.
 
 ---
 

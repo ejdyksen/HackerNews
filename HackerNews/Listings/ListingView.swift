@@ -12,31 +12,10 @@ struct ListingView: View {
             ForEach(listing.items) { item in
                 ListingItemCell(item: item)
             }
-            if (!showRefresh) {
-                if listing.items.isEmpty && listing.isLoading {
-                    HStack(alignment: .center, spacing: 10) {
-                        ProgressView()
-                        Text("Loading").foregroundColor(.secondary)
-                    }
-                } else if listing.items.isEmpty, let error = listing.loadError {
-                    VStack(spacing: 12) {
-                        Text("Failed to load")
-                            .foregroundColor(.secondary)
-                        Button("Retry") {
-                            listing.loadMoreContent(reload: true)
-                        }
-                    }
+            if !showRefresh, listing.hasMoreContent {
+                ProgressView()
                     .frame(maxWidth: .infinity)
-                    .padding(.vertical, 20)
-                } else if listing.hasMoreContent {
-                    HStack(alignment: .center, spacing: 10) {
-                        ProgressView()
-                        Text("Loading more...").foregroundColor(.secondary)
-                    }
-                    .onAppear {
-                        listing.loadMoreContent()
-                    }
-                }
+                    .onAppear { listing.loadMoreContent() }
             }
         }
         .refreshable {
@@ -48,22 +27,24 @@ struct ListingView: View {
         .task {
             listing.loadInitialContent()
         }
-
+        .overlay {
+            if listing.isLoading && listing.items.isEmpty {
+                ProgressView()
+            } else if let error = listing.loadError, listing.items.isEmpty {
+                ContentUnavailableView {
+                    Label("Failed to Load", systemImage: "exclamationmark.triangle")
+                } description: {
+                    Text(error)
+                } actions: {
+                    Button("Retry") { listing.loadMoreContent(reload: true) }
+                }
+            }
+        }
         .listStyle(PlainListStyle())
-        .navigationTitle(Text(title))
-        .navigationBarTitleDisplayMode(.inline)
+        .navigationTitle(title)
         .navigationDestination(for: HNItem.self) { item in
             ItemDetailView(item: item)
         }
-        .navigationBarItems(trailing:
-                HStack {
-                    Button {
-                        listing.loadMoreContent(reload: true)
-                    } label: {
-                        Image(systemName: "arrow.clockwise").frame(width: 44, height: 44)
-                    }
-                }
-        )
     }
 }
 

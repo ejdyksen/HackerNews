@@ -11,7 +11,6 @@ struct ItemDetailHeader: View {
                 Text(item.title)
                     .font(.title2)
                     .foregroundColor(.primary)
-                    .padding(.top, 12)
                     .multilineTextAlignment(.leading)
             }
             .buttonStyle(.plain)

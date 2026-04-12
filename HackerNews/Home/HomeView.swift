@@ -29,11 +29,7 @@ struct HomeView: View {
 
                 Section {
                     if authController.isLoggedIn {
-                        HStack {
-                            Text(authController.username ?? "User")
-                                .font(.subheadline)
-                            Spacer()
-                        }
+                        Text(authController.username ?? "User")
                         Button("Logout") {
                             authController.logout()
                         }

@@ -30,7 +30,7 @@ struct CommentCell: View {
                         Text(comment.author)
                             .font(.headline)
                             .foregroundColor(.accentColor)
-                        Text(isCollapsed ? String(comment.content.characters.prefix(50)) : comment.age)
+                        Text(comment.age)
                             .font(.subheadline)
                             .foregroundColor(.secondary)
                     }
@@ -40,16 +40,11 @@ struct CommentCell: View {
                     if !isCollapsed {
                         Text(comment.content)
                             .padding(.leading, CGFloat(comment.indentLevel * 12))
-                            .transition(.opacity.combined(with: .move(edge: .top)))
+                            .transition(.opacity)
                     }
                 }
                 .padding(.vertical, 8)
                 .padding(.horizontal, 16)
-                .background(
-                    Rectangle()
-                        .fill(Color(UIColor.systemBackground))
-                        .shadow(color: Color.black.opacity(0.1), radius: 1, x: 0, y: 1)
-                )
             }
             .buttonStyle(PlainButtonStyle())
 
@@ -76,8 +71,6 @@ struct CommentCell: View {
 
             Divider()
         }
-        .padding(.horizontal, 1)
-        .clipped()
     }
 }
 

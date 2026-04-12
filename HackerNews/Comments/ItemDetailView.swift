@@ -61,13 +61,10 @@ struct ItemDetailView: View {
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 20)
                 } else if item.canLoadMore {
-                    HStack(alignment: .center, spacing: 10) {
-                        ProgressView()
-                        Text("Loading").foregroundColor(.secondary)
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 10)
-                    .onAppear { item.loadMoreContent() }
+                    ProgressView()
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 10)
+                        .onAppear { item.loadMoreContent() }
                 } else if item.flatComments.isEmpty {
                     Text("No comments yet")
                         .foregroundColor(.secondary)
