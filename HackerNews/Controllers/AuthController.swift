@@ -1,6 +1,5 @@
 import Foundation
 import Security
-import Fuzi
 
 class AuthController: ObservableObject {
     @Published var isLoggedIn = false

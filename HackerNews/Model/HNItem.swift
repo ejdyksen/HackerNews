@@ -11,14 +11,6 @@ import SwiftUI
     private var currentPage = 1
     var canLoadMore = true
 
-    var domainString: String {
-        if (self.domain == "") {
-            return ""
-        } else {
-            return "  (\(self.domain))"
-        }
-    }
-
     var age: String
     var author: String?
 

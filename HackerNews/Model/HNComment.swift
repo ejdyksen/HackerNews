@@ -19,9 +19,7 @@ import Combine
     let content: AttributedString
     var children: [HNComment] = []
     private var upvoteAuth: String?
-    private var upvoteEndpoint: String?
     private var downvoteAuth: String?
-    private var downvoteEndpoint: String?
     @Published var isUpvoted: Bool = false
     @Published var isDownvoted: Bool = false
     
@@ -36,11 +34,9 @@ import Combine
         self.content = content
     }
     
-    func setVoteAuth(upvoteAuth: String?, upvoteEndpoint: String?, downvoteAuth: String?, downvoteEndpoint: String?) {
+    func setVoteAuth(upvoteAuth: String?, downvoteAuth: String?) {
         self.upvoteAuth = upvoteAuth
-        self.upvoteEndpoint = upvoteEndpoint
         self.downvoteAuth = downvoteAuth
-        self.downvoteEndpoint = downvoteEndpoint
     }
 
     nonisolated static func parseText(_ node: XMLElement) -> AttributedString {
@@ -126,7 +122,7 @@ import Combine
             }
 
             let comment = HNComment(id: id, author: author, age: age, indentLevel: indentLevel, content: content)
-            comment.setVoteAuth(upvoteAuth: upvoteAuth, upvoteEndpoint: nil, downvoteAuth: downvoteAuth, downvoteEndpoint: nil)
+            comment.setVoteAuth(upvoteAuth: upvoteAuth, downvoteAuth: downvoteAuth)
 
             if indentLevel == 0 {
                 rootComments.append(comment)

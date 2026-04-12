@@ -10,27 +10,6 @@ var itemOne = HNItem(id: 123,
                    score: 123,
                    commentCount: 123)
 
-
-
-var itemTwo = HNItem(id: 456,
-                   title: "This is also a story",
-                   storyLink: URL(string: "https://www.example.com")!,
-                   domain: "example.com",
-                   age: "3 hours ago",
-                   author: "ejdyksen",
-                   score: 123,
-                   commentCount: 555)
-
-let sampleItems = [itemOne, itemTwo, itemOne, itemTwo, itemOne, itemTwo, itemOne, itemTwo]
-
-extension HNListing {
-    static func exampleService() -> HNListing {
-        let service = HNListing(.news)
-        service.items = sampleItems
-        return service
-    }
-}
-
 // Helper function to create AttributedString from HTML content
 private func createCommentContent(_ html: String) -> AttributedString {
     let doc = try! HTMLDocument(string: html)

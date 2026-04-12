@@ -198,7 +198,6 @@ Text("\(item.title)\(Text(item.domainString).font(.caption)...)")
 ## Preview Data
 
 `PreviewData.swift` provides:
-- `itemOne`, `itemTwo`, `sampleItems` — static `HNItem` instances
-- `HNListing.exampleService()` — pre-populated listing
+- `itemOne` — a sample `HNItem`
 - `HNItem.itemWithComments()` — item with a 3-comment thread (dang → tptacek → patio11)
 - `createCommentContent(_:)` — parses HTML strings into `AttributedString` for preview fixtures
