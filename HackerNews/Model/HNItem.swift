@@ -84,8 +84,14 @@ class HNItem: ObservableObject, Identifiable, Hashable, Equatable {
         self.id = id
 
         // Link and title, which are required
-        guard let href = storyLinkNode.attributes["href"], let storyLink = URL(string: href) else {
-            return nil
+        guard let href = storyLinkNode.attributes["href"] else { return nil }
+        let storyLink: URL
+        if href.hasPrefix("http://") || href.hasPrefix("https://") {
+            guard let url = URL(string: href) else { return nil }
+            storyLink = url
+        } else {
+            guard let url = URL(string: "https://news.ycombinator.com/\(href)") else { return nil }
+            storyLink = url
         }
         self.storyLink = storyLink
         self.title = storyLinkNode.stringValue
@@ -121,13 +127,9 @@ class HNItem: ObservableObject, Identifiable, Hashable, Equatable {
             if commentString == "discuss" {
                 self.commentCount = 0
             } else {
-                // Parse "N comments" format, handling &nbsp;
-                let components = commentString.components(separatedBy: .whitespaces)
-                if let first = components.first, let count = Int(first) {
-                    self.commentCount = count
-                } else {
-                    self.commentCount = 0
-                }
+                // Parse "N comments" — use prefix scan to handle &nbsp; between number and word
+                let digits = commentString.prefix(while: { $0.isNumber })
+                self.commentCount = digits.isEmpty ? 0 : (Int(digits) ?? 0)
             }
         } else {
             self.commentCount = 0
@@ -146,12 +148,9 @@ class HNItem: ObservableObject, Identifiable, Hashable, Equatable {
 
                 let doc = try await RequestController.shared.makeRequest(endpoint: url)
 
-                let body: AttributedString? = {
-                    let itemNodes = doc.xpath("//table[@class=\"fatitem\"]//tr[4]")
-                    guard !itemNodes.isEmpty else { return nil }
-                    let parsed = HNComment.parseText(itemNodes[0])
-                    return parsed.characters.isEmpty ? nil : parsed
-                }()
+                let body: AttributedString? = doc.css("table.fatitem .commtext").first
+                    .map { HNComment.parseText($0) }
+                    .flatMap { $0.characters.isEmpty ? nil : $0 }
 
                 let nodeList = doc.css("table.comment-tree tr.athing")
                 let newComments = HNComment.createCommentTree(nodes: nodeList)

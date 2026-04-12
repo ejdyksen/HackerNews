@@ -97,12 +97,10 @@ class HNListing: ObservableObject {
     }
 
     func parseMoreLink(doc: HTMLDocument) -> String? {
-        // Find the last <tr> in the table that contains the "More" link
-        if let moreLink = doc.css("a").first(where: { $0.stringValue.trimmingCharacters(in: .whitespaces) == "More" }) {
-            if let href = moreLink["href"] {
-                return "https://news.ycombinator.com/\(href)"
-            }
+        guard let moreLink = doc.css("a.morelink").first, let href = moreLink["href"] else {
+            return nil
         }
-        return nil
+        let baseURL = URL(string: "https://news.ycombinator.com/\(self.listingType)")!
+        return URL(string: href, relativeTo: baseURL)?.absoluteString
     }
 }

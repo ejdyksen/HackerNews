@@ -105,7 +105,7 @@ class HNComment: Identifiable, ObservableObject {
             // Get other comment metadata
             let author = node.firstChild(css: ".comhead .hnuser")?.stringValue ?? ""
             let age = node.firstChild(css: ".comhead .age")?.stringValue ?? ""
-            let indentLevel = (node.firstChild(css: ".ind img")?["width"].flatMap(Int.init) ?? 0) / 40
+            let indentLevel = node.firstChild(css: ".ind")?["indent"].flatMap(Int.init) ?? 0
             
             // Extract auth tokens from upvote/downvote links if they exist
             var upvoteAuth: String? = nil
