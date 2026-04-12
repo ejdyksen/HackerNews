@@ -7,13 +7,7 @@ struct LastUpdatedToast: View {
     @State private var dragOffset: CGFloat = 0
 
     private var agoText: String {
-        let minutes = Int(now.timeIntervalSince(lastUpdated) / 60)
-        if minutes < 1 { return "Updated just now" }
-        if minutes == 1 { return "Updated 1 minute ago" }
-        if minutes < 60 { return "Updated \(minutes) minutes ago" }
-        let hours = minutes / 60
-        if hours == 1 { return "Updated 1 hour ago" }
-        return "Updated \(hours) hours ago"
+        "Updated \(relativeTimeString(from: lastUpdated, now: now))"
     }
 
     var body: some View {

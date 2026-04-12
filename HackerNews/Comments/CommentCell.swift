@@ -30,7 +30,7 @@ struct CommentCell: View {
                         Text(comment.author)
                             .font(.headline)
                             .foregroundColor(.accentColor)
-                        Text(comment.age)
+                        Text(relativeTimeString(from: comment.age))
                             .font(.subheadline)
                             .foregroundColor(.secondary)
                     }

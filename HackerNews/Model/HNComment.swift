@@ -14,7 +14,7 @@ import Combine
 @MainActor class HNComment: Identifiable, ObservableObject {
     let id: Int
     let author: String
-    let age: String
+    let age: Date
     let indentLevel: Int
     let content: AttributedString
     var children: [HNComment] = []
@@ -22,11 +22,11 @@ import Combine
     private var downvoteAuth: String?
     @Published var isUpvoted: Bool = false
     @Published var isDownvoted: Bool = false
-    
+
     var canUpvote: Bool { upvoteAuth != nil }
     var canDownvote: Bool { downvoteAuth != nil }
 
-    nonisolated init(id: Int, author: String, age: String, indentLevel: Int, content: AttributedString) {
+    nonisolated init(id: Int, author: String, age: Date, indentLevel: Int, content: AttributedString) {
         self.id = id
         self.author = author
         self.age = age
@@ -100,7 +100,10 @@ import Combine
 
             // Get other comment metadata
             let author = node.firstChild(css: ".comhead .hnuser")?.stringValue ?? ""
-            let age = node.firstChild(css: ".comhead .age")?.stringValue ?? ""
+            guard let ageNode = node.firstChild(css: ".comhead .age"),
+                  let age = hnDate(fromAge: ageNode) else {
+                continue
+            }
             let indentLevel = node.firstChild(css: ".ind")?["indent"].flatMap(Int.init) ?? 0
             
             // Extract auth tokens from upvote/downvote links if they exist

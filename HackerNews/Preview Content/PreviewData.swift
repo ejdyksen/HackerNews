@@ -5,7 +5,7 @@ var itemOne = HNItem(id: 123,
                    title: "This is a story with a particularly long title that I built in one day",
                    storyLink: URL(string: "https://www.example.com")!,
                    domain: "example.com",
-                   age: "2 hours ago",
+                   age: Date().addingTimeInterval(-2 * 60 * 60),
                    author: "ejdyksen",
                    score: 123,
                    commentCount: 123)
@@ -20,7 +20,7 @@ private func createCommentContent(_ html: String) -> AttributedString {
 let comment1 = HNComment(
     id: 1,
     author: "dang",
-    age: "1 hour ago",
+    age: Date().addingTimeInterval(-60 * 60),
     indentLevel: 0,
     content: createCommentContent("""
         This is a thoughtful comment about programming languages and their trade-offs.
@@ -44,7 +44,7 @@ let comment1 = HNComment(
 var comment2 = HNComment(
     id: 2,
     author: "tptacek",
-    age: "45 minutes ago",
+    age: Date().addingTimeInterval(-45 * 60),
     indentLevel: 1,
     content: createCommentContent("""
         *Interesting analysis!* I particularly agree with your point about tooling.
@@ -64,7 +64,7 @@ var comment2 = HNComment(
 let comment3 = HNComment(
     id: 3,
     author: "patio11",
-    age: "30 minutes ago",
+    age: Date().addingTimeInterval(-30 * 60),
     indentLevel: 2,
     content: createCommentContent("""
         Speaking from experience building large-scale systems, I've found that *both* approaches have merit.

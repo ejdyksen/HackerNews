@@ -11,7 +11,7 @@ import SwiftUI
     private var currentPage = 1
     var canLoadMore = true
 
-    var age: String
+    var age: Date?
     var author: String?
 
     var score: Int?
@@ -41,15 +41,11 @@ import SwiftUI
     }
 
     var subheading: String {
-        if (score != nil && author != nil) {
-            return "\(score!) points by \(author!) \(age)"
-        } else if (score == nil && author != nil) {
-            return "by \(author!) \(age)"
-        } else if (score != nil && author == nil) {
-            return "\(score!) points \(age)"
-        } else {
-            return age
-        }
+        var parts: [String] = []
+        if let score { parts.append("\(score) points") }
+        if let author { parts.append("by \(author)") }
+        if let age { parts.append(relativeTimeString(from: age)) }
+        return parts.joined(separator: " ")
     }
 
     nonisolated init(id: Int) {
@@ -57,13 +53,13 @@ import SwiftUI
         self.title = ""
         self.storyLink = URL(string: "https://news.ycombinator.com/item?id=\(id)")!
         self.domain = ""
-        self.age = ""
+        self.age = nil
         self.author = nil
         self.score = nil
         self.commentCount = 0
     }
 
-    nonisolated init(id: Int, title: String, storyLink: URL, domain: String, age: String, author: String, score: Int?, commentCount: Int?) {
+    nonisolated init(id: Int, title: String, storyLink: URL, domain: String, age: Date, author: String, score: Int?, commentCount: Int?) {
         self.id = id
         self.title = title
         self.storyLink = storyLink
@@ -108,11 +104,12 @@ import SwiftUI
             self.domain = ""
         }
 
-        // Age, required
-        guard let ageNode = adjacentItem.firstChild(css: ".age") else {
+        // Age, required — parsed from the `.age` span's `title` attribute
+        guard let ageNode = adjacentItem.firstChild(css: ".age"),
+              let age = hnDate(fromAge: ageNode) else {
             return nil
         }
-        self.age = ageNode.stringValue
+        self.age = age
 
 
         // Score, optional

@@ -33,7 +33,7 @@ struct ListingItemCellContent: View {
         var parts: [String] = []
         if let score = item.score { parts.append("\(score) pts") }
         if let author = item.author { parts.append("by \(author)") }
-        parts.append(item.age)
+        if let age = item.age { parts.append(relativeTimeString(from: age)) }
         parts.append(" · \(item.commentCount) comments")
         return parts.joined(separator: " ")
     }
