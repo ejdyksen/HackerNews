@@ -11,7 +11,7 @@ public struct URLHandler: ViewModifier {
                 showWebView = true
                 return .handled
             })
-            .sheet(isPresented: $showWebView) {
+            .fullScreenCover(isPresented: $showWebView) {
                 if let url = presentedURL {
                     SafariView(url: url)
                 }
