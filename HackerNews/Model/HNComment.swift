@@ -126,6 +126,13 @@ import Combine
 
             let comment = HNComment(id: id, author: author, age: age, indentLevel: indentLevel, content: content)
             comment.setVoteAuth(upvoteAuth: upvoteAuth, downvoteAuth: downvoteAuth)
+            if let unvoteNode = node.firstChild(css: "#un_\(id)") {
+                if unvoteNode.stringValue.lowercased() == "undown" {
+                    comment.isDownvoted = true
+                } else {
+                    comment.isUpvoted = true
+                }
+            }
 
             if indentLevel == 0 {
                 rootComments.append(comment)

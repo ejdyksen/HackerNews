@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ListingItemCellContent: View {
-    var item: HNItem
+    @ObservedObject var item: HNItem
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -9,13 +9,31 @@ struct ListingItemCellContent: View {
                 .lineLimit(3)
                 .multilineTextAlignment(.leading)
 
-            Text(metadata)
+            metadataText
                 .font(.footnote)
                 .foregroundStyle(.secondary)
                 .lineLimit(1)
                 .padding(.top, 6)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+        .contextMenu {
+            if item.canUpvote {
+                if !item.isUpvoted && !item.isDownvoted {
+                    Button { Task { try? await item.upvote() } } label: {
+                        Label("Upvote", systemImage: "hand.thumbsup")
+                    }
+                    if item.canDownvote {
+                        Button { Task { try? await item.downvote() } } label: {
+                            Label("Downvote", systemImage: "hand.thumbsdown")
+                        }
+                    }
+                } else {
+                    Button { Task { try? await item.unvote() } } label: {
+                        Label("Unvote", systemImage: "arrow.uturn.backward")
+                    }
+                }
+            }
+        }
     }
 
     private var titleWithDomain: Text {
@@ -29,13 +47,28 @@ struct ListingItemCellContent: View {
         return Text("\(title)\(domain)")
     }
 
-    private var metadata: String {
-        var parts: [String] = []
-        if let score = item.score { parts.append("\(score) pts") }
-        if let author = item.author { parts.append("by \(author)") }
-        if let age = item.age { parts.append(relativeTimeString(from: age)) }
-        parts.append(" · \(item.commentCount) comments")
-        return parts.joined(separator: " ")
+    private var metadataText: Text {
+        var pieces: [Text] = []
+
+        if let score = item.score {
+            if item.isUpvoted {
+                pieces.append(
+                    Text(Image(systemName: "hand.thumbsup.fill")).foregroundColor(.orange)
+                    + Text(" \(score) pts")
+                )
+            } else {
+                pieces.append(Text("\(score) pts"))
+            }
+        }
+        if let author = item.author { pieces.append(Text("by \(author)")) }
+        if let age = item.age { pieces.append(Text(relativeTimeString(from: age))) }
+        pieces.append(Text(" · \(item.commentCount) comments"))
+
+        var result = pieces.first ?? Text("")
+        for piece in pieces.dropFirst() {
+            result = result + Text(" ") + piece
+        }
+        return result
     }
 }
 

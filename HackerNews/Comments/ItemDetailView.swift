@@ -132,7 +132,22 @@ struct ItemDetailView: View {
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Menu {
-                    Text("Placeholder")
+                    if item.canUpvote {
+                        if !item.isUpvoted && !item.isDownvoted {
+                            Button { Task { try? await item.upvote() } } label: {
+                                Label("Upvote", systemImage: "hand.thumbsup")
+                            }
+                            if item.canDownvote {
+                                Button { Task { try? await item.downvote() } } label: {
+                                    Label("Downvote", systemImage: "hand.thumbsdown")
+                                }
+                            }
+                        } else {
+                            Button { Task { try? await item.unvote() } } label: {
+                                Label("Unvote", systemImage: "arrow.uturn.backward")
+                            }
+                        }
+                    }
                 } label: {
                     Image(systemName: "ellipsis")
                 }

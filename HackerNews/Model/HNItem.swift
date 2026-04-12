@@ -24,6 +24,43 @@ import SwiftUI
     @Published var body: AttributedString? = nil
     @Published private(set) var lastUpdated: Date?
 
+    private var upvoteAuth: String?
+    private var downvoteAuth: String?
+    @Published var isUpvoted: Bool = false
+    @Published var isDownvoted: Bool = false
+
+    var canUpvote: Bool { upvoteAuth != nil }
+    var canDownvote: Bool { downvoteAuth != nil }
+
+    func setVoteAuth(upvoteAuth: String?, downvoteAuth: String?) {
+        self.upvoteAuth = upvoteAuth
+        self.downvoteAuth = downvoteAuth
+    }
+
+    func upvote() async throws {
+        guard let auth = upvoteAuth else { return }
+        let voteEndpoint = "https://news.ycombinator.com/vote?id=\(id)&how=up&auth=\(auth)&goto=item%3Fid%3D\(id)&js=t"
+        _ = try await RequestController.shared.makeRequest(endpoint: voteEndpoint)
+        isUpvoted = true
+        isDownvoted = false
+    }
+
+    func downvote() async throws {
+        guard let auth = downvoteAuth else { return }
+        let voteEndpoint = "https://news.ycombinator.com/vote?id=\(id)&how=down&auth=\(auth)&goto=item%3Fid%3D\(id)&js=t"
+        _ = try await RequestController.shared.makeRequest(endpoint: voteEndpoint)
+        isDownvoted = true
+        isUpvoted = false
+    }
+
+    func unvote() async throws {
+        guard let auth = isUpvoted ? upvoteAuth : downvoteAuth else { return }
+        let voteEndpoint = "https://news.ycombinator.com/vote?id=\(id)&how=un&auth=\(auth)&goto=item%3Fid%3D\(id)&js=t"
+        _ = try await RequestController.shared.makeRequest(endpoint: voteEndpoint)
+        isUpvoted = false
+        isDownvoted = false
+    }
+
     @MainActor private static func buildFlatComments(_ root: [HNComment]) -> [HNComment] {
         var result: [HNComment] = []
         func traverse(_ comments: [HNComment]) {
@@ -137,6 +174,28 @@ import SwiftUI
         } else {
             self.commentCount = 0
         }
+
+        if let upvoteLink = node.firstChild(css: "#up_\(id)")?.attr("href"),
+           let upvoteUrl = URL(string: "https://news.ycombinator.com/\(upvoteLink)"),
+           let components = URLComponents(url: upvoteUrl, resolvingAgainstBaseURL: false),
+           let auth = components.queryItems?.first(where: { $0.name == "auth" })?.value {
+            self.upvoteAuth = auth
+        }
+
+        if let downvoteLink = node.firstChild(css: "#down_\(id)")?.attr("href"),
+           let downvoteUrl = URL(string: "https://news.ycombinator.com/\(downvoteLink)"),
+           let components = URLComponents(url: downvoteUrl, resolvingAgainstBaseURL: false),
+           let auth = components.queryItems?.first(where: { $0.name == "auth" })?.value {
+            self.downvoteAuth = auth
+        }
+
+        if let unvoteNode = adjacentItem.firstChild(css: "#un_\(id)") {
+            if unvoteNode.stringValue.lowercased() == "undown" {
+                self.isDownvoted = true
+            } else {
+                self.isUpvoted = true
+            }
+        }
     }
 
 
@@ -152,6 +211,10 @@ import SwiftUI
         if let author = other.author { self.author = author }
         if let score = other.score { self.score = score }
         if other.commentCount > 0 { self.commentCount = other.commentCount }
+        self.upvoteAuth = other.upvoteAuth
+        self.downvoteAuth = other.downvoteAuth
+        self.isUpvoted = other.isUpvoted
+        self.isDownvoted = other.isDownvoted
     }
 
     func refreshIfStale() {
@@ -192,18 +255,23 @@ import SwiftUI
                 let url = "https://news.ycombinator.com/item?id=\(self.id)&p=\(page)"
                 let doc = try await RequestController.shared.makeRequest(endpoint: url)
 
-                // Populate metadata from fatitem when navigated via deep link (title is empty)
-                if self.title.isEmpty,
-                   let fatRow = doc.css("table.fatitem tr.athing").first,
+                if let fatRow = doc.css("table.fatitem tr.athing").first,
                    let stub = HNItem(withXmlNode: fatRow) {
-                    self.objectWillChange.send()
-                    self.title = stub.title
-                    self.storyLink = stub.storyLink
-                    self.domain = stub.domain
-                    self.age = stub.age
-                    self.author = stub.author
-                    if let s = stub.score { self.score = s }
-                    self.commentCount = stub.commentCount
+                    // Populate metadata from fatitem when navigated via deep link (title is empty)
+                    if self.title.isEmpty {
+                        self.objectWillChange.send()
+                        self.title = stub.title
+                        self.storyLink = stub.storyLink
+                        self.domain = stub.domain
+                        self.age = stub.age
+                        self.author = stub.author
+                        if let s = stub.score { self.score = s }
+                        self.commentCount = stub.commentCount
+                    }
+                    // Always refresh vote auth and state — listing-fetched ones may be stale
+                    self.setVoteAuth(upvoteAuth: stub.upvoteAuth, downvoteAuth: stub.downvoteAuth)
+                    self.isUpvoted = stub.isUpvoted
+                    self.isDownvoted = stub.isDownvoted
                 }
 
                 let parsedBody: AttributedString? = doc.css("table.fatitem .commtext").first

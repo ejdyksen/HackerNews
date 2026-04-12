@@ -8,6 +8,29 @@ struct ItemDetailHeader: View {
         item.storyLink.absoluteString == item.itemLink.absoluteString
     }
 
+    private var subheadingText: Text {
+        var pieces: [Text] = []
+
+        if let score = item.score {
+            if item.isUpvoted {
+                pieces.append(
+                    Text(Image(systemName: "hand.thumbsup.fill")).foregroundColor(.orange)
+                    + Text(" \(score) points")
+                )
+            } else {
+                pieces.append(Text("\(score) points"))
+            }
+        }
+        if let author = item.author { pieces.append(Text("by \(author)")) }
+        if let age = item.age { pieces.append(Text(relativeTimeString(from: age))) }
+
+        var result = pieces.first ?? Text("")
+        for piece in pieces.dropFirst() {
+            result = result + Text(" ") + piece
+        }
+        return result
+    }
+
     private var titleWithDomain: Text {
         let title = Text(item.title)
             .font(.title2)
@@ -33,7 +56,7 @@ struct ItemDetailHeader: View {
                 .buttonStyle(.plain)
             }
 
-            Text(item.subheading)
+            subheadingText
                 .font(.subheadline)
                 .foregroundColor(.secondary)
 

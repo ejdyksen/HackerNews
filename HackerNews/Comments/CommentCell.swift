@@ -47,25 +47,20 @@ struct CommentCell: View {
                 .padding(.horizontal, 16)
             }
             .buttonStyle(PlainButtonStyle())
-
-            if !isCollapsed && comment.canUpvote {
-                Menu {
+            .contextMenu {
+                if comment.canUpvote {
                     if !comment.isUpvoted && !comment.isDownvoted {
-                        Button(action: { Task { try? await comment.upvote() } }) {
+                        Button { Task { try? await comment.upvote() } } label: {
                             Label("Upvote", systemImage: "hand.thumbsup")
                         }
-                        Button(action: { Task { try? await comment.downvote() } }) {
+                        Button { Task { try? await comment.downvote() } } label: {
                             Label("Downvote", systemImage: "hand.thumbsdown")
                         }
                     } else {
-                        Button(action: { Task { try? await comment.unvote() } }) {
+                        Button { Task { try? await comment.unvote() } } label: {
                             Label("Unvote", systemImage: "arrow.uturn.backward")
                         }
                     }
-                } label: {
-                    Color.clear
-                        .contentShape(Rectangle())
-                        .frame(maxWidth: .infinity, maxHeight: 44)
                 }
             }
 
