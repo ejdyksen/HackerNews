@@ -3,8 +3,17 @@ import SwiftUI
 struct ItemDetailView: View {
     @ObservedObject var item: HNItem
     @State private var collapsedIDs: Set<Int> = []
+    @State private var showScrolledTitle = false
     var onToggleFullScreen: (() -> Void)? = nil
     var isFullScreen: Bool = false
+
+    private var truncatedTitle: String {
+        let maxChars = 35
+        if item.title.count > maxChars {
+            return String(item.title.prefix(maxChars - 1)) + "…"
+        }
+        return item.title
+    }
 
     private var visibleComments: [HNComment] {
         var result: [HNComment] = []
@@ -31,6 +40,16 @@ struct ItemDetailView: View {
             VStack(alignment: .leading, spacing: 0) {
                 ItemDetailHeader(item: item)
                     .padding(.horizontal)
+                    .onGeometryChange(for: CGFloat.self) { proxy in
+                        proxy.frame(in: .scrollView).maxY
+                    } action: { maxY in
+                        let shouldShow = maxY < 0
+                        if shouldShow != showScrolledTitle {
+                            withAnimation(.easeInOut(duration: 0.2)) {
+                                showScrolledTitle = shouldShow
+                            }
+                        }
+                    }
 
                 LazyVStack(spacing: 0) {
                     ForEach(visibleComments) { comment in
@@ -73,7 +92,6 @@ struct ItemDetailView: View {
                 }
             }
         }
-        .navigationTitle("\(item.commentCount) comments")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             if let toggle = onToggleFullScreen {
@@ -83,6 +101,20 @@ struct ItemDetailView: View {
                             ? "arrow.down.right.and.arrow.up.left"
                             : "arrow.up.left.and.arrow.down.right")
                     }
+                }
+            }
+            ToolbarItem(placement: .principal) {
+                if showScrolledTitle {
+                    VStack(alignment: .leading, spacing: 1) {
+                        Text(truncatedTitle)
+                            .font(.headline)
+                            .foregroundStyle(.primary)
+                        Text("\(item.commentCount) comments")
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .transition(.opacity.combined(with: .move(edge: .top)))
                 }
             }
         }
