@@ -12,12 +12,6 @@ struct ListingView: View {
 
     var body: some View {
         List {
-            Text(listingType.displayName)
-                .font(.largeTitle.bold())
-                .listRowSeparator(.hidden)
-                .listRowBackground(Color.clear)
-                .listRowInsets(EdgeInsets(top: 16, leading: 20, bottom: 8, trailing: 20))
-
             ForEach(listing.items) { item in
                 ListingItemCell(item: item)
             }
@@ -50,7 +44,16 @@ struct ListingView: View {
             }
         }
         .listStyle(PlainListStyle())
-        .navigationBarTitleDisplayMode(.inline)
+        .navigationTitle(listingType.displayName)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Menu {
+                    Text("Placeholder")
+                } label: {
+                    Image(systemName: "ellipsis")
+                }
+            }
+        }
         .navigationDestination(for: HNItem.self) { item in
             ItemDetailView(item: item)
         }

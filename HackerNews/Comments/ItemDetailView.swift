@@ -124,6 +124,13 @@ struct ItemDetailView: View {
                     .transition(.opacity.combined(with: .move(edge: .top)))
                 }
             }
+            ToolbarItem(placement: .topBarTrailing) {
+                Menu {
+                    Text("Placeholder")
+                } label: {
+                    Image(systemName: "ellipsis")
+                }
+            }
         }
         .scrollPosition($scrollPosition)
         .refreshable {
