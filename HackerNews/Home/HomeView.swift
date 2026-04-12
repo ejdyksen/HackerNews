@@ -1,3 +1,5 @@
+// Phone-first home screen that offers top-level navigation into listings and
+// account actions, and receives deep-link requests from shared app state.
 import SwiftUI
 
 struct HomeView: View {

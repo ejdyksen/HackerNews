@@ -1,5 +1,6 @@
+// Observable listing state. This model manages pagination and freshness for one
+// story feed, while HNRepository handles the actual page fetch and parsing.
 import Foundation
-import Fuzi
 
 enum ListingType: String, CaseIterable {
     case news
@@ -29,7 +30,7 @@ enum ListingType: String, CaseIterable {
     }
 }
 
-@MainActor class HNListing: ObservableObject {
+@MainActor final class HNListing: ObservableObject {
     let listingType: ListingType
 
     @Published var items: [HNItem] = []
@@ -38,7 +39,9 @@ enum ListingType: String, CaseIterable {
     @Published var loadError: String?
     @Published private(set) var lastUpdated: Date?
 
-    private var nextPageUrl: String?
+    private var nextPageURL: String?
+    private var loadTask: Task<Void, Never>?
+    private var activeLoadID: UUID?
     weak var cache: AppCache?
 
     init(_ listingType: ListingType, cache: AppCache? = nil) {
@@ -55,7 +58,7 @@ enum ListingType: String, CaseIterable {
     func staleRefresh() {
         guard !isLoading else { return }
         items = []
-        nextPageUrl = nil
+        nextPageURL = nil
         hasMoreContent = false
         loadMoreContent(reload: true)
     }
@@ -68,68 +71,111 @@ enum ListingType: String, CaseIterable {
     }
 
     func loadMoreContent(reload: Bool = false) async {
-        await withCheckedContinuation { continuation in
-            loadMoreContent(reload: reload) { continuation.resume() }
-        }
+        await startLoad(reload: reload).value
     }
 
-    func loadMoreContent(reload: Bool = false, completion: (() -> Void)? = nil) {
-        guard !isLoading else { return }
+    func loadMoreContent(reload: Bool = false) {
+        _ = startLoad(reload: reload)
+    }
+
+    @discardableResult
+    private func startLoad(reload: Bool) -> Task<Void, Never> {
+        if reload {
+            loadTask?.cancel()
+            loadTask = nil
+        } else if let loadTask {
+            return loadTask
+        }
+
+        if !reload && !hasMoreContent && !items.isEmpty {
+            return Task {}
+        }
 
         let isFirstPageFetch = reload || items.isEmpty
+        if reload {
+            nextPageURL = nil
+        }
+
+        let pageURL = nextPageURL
+        let loadID = UUID()
+
+        activeLoadID = loadID
         isLoading = true
         loadError = nil
-        if reload {
-            self.nextPageUrl = nil
-        }
 
-        Task {
+        let task = Task { [weak self] in
+            guard let self else { return }
+
             do {
-                let url = self.nextPageUrl ?? "https://news.ycombinator.com/\(self.listingType)"
-                let doc = try await RequestController.shared.makeRequest(endpoint: url)
-                let newItems = self.parseItems(doc: doc)
-                self.nextPageUrl = self.parseMoreLink(doc: doc)
-
-                self.hasMoreContent = self.nextPageUrl != nil
-                if reload {
-                    self.items = newItems
-                } else {
-                    self.items.append(contentsOf: newItems)
-                }
-                if isFirstPageFetch {
-                    self.lastUpdated = .now
-                    debugLog("listing/\(self.listingType)", "loaded \(self.items.count) items\(reload ? " (reload)" : "")")
-                }
-                self.isLoading = false
-                completion?()
+                let page = try await HNRepository.shared.fetchListingPage(
+                    listingType: self.listingType,
+                    nextPageURL: pageURL
+                )
+                self.finishLoad(
+                    loadID: loadID,
+                    reload: reload,
+                    isFirstPageFetch: isFirstPageFetch,
+                    result: .success(page)
+                )
+            } catch is CancellationError {
+                self.finishCancellation(loadID: loadID)
             } catch {
-                self.isLoading = false
-                self.loadError = error.localizedDescription
-                debugLog("listing/\(self.listingType)", "load error: \(error.localizedDescription)")
-                completion?()
-            }
-        }
-    }
-
-    func parseItems(doc: HTMLDocument) -> [HNItem] {
-        let itemList = doc.css("tr.athing")
-        var newItems: [HNItem] = []
-
-        for node in itemList {
-            if let parsed = HNItem(withXmlNode: node) {
-                let canonical = cache?.canonicalize(parsed) ?? parsed
-                newItems.append(canonical)
+                self.finishLoad(
+                    loadID: loadID,
+                    reload: reload,
+                    isFirstPageFetch: isFirstPageFetch,
+                    result: .failure(error)
+                )
             }
         }
 
-        return newItems
+        loadTask = task
+        return task
     }
 
-    func parseMoreLink(doc: HTMLDocument) -> String? {
-        guard let moreLink = doc.css("a.morelink").first, let href = moreLink["href"] else {
-            return nil
+    private func finishLoad(
+        loadID: UUID,
+        reload: Bool,
+        isFirstPageFetch: Bool,
+        result: Result<ParsedHNListingPage, Error>
+    ) {
+        guard activeLoadID == loadID else { return }
+
+        defer {
+            loadTask = nil
+            isLoading = false
         }
-        let baseURL = URL(string: "https://news.ycombinator.com/\(self.listingType)")!
-        return URL(string: href, relativeTo: baseURL)?.absoluteString
+
+        switch result {
+        case .success(let page):
+            let newItems = page.items.map { cache?.canonicalize($0) ?? HNItem(parsed: $0) }
+            nextPageURL = page.nextPageURL
+            hasMoreContent = page.nextPageURL != nil
+
+            if reload {
+                items = newItems
+            } else {
+                items.append(contentsOf: newItems)
+            }
+
+            loadError = nil
+            if isFirstPageFetch {
+                lastUpdated = .now
+                debugLog(
+                    "listing/\(listingType)",
+                    "loaded \(items.count) items\(reload ? " (reload)" : "")"
+                )
+            }
+
+        case .failure(let error):
+            loadError = error.localizedDescription
+            debugLog("listing/\(listingType)", "load error: \(error.localizedDescription)")
+        }
+    }
+
+    private func finishCancellation(loadID: UUID) {
+        guard activeLoadID == loadID else { return }
+        loadTask = nil
+        isLoading = false
     }
 }

@@ -1,3 +1,5 @@
+// Story detail screen showing the story header plus a flattened comment thread.
+// It owns local UI state like collapsed comments and scroll-position affordances.
 import SwiftUI
 
 struct ItemDetailView: View {

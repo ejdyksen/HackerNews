@@ -1,3 +1,5 @@
+// Standalone listing screen for phone navigation. This binds one listing model
+// into a scrollable feed with refresh, pagination, and empty/error states.
 import SwiftUI
 
 struct ListingView: View {

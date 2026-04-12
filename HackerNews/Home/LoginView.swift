@@ -1,3 +1,5 @@
+// Simple login form for the Hacker News web session. This view collects user
+// credentials and delegates the actual form submission to AuthController.
 import SwiftUI
 
 struct LoginView: View {

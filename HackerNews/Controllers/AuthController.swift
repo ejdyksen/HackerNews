@@ -1,55 +1,76 @@
+// Authentication state for the HN web session. This object logs in through the
+// real Hacker News form flow and persists the resulting session cookie.
 import Foundation
 import Security
 
-class AuthController: ObservableObject {
+@MainActor final class AuthController: ObservableObject {
     @Published var isLoggedIn = false
     @Published var username: String?
 
     static let shared = AuthController()
-    private let userSessionCookie = "user_session_cookie"
+
+    private let keychainService = "com.ejd.HackerNews.auth"
+    private let cookieAccount = "user_session_cookie"
+    private let usernameAccount = "user_session_username"
 
     private init() {
-        loadStoredCookie()
+        Task {
+            await restoreStoredSession()
+        }
     }
 
     func login(username: String, password: String) async throws -> Bool {
-        let body = "acct=\(username)&pw=\(password)"
-
-        let _ = try await RequestController.shared.makeRequest(
+        _ = try await RequestController.shared.requestForm(
             endpoint: "https://news.ycombinator.com/login",
-            method: "POST",
-            body: body.data(using: .utf8)
+            items: [
+                URLQueryItem(name: "goto", value: "news"),
+                URLQueryItem(name: "acct", value: username),
+                URLQueryItem(name: "pw", value: password)
+            ],
+            headers: [
+                "Origin": "https://news.ycombinator.com",
+                "Referer": "https://news.ycombinator.com/"
+            ],
+            shouldRetry: true
         )
 
-        if let cookies = HTTPCookieStorage.shared.cookies?.filter({ $0.domain.contains("ycombinator.com") }),
-           let userCookie = cookies.first(where: { $0.name == "user" }) {
-            await MainActor.run {
-                self.isLoggedIn = true
-                self.username = username
-            }
-            try storeCookieValue(userCookie.value)
-            return true
+        guard let cookieValue = await RequestController.shared.userSessionCookieValue() else {
+            await RequestController.shared.clearHNSessionCookies()
+            return false
         }
 
-        return false
+        try storeString(cookieValue, account: cookieAccount)
+        try storeString(username, account: usernameAccount)
+
+        isLoggedIn = true
+        self.username = username
+        return true
     }
 
     func logout() {
-        // Clear cookies from HTTPCookieStorage
-        if let cookies = HTTPCookieStorage.shared.cookies {
-            cookies.forEach { HTTPCookieStorage.shared.deleteCookie($0) }
+        Task {
+            await RequestController.shared.clearHNSessionCookies()
         }
-        deleteStoredCookie()
+        deleteStoredValue(account: cookieAccount)
+        deleteStoredValue(account: usernameAccount)
         isLoggedIn = false
         username = nil
     }
 
-    private func storeCookieValue(_ value: String) throws {
-        let data = Data(value.utf8)
+    private func restoreStoredSession() async {
+        guard let cookieValue = loadString(account: cookieAccount) else { return }
 
+        await RequestController.shared.restoreUserSessionCookie(cookieValue)
+        isLoggedIn = true
+        username = loadString(account: usernameAccount)
+    }
+
+    private func storeString(_ value: String, account: String) throws {
+        let data = Data(value.utf8)
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
-            kSecAttrAccount as String: userSessionCookie,
+            kSecAttrService as String: keychainService,
+            kSecAttrAccount as String: account,
             kSecValueData as String: data,
             kSecAttrAccessible as String: kSecAttrAccessibleAfterFirstUnlock
         ]
@@ -61,41 +82,30 @@ class AuthController: ObservableObject {
         }
     }
 
-    private func loadStoredCookie() {
+    private func loadString(account: String) -> String? {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
-            kSecAttrAccount as String: userSessionCookie,
+            kSecAttrService as String: keychainService,
+            kSecAttrAccount as String: account,
             kSecReturnData as String: true
         ]
 
         var result: AnyObject?
         let status = SecItemCopyMatching(query as CFDictionary, &result)
 
-        if status == errSecSuccess,
-           let cookieData = result as? Data,
-           let cookieValue = String(data: cookieData, encoding: .utf8) {
-
-            let username = cookieValue.components(separatedBy: "&").first.flatMap { $0.isEmpty ? nil : $0 }
-
-            let properties: [HTTPCookiePropertyKey: Any] = [
-                .name: "user",
-                .value: cookieValue,
-                .domain: "news.ycombinator.com",
-                .path: "/"
-            ]
-
-            if let cookie = HTTPCookie(properties: properties) {
-                HTTPCookieStorage.shared.setCookie(cookie)
-                isLoggedIn = true
-                self.username = username
-            }
+        guard status == errSecSuccess,
+              let data = result as? Data else {
+            return nil
         }
+
+        return String(data: data, encoding: .utf8)
     }
 
-    private func deleteStoredCookie() {
+    private func deleteStoredValue(account: String) {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
-            kSecAttrAccount as String: userSessionCookie
+            kSecAttrService as String: keychainService,
+            kSecAttrAccount as String: account
         ]
         SecItemDelete(query as CFDictionary)
     }

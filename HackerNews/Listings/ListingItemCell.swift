@@ -1,3 +1,5 @@
+// Story row views for feed lists and split-view selections. This file formats
+// story metadata compactly and exposes the row-level voting context menu.
 import SwiftUI
 
 struct ListingItemCellContent: View {

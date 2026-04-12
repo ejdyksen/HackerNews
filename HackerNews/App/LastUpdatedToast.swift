@@ -1,3 +1,5 @@
+// Small toast presentation for showing when visible content was last refreshed.
+// It centralizes the shared timing and dismissal behavior for listings and items.
 import SwiftUI
 
 struct LastUpdatedToast: View {

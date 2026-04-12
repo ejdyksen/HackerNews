@@ -1,3 +1,5 @@
+// Shared freshness thresholds for deciding when listings and item threads
+// should be refreshed after navigation or app foregrounding.
 import Foundation
 
 enum Freshness: Equatable {

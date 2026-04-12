@@ -1,3 +1,5 @@
+// Static preview fixtures used by SwiftUI previews so view work does not depend
+// on live network requests or real Hacker News sessions.
 import Foundation
 import Fuzi
 
@@ -13,7 +15,7 @@ var itemOne = HNItem(id: 123,
 // Helper function to create AttributedString from HTML content
 private func createCommentContent(_ html: String) -> AttributedString {
     let doc = try! HTMLDocument(string: html)
-    return HNComment.parseText(doc.body!)
+    return HNHTMLParser.parseCommentText(doc.body!)
 }
 
 // Sample comment with various HN formatting features

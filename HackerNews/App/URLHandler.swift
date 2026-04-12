@@ -1,3 +1,5 @@
+// Centralized URL routing for in-app links. Hacker News item URLs become app
+// navigation, while external links are opened in an in-app Safari controller.
 import SafariServices
 import SwiftUI
 

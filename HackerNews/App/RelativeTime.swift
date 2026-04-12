@@ -1,3 +1,5 @@
+// Shared date formatting helpers for Hacker News timestamps, including parsing
+// the site-specific `.age` metadata emitted in scraped HTML.
 import Foundation
 import Fuzi
 

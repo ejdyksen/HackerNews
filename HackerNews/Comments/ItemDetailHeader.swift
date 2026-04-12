@@ -1,3 +1,5 @@
+// Header content for a story detail screen, including the story title, metadata,
+// and any self-post body content parsed from the Hacker News item page.
 import SwiftUI
 
 struct ItemDetailHeader: View {

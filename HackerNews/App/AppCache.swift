@@ -1,3 +1,5 @@
+// Lightweight in-memory cache for canonical story objects and listing models so
+// navigation can reuse state instead of recreating the same observable objects.
 import Foundation
 import SwiftUI
 
@@ -28,16 +30,17 @@ import SwiftUI
         evictIfNeeded()
     }
 
-    func canonicalize(_ parsed: HNItem) -> HNItem {
+    func canonicalize(_ parsed: ParsedHNItem) -> HNItem {
         if let existing = items[parsed.id] {
             existing.updateMetadata(from: parsed)
             touch(parsed.id)
             return existing
         }
-        items[parsed.id] = parsed
+        let item = HNItem(parsed: parsed)
+        items[parsed.id] = item
         touch(parsed.id)
         evictIfNeeded()
-        return parsed
+        return item
     }
 
     private func touch(_ id: Int) {

@@ -1,10 +1,5 @@
-//
-//  HackerNewsApp.swift
-//  Shared
-//
-//  Created by E.J. Dyksen on 11/22/20.
-//
-
+// App entry point. This wires shared state and cache objects into the root
+// SwiftUI hierarchy before handing off to the adaptive home container.
 import SwiftUI
 
 @main

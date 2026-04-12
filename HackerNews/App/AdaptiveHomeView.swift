@@ -1,3 +1,5 @@
+// Root container that switches between phone and iPad navigation layouts while
+// keeping selection, deep-link handling, and account UI in one place.
 import SwiftUI
 
 struct AdaptiveHomeView: View {

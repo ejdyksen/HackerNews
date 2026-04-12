@@ -1,3 +1,5 @@
+// Row rendering for one flattened comment in the thread view. This handles the
+// collapse gesture, indentation, and per-comment vote actions.
 import SwiftUI
 
 struct CommentCell: View {
