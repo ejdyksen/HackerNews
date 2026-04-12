@@ -2,7 +2,7 @@ import Foundation
 import Fuzi
 import SwiftUI
 
-class HNItem: ObservableObject, Identifiable, Hashable, Equatable {
+@MainActor class HNItem: ObservableObject, Identifiable, Hashable, Equatable {
     let id: Int
     let title: String
     let storyLink: URL
@@ -31,7 +31,7 @@ class HNItem: ObservableObject, Identifiable, Hashable, Equatable {
     @Published var flatComments: [HNComment] = []
     @Published var body: AttributedString? = nil
 
-    private static func buildFlatComments(_ root: [HNComment]) -> [HNComment] {
+    @MainActor private static func buildFlatComments(_ root: [HNComment]) -> [HNComment] {
         var result: [HNComment] = []
         func traverse(_ comments: [HNComment]) {
             for comment in comments {
@@ -59,7 +59,7 @@ class HNItem: ObservableObject, Identifiable, Hashable, Equatable {
         }
     }
 
-    init(id: Int, title: String, storyLink: URL, domain: String, age: String, author: String, score: Int?, commentCount: Int?) {
+    nonisolated init(id: Int, title: String, storyLink: URL, domain: String, age: String, author: String, score: Int?, commentCount: Int?) {
         self.id = id
         self.title = title
         self.storyLink = storyLink
@@ -139,8 +139,8 @@ class HNItem: ObservableObject, Identifiable, Hashable, Equatable {
     }
 
 
-    static func == (lhs: HNItem, rhs: HNItem) -> Bool { lhs.id == rhs.id }
-    func hash(into hasher: inout Hasher) { hasher.combine(id) }
+    nonisolated static func == (lhs: HNItem, rhs: HNItem) -> Bool { lhs.id == rhs.id }
+    nonisolated func hash(into hasher: inout Hasher) { hasher.combine(id) }
 
     func loadMoreContent(reload: Bool = false, completion: (() -> Void)? = nil) {
         if reload {
@@ -166,23 +166,19 @@ class HNItem: ObservableObject, Identifiable, Hashable, Equatable {
                 let newComments = HNComment.createCommentTree(nodes: nodeList)
                 let canLoadMoreValue = !doc.css(".morelink").isEmpty
 
-                await MainActor.run {
-                    let updatedRoot = self.rootComments + newComments
-                    self.rootComments = updatedRoot
-                    self.flatComments = Self.buildFlatComments(updatedRoot)
-                    self.body = parsedBody
-                    self.canLoadMore = canLoadMoreValue
-                    self.currentPage = page + 1
-                    self.isLoading = false
-                    self.loadError = nil
-                    completion?()
-                }
+                let updatedRoot = self.rootComments + newComments
+                self.rootComments = updatedRoot
+                self.flatComments = Self.buildFlatComments(updatedRoot)
+                self.body = parsedBody
+                self.canLoadMore = canLoadMoreValue
+                self.currentPage = page + 1
+                self.isLoading = false
+                self.loadError = nil
+                completion?()
             } catch {
-                await MainActor.run {
-                    self.isLoading = false
-                    self.loadError = error.localizedDescription
-                    completion?()
-                }
+                self.isLoading = false
+                self.loadError = error.localizedDescription
+                completion?()
             }
         }
     }

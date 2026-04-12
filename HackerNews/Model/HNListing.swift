@@ -29,7 +29,7 @@ enum ListingType: String, CaseIterable {
     }
 }
 
-class HNListing: ObservableObject {
+@MainActor class HNListing: ObservableObject {
     let listingType: ListingType
 
     @Published var items: [HNItem] = []
@@ -65,22 +65,18 @@ class HNListing: ObservableObject {
                 let newItems = self.parseItems(doc: doc)
                 self.nextPageUrl = self.parseMoreLink(doc: doc)
 
-                await MainActor.run {
-                    self.hasMoreContent = self.nextPageUrl != nil
-                    if reload {
-                        self.items = newItems
-                    } else {
-                        self.items.append(contentsOf: newItems)
-                    }
-                    self.isLoading = false
-                    completion?()
+                self.hasMoreContent = self.nextPageUrl != nil
+                if reload {
+                    self.items = newItems
+                } else {
+                    self.items.append(contentsOf: newItems)
                 }
+                self.isLoading = false
+                completion?()
             } catch {
-                await MainActor.run {
-                    self.isLoading = false
-                    self.loadError = error.localizedDescription
-                    completion?()
-                }
+                self.isLoading = false
+                self.loadError = error.localizedDescription
+                completion?()
             }
         }
     }

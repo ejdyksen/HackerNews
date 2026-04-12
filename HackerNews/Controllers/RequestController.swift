@@ -11,6 +11,25 @@ enum RequestError: Error {
     case htmlParseError(Error)
 }
 
+extension RequestError: LocalizedError {
+    var errorDescription: String? {
+        switch self {
+        case .rateLimitExceeded:
+            return "Loading too quickly — please wait a moment and try again."
+        case .maxRetriesExceeded:
+            return "Server is busy. Please try again later."
+        case .serverError(let code):
+            return "Server error (\(code)). Please try again."
+        case .networkError(let underlying):
+            return "Network error: \(underlying.localizedDescription)"
+        case .htmlParseError:
+            return "Couldn't read the page content. HN may have changed its layout."
+        case .invalidResponse, .emptyResponse:
+            return "Unexpected response from server."
+        }
+    }
+}
+
 actor RequestController {
     static let shared = RequestController()
 

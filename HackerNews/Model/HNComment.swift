@@ -11,7 +11,7 @@ import Fuzi
 import SwiftUI
 import Combine
 
-class HNComment: Identifiable, ObservableObject {
+@MainActor class HNComment: Identifiable, ObservableObject {
     let id: Int
     let author: String
     let age: String
@@ -28,7 +28,7 @@ class HNComment: Identifiable, ObservableObject {
     var canUpvote: Bool { upvoteAuth != nil }
     var canDownvote: Bool { downvoteAuth != nil }
 
-    init(id: Int, author: String, age: String, indentLevel: Int, content: AttributedString) {
+    nonisolated init(id: Int, author: String, age: String, indentLevel: Int, content: AttributedString) {
         self.id = id
         self.author = author
         self.age = age
@@ -43,7 +43,7 @@ class HNComment: Identifiable, ObservableObject {
         self.downvoteEndpoint = downvoteEndpoint
     }
 
-    static func parseText(_ node: XMLElement) -> AttributedString {
+    nonisolated static func parseText(_ node: XMLElement) -> AttributedString {
         var result = AttributedString()
 
         // Handle text nodes and elements
@@ -89,7 +89,7 @@ class HNComment: Identifiable, ObservableObject {
         return result
     }
 
-    static func createCommentTree(nodes: NodeSet) -> [HNComment] {
+    @MainActor static func createCommentTree(nodes: NodeSet) -> [HNComment] {
         var rootComments: [HNComment] = []
         var lastCommentAtLevel = [Int: HNComment]()
 

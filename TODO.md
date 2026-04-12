@@ -25,9 +25,9 @@ Reading experience comes first. Participation features come after the app is a g
 
 ## Error Handling & Empty States
 
-- [ ] Show an error message when a listing or item fails to load (network error, parse failure)
-- [ ] "No comments yet" empty state in `ItemDetailView`
-- [ ] Retry button on failed loads
+- [x] Show an error message when a listing or item fails to load (network error, parse failure)
+- [x] "No comments yet" empty state in `ItemDetailView`
+- [x] Retry button on failed loads
 - [ ] Handle the case where login POST succeeds but no `user` cookie is set (e.g. wrong password with no clear feedback path)
 
 ---
@@ -55,7 +55,7 @@ Reading experience comes first. Participation features come after the app is a g
 ## Polish & UX
 
 - [ ] **Swipe actions** on listing rows — swipe to upvote, swipe to open in browser
-- [ ] **Pull-to-refresh on `ItemDetailView`** (currently only on listings)
+- [x] **Pull-to-refresh on `ItemDetailView`** (currently only on listings)
 - [ ] **Scroll-to-top** on nav title tap (standard iOS convention)
 - [ ] **Loading skeleton** instead of plain spinner in listing
 - [ ] **Open story in Safari** button in `ItemDetailHeader` (alongside the NavigationLink)
@@ -85,9 +85,9 @@ Reading experience comes first. Participation features come after the app is a g
 ## Infrastructure / Tech Debt
 
 - [ ] **Caching** — cache listing pages and item pages with short TTL so back-navigation is instant
-- [ ] **`@MainActor` audit** — models dispatch to `MainActor.run {}`; consider annotating the whole model class instead
-- [ ] **`canLoadMore` reset on reload** — `HNItem` doesn't reset `currentPage` or `canLoadMore` when reloaded
-- [ ] **Rate-limit UX** — `RequestController` throws `rateLimitExceeded` silently; surface it
+- [x] **`@MainActor` audit** — annotated `HNListing`, `HNItem`, `HNComment` with `@MainActor`; removed all `await MainActor.run {}` boilerplate; vote methods on `HNComment` now guaranteed to resume on main thread
+- [x] **`canLoadMore` reset on reload** — `HNItem` doesn't reset `currentPage` or `canLoadMore` when reloaded
+- [x] **Rate-limit UX** — `RequestController` throws `rateLimitExceeded` silently; added `LocalizedError` conformance so user-facing error messages propagate through to UI
 - [ ] **Test targets** — add at minimum unit tests for HTML parsing (the code most likely to break when HN changes markup)
 
 ---
