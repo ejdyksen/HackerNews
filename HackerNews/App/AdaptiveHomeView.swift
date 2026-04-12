@@ -120,6 +120,14 @@ struct ListingContentColumn: View {
         .overlay {
             if listing.isLoading && listing.items.isEmpty {
                 ProgressView("Loading...")
+            } else if let error = listing.loadError, listing.items.isEmpty {
+                ContentUnavailableView {
+                    Label("Failed to Load", systemImage: "exclamationmark.triangle")
+                } description: {
+                    Text(error)
+                } actions: {
+                    Button("Retry") { listing.loadMoreContent(reload: true) }
+                }
             }
         }
     }

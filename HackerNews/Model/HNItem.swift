@@ -25,6 +25,8 @@ class HNItem: ObservableObject, Identifiable, Hashable, Equatable {
     var score: Int?
     var commentCount: Int
 
+    @Published var isLoading = false
+    @Published var loadError: String?
     @Published var rootComments: [HNComment] = []
     @Published var flatComments: [HNComment] = []
     @Published var body: AttributedString? = nil
@@ -140,32 +142,47 @@ class HNItem: ObservableObject, Identifiable, Hashable, Equatable {
     static func == (lhs: HNItem, rhs: HNItem) -> Bool { lhs.id == rhs.id }
     func hash(into hasher: inout Hasher) { hasher.combine(id) }
 
-    func loadMoreContent() {
+    func loadMoreContent(reload: Bool = false, completion: (() -> Void)? = nil) {
+        if reload {
+            currentPage = 1
+            canLoadMore = true
+            rootComments = []
+            flatComments = []
+            body = nil
+            loadError = nil
+        }
+        isLoading = true
+        let page = currentPage
         Task {
             do {
-                let url = "https://news.ycombinator.com/item?id=\(self.id)&p=\(self.currentPage)"
-                self.currentPage = self.currentPage + 1
-
+                let url = "https://news.ycombinator.com/item?id=\(self.id)&p=\(page)"
                 let doc = try await RequestController.shared.makeRequest(endpoint: url)
 
-                let body: AttributedString? = doc.css("table.fatitem .commtext").first
+                let parsedBody: AttributedString? = doc.css("table.fatitem .commtext").first
                     .map { HNComment.parseText($0) }
                     .flatMap { $0.characters.isEmpty ? nil : $0 }
 
                 let nodeList = doc.css("table.comment-tree tr.athing")
                 let newComments = HNComment.createCommentTree(nodes: nodeList)
-
                 let canLoadMoreValue = !doc.css(".morelink").isEmpty
 
                 await MainActor.run {
                     let updatedRoot = self.rootComments + newComments
                     self.rootComments = updatedRoot
                     self.flatComments = Self.buildFlatComments(updatedRoot)
-                    self.body = body
+                    self.body = parsedBody
                     self.canLoadMore = canLoadMoreValue
+                    self.currentPage = page + 1
+                    self.isLoading = false
+                    self.loadError = nil
+                    completion?()
                 }
             } catch {
-                print(error)
+                await MainActor.run {
+                    self.isLoading = false
+                    self.loadError = error.localizedDescription
+                    completion?()
+                }
             }
         }
     }

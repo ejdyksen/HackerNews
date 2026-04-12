@@ -46,7 +46,19 @@ struct ItemDetailView: View {
                     }
                 }
 
-                if item.canLoadMore {
+                if let error = item.loadError {
+                    VStack(spacing: 12) {
+                        Text("Failed to load comments")
+                            .foregroundColor(.secondary)
+                        Text(error)
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                            .multilineTextAlignment(.center)
+                        Button("Retry") { item.loadMoreContent() }
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 20)
+                } else if item.canLoadMore {
                     HStack(alignment: .center, spacing: 10) {
                         ProgressView()
                         Text("Loading").foregroundColor(.secondary)
@@ -54,6 +66,11 @@ struct ItemDetailView: View {
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 10)
                     .onAppear { item.loadMoreContent() }
+                } else if item.flatComments.isEmpty {
+                    Text("No comments yet")
+                        .foregroundColor(.secondary)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 20)
                 }
             }
         }
@@ -61,6 +78,13 @@ struct ItemDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .navigationDestination(for: URL.self) { url in
             WebView(url: url)
+        }
+        .refreshable {
+            await withCheckedContinuation { continuation in
+                item.loadMoreContent(reload: true) {
+                    continuation.resume()
+                }
+            }
         }
     }
 }

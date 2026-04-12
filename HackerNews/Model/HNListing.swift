@@ -35,6 +35,7 @@ class HNListing: ObservableObject {
     @Published var items: [HNItem] = []
     @Published var isLoading = false
     @Published var hasMoreContent = false
+    @Published var loadError: String?
 
     private var nextPageUrl: String?
 
@@ -52,7 +53,8 @@ class HNListing: ObservableObject {
         guard !isLoading else { return }
 
         isLoading = true
-        if (reload) {
+        loadError = nil
+        if reload {
             self.nextPageUrl = nil
         }
 
@@ -65,8 +67,7 @@ class HNListing: ObservableObject {
 
                 await MainActor.run {
                     self.hasMoreContent = self.nextPageUrl != nil
-
-                    if (reload) {
+                    if reload {
                         self.items = newItems
                     } else {
                         self.items.append(contentsOf: newItems)
@@ -77,6 +78,7 @@ class HNListing: ObservableObject {
             } catch {
                 await MainActor.run {
                     self.isLoading = false
+                    self.loadError = error.localizedDescription
                     completion?()
                 }
             }

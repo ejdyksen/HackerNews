@@ -13,11 +13,21 @@ struct ListingView: View {
                 ListingItemCell(item: item)
             }
             if (!showRefresh) {
-                if listing.items.isEmpty {
+                if listing.items.isEmpty && listing.isLoading {
                     HStack(alignment: .center, spacing: 10) {
                         ProgressView()
                         Text("Loading").foregroundColor(.secondary)
                     }
+                } else if listing.items.isEmpty, let error = listing.loadError {
+                    VStack(spacing: 12) {
+                        Text("Failed to load")
+                            .foregroundColor(.secondary)
+                        Button("Retry") {
+                            listing.loadMoreContent(reload: true)
+                        }
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 20)
                 } else if listing.hasMoreContent {
                     HStack(alignment: .center, spacing: 10) {
                         ProgressView()
