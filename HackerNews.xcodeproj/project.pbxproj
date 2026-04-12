@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		290B8F662F8AB35E0096C1D6 /* AdaptiveHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 290B8F652F8AB35E0096C1D6 /* AdaptiveHomeView.swift */; };
 		290B8F672F8AB35E0096C1D6 /* AdaptiveHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 290B8F652F8AB35E0096C1D6 /* AdaptiveHomeView.swift */; };
+		290B8F6C2F8B3C780096C1D6 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 290B8F6B2F8B3C780096C1D6 /* AppState.swift */; };
+		290B8F6D2F8B3C780096C1D6 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 290B8F6B2F8B3C780096C1D6 /* AppState.swift */; };
 		291930B32D207EC2008756BB /* AuthController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291930B02D207EC2008756BB /* AuthController.swift */; };
 		291930B42D207EC2008756BB /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291930B12D207EC2008756BB /* LoginView.swift */; };
 		291930B52D207EC2008756BB /* AuthController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291930B02D207EC2008756BB /* AuthController.swift */; };
@@ -46,6 +48,7 @@
 
 /* Begin PBXFileReference section */
 		290B8F652F8AB35E0096C1D6 /* AdaptiveHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptiveHomeView.swift; sourceTree = "<group>"; };
+		290B8F6B2F8B3C780096C1D6 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		291930B02D207EC2008756BB /* AuthController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthController.swift; sourceTree = "<group>"; };
 		291930B12D207EC2008756BB /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		298551CE26691EBF00258A8A /* ItemDetailHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailHeader.swift; sourceTree = "<group>"; };
@@ -120,6 +123,7 @@
 			children = (
 				29A1B2C32D69010100000001 /* URLHandler.swift */,
 				290B8F652F8AB35E0096C1D6 /* AdaptiveHomeView.swift */,
+				290B8F6B2F8B3C780096C1D6 /* AppState.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -328,6 +332,7 @@
 				29D8F94D256B620600E37E1E /* PreviewData.swift in Sources */,
 				29D8F92E256B615B00E37E1E /* HNComment.swift in Sources */,
 				29F947B8265955CA00578039 /* ListingItemCell.swift in Sources */,
+				290B8F6C2F8B3C780096C1D6 /* AppState.swift in Sources */,
 				29EE31E8265B3E1000CE2569 /* CommentCell.swift in Sources */,
 				298551CF26691EBF00258A8A /* ItemDetailHeader.swift in Sources */,
 				29D8F8F9256B5FB500E37E1E /* ListingView.swift in Sources */,
@@ -356,6 +361,7 @@
 				290B8F672F8AB35E0096C1D6 /* AdaptiveHomeView.swift in Sources */,
 				29D8F8FA256B5FB500E37E1E /* ListingView.swift in Sources */,
 				29D8F911256B610300E37E1E /* ItemDetailView.swift in Sources */,
+				290B8F6D2F8B3C780096C1D6 /* AppState.swift in Sources */,
 				298551D026691EBF00258A8A /* ItemDetailHeader.swift in Sources */,
 				29D8F929256B615300E37E1E /* HNListing.swift in Sources */,
 				29D8F935256B615D00E37E1E /* HNItem.swift in Sources */,

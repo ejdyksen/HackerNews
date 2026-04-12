@@ -4,9 +4,9 @@ import SwiftUI
 
 @MainActor class HNItem: ObservableObject, Identifiable, Hashable, Equatable {
     let id: Int
-    let title: String
-    let storyLink: URL
-    let domain: String
+    var title: String
+    var storyLink: URL
+    var domain: String
 
     private var currentPage = 1
     var canLoadMore = true
@@ -19,8 +19,8 @@ import SwiftUI
         }
     }
 
-    let age: String
-    let author: String?
+    var age: String
+    var author: String?
 
     var score: Int?
     var commentCount: Int
@@ -57,6 +57,17 @@ import SwiftUI
         } else {
             return age
         }
+    }
+
+    nonisolated init(id: Int) {
+        self.id = id
+        self.title = ""
+        self.storyLink = URL(string: "https://news.ycombinator.com/item?id=\(id)")!
+        self.domain = ""
+        self.age = ""
+        self.author = nil
+        self.score = nil
+        self.commentCount = 0
     }
 
     nonisolated init(id: Int, title: String, storyLink: URL, domain: String, age: String, author: String, score: Int?, commentCount: Int?) {
@@ -157,6 +168,20 @@ import SwiftUI
             do {
                 let url = "https://news.ycombinator.com/item?id=\(self.id)&p=\(page)"
                 let doc = try await RequestController.shared.makeRequest(endpoint: url)
+
+                // Populate metadata from fatitem when navigated via deep link (title is empty)
+                if self.title.isEmpty,
+                   let fatRow = doc.css("table.fatitem tr.athing").first,
+                   let stub = HNItem(withXmlNode: fatRow) {
+                    self.objectWillChange.send()
+                    self.title = stub.title
+                    self.storyLink = stub.storyLink
+                    self.domain = stub.domain
+                    self.age = stub.age
+                    self.author = stub.author
+                    if let s = stub.score { self.score = s }
+                    self.commentCount = stub.commentCount
+                }
 
                 let parsedBody: AttributedString? = doc.css("table.fatitem .commtext").first
                     .map { HNComment.parseText($0) }

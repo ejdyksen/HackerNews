@@ -16,9 +16,20 @@ struct ItemDetailHeader: View {
             }
             .buttonStyle(.plain)
 
-            Text(item.subheading)
-                .font(.subheadline)
-                .foregroundColor(.secondary)
+            HStack(alignment: .firstTextBaseline) {
+                Text(item.subheading)
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+                Spacer()
+                Button {
+                    UIApplication.shared.open(item.storyLink)
+                } label: {
+                    Image(systemName: "safari")
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                }
+                .buttonStyle(.plain)
+            }
 
             Divider()
 

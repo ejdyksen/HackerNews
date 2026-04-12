@@ -2,6 +2,7 @@ import SwiftUI
 
 struct AdaptiveHomeView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @EnvironmentObject private var appState: AppState
     @State private var selectedListing: ListingType? = .news
     @State private var selectedItem: HNItem?
     @State private var columnVisibility: NavigationSplitViewVisibility = .all
@@ -42,6 +43,12 @@ struct AdaptiveHomeView: View {
             .navigationSplitViewStyle(.balanced)
             .onChange(of: selectedListing) {
                 selectedItem = nil
+            }
+            .onChange(of: appState.deepLinkItemID) { _, id in
+                guard let id else { return }
+                selectedItem = HNItem(id: id)
+                columnVisibility = .detailOnly
+                appState.deepLinkItemID = nil
             }
             .sheet(isPresented: $showingLoginSheet) {
                 LoginView()

@@ -9,10 +9,13 @@ import SwiftUI
 
 @main
 struct HackerNewsApp: App {
+    @StateObject private var appState = AppState()
+
     var body: some Scene {
         WindowGroup {
             AdaptiveHomeView()
                 .handleURLs()
+                .environmentObject(appState)
         }
     }
 }

@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct HomeView: View {
+    @EnvironmentObject private var appState: AppState
     @State private var path = NavigationPath()
     @StateObject private var authController = AuthController.shared
     @State private var showingLoginSheet = false
@@ -46,6 +47,14 @@ struct HomeView: View {
             }
             .navigationTitle("Home")
             .listStyle(.grouped)
+            .navigationDestination(for: HNItem.self) { item in
+                ItemDetailView(item: item)
+            }
+            .onChange(of: appState.deepLinkItemID) { _, id in
+                guard let id else { return }
+                path.append(HNItem(id: id))
+                appState.deepLinkItemID = nil
+            }
             .navigationDestination(for: ListingType.self) { destination in
                 switch destination {
                 case .news:
