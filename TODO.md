@@ -28,7 +28,7 @@ Reading experience comes first. Participation features come after the app is a g
 - [x] Show an error message when a listing or item fails to load (network error, parse failure)
 - [x] "No comments yet" empty state in `ItemDetailView`
 - [x] Retry button on failed loads
-- [ ] Handle the case where login POST succeeds but no `user` cookie is set (e.g. wrong password with no clear feedback path)
+- [x] Handle the case where login POST succeeds but no `user` cookie is set (e.g. wrong password with no clear feedback path)
 
 ---
 

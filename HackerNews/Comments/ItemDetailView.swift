@@ -3,6 +3,8 @@ import SwiftUI
 struct ItemDetailView: View {
     @ObservedObject var item: HNItem
     @State private var collapsedIDs: Set<Int> = []
+    var onToggleFullScreen: (() -> Void)? = nil
+    var isFullScreen: Bool = false
 
     private var visibleComments: [HNComment] {
         var result: [HNComment] = []
@@ -76,6 +78,17 @@ struct ItemDetailView: View {
         }
         .navigationTitle("\(item.commentCount) comments")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            if let toggle = onToggleFullScreen {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button(action: toggle) {
+                        Image(systemName: isFullScreen
+                            ? "arrow.down.right.and.arrow.up.left"
+                            : "arrow.up.left.and.arrow.down.right")
+                    }
+                }
+            }
+        }
         .navigationDestination(for: URL.self) { url in
             WebView(url: url)
         }

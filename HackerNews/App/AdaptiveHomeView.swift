@@ -4,6 +4,7 @@ struct AdaptiveHomeView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @State private var selectedListing: ListingType? = .news
     @State private var selectedItem: HNItem?
+    @State private var columnVisibility: NavigationSplitViewVisibility = .all
     @StateObject private var authController = AuthController.shared
     @State private var showingLoginSheet = false
 
@@ -11,7 +12,7 @@ struct AdaptiveHomeView: View {
 
     var body: some View {
         if horizontalSizeClass == .regular {
-            NavigationSplitView {
+            NavigationSplitView(columnVisibility: $columnVisibility) {
                 sidebarView
             } content: {
                 ListingContentColumn(listingType: currentListing, selectedItem: $selectedItem)
@@ -19,7 +20,15 @@ struct AdaptiveHomeView: View {
             } detail: {
                 NavigationStack {
                     if let item = selectedItem {
-                        ItemDetailView(item: item)
+                        ItemDetailView(
+                            item: item,
+                            onToggleFullScreen: {
+                                withAnimation {
+                                    columnVisibility = columnVisibility == .detailOnly ? .all : .detailOnly
+                                }
+                            },
+                            isFullScreen: columnVisibility == .detailOnly
+                        )
                     } else {
                         ContentUnavailableView {
                             Label("Select a story", systemImage: "newspaper")
