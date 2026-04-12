@@ -44,15 +44,10 @@ HackerNews/
 │   └── ListingItemCell.swift        Row: title + domain, subheading, comment count
 ├── Comments/
 │   ├── ItemDetailView.swift         ScrollView: header + flat LazyVStack comment list
-│   ├── ItemDetailHeader.swift       Story title/link (NavigationLink), subheading, body text
+│   ├── ItemDetailHeader.swift       Story title button (openURL), subheading, body text
 │   └── CommentCell.swift            Flat (non-recursive) cell: collapse/expand, vote context menu
 ├── WebView/
-│   ├── WebView.swift                SwiftUI shell with back/fwd/share/safari toolbar
-│   ├── WebViewWrapper.swift         UIViewRepresentable wrapping WKWebView
-│   ├── WebViewCoordinator.swift     WKNavigationDelegate → updates WebViewState
-│   └── WebViewState.swift           @Published state: loading, canGoBack/Fwd, url, pageTitle
-├── UIKit Views/
-│   └── ActivityView.swift           UIActivityViewController wrapper
+│   └── SafariView.swift             UIViewControllerRepresentable wrapping SFSafariViewController
 └── Preview Content/
     └── PreviewData.swift            Static HNItem/HNListing/HNComment fixtures + extensions
 ```
@@ -69,7 +64,7 @@ URLSession (RequestController) → HTMLDocument (Fuzi)
   → HNItem.buildFlatComments()                   (pre-order flatten for display)
 ```
 
-All network calls use `async/await`. Models are `ObservableObject` with `@Published` properties. UI updates are dispatched to `MainActor.run {}`.
+All network calls use `async/await`. Models are `@MainActor ObservableObject` with `@Published` properties.
 
 ### Navigation
 
@@ -80,22 +75,21 @@ All network calls use `async/await`. Models are `ObservableObject` with `@Publis
 HomeView (NavigationStack)
   → NavigationLink(value: ListingType) → listing view
     → NavigationLink(value: HNItem)    → ItemDetailView
-      → NavigationLink(value: URL)     → WebView
 ```
-Destination registrations: `ListingType` in `HomeView`, `HNItem` in `ListingView`, `URL` in `ItemDetailView`.
+Destination registrations: `ListingType` in `HomeView`, `HNItem` in `ListingView`.
 
 **iPad path** (regular size class → `AdaptiveHomeView`):
 ```
-NavigationSplitView
+NavigationSplitView(columnVisibility: $columnVisibility)
   ├── Sidebar: List(selection: $selectedListing) — ListingType picker
   ├── Content: ListingContentColumn — Button rows set $selectedItem
   └── Detail: NavigationStack.id(selectedItem?.id)
-        └── ItemDetailView → NavigationLink(value: URL) → WebView
+        └── ItemDetailView (expand button toggles columnVisibility ↔ .detailOnly)
 ```
 
-The `.id(selectedItem?.id)` on the detail `NavigationStack` is intentional and important: it forces SwiftUI to recreate the stack (clearing any pushed WebView) whenever the selected story changes. Do not remove it.
+The `.id(selectedItem?.id)` on the detail `NavigationStack` is intentional and important: it forces SwiftUI to recreate the stack whenever the selected story changes. Do not remove it.
 
-**URL handling**: `URLHandler` (attached at app root) intercepts all `openURL` calls and presents a WebView sheet. This handles links in comment `AttributedString` text. The story title in `ItemDetailHeader` uses `NavigationLink(value: URL)` (push, not sheet) — these are separate paths.
+**URL handling**: All URLs (story title taps and comment links) go through `openURL` → `URLHandler` → `SafariView` sheet. `URLHandler` (attached at app root) intercepts all `openURL` calls and presents a `SFSafariViewController` sheet. This means ad blockers and Safari extensions installed by the user are active in the in-app browser. There is no URL push-navigation in any NavigationStack.
 
 ### Comment Rendering
 
@@ -193,19 +187,13 @@ Text("\(item.title)\(Text(item.domainString).font(.caption)...)")
 - Long-press context `Menu` exposes upvote/downvote/unvote when `canUpvote` is true.
 - Vote state stored as `@Published isUpvoted / isDownvoted` on `HNComment`.
 
-### WebView
+### SafariView
 
-- `WebViewWrapper` is the `UIViewRepresentable` (previously had a typo: `WebViewWraper`)
-- `WebViewState` holds observable state; `WebViewCoordinator` is the `WKNavigationDelegate`
-- Coordinator holds `webViewState` as a plain `var` (not `@ObservedObject` — NSObject subclasses don't participate in SwiftUI observation)
-- Toolbar: back, forward, share (uses `webViewState.url`), open-in-Safari
+`SafariView` is a minimal `UIViewControllerRepresentable` wrapping `SFSafariViewController`. It implements `SFSafariViewControllerDelegate` via a `Coordinator` to forward the "Done" tap to SwiftUI's `dismiss` action. No custom toolbar — SFSafariVC provides back/forward/share/open-in-Safari/reader mode natively, and inherits all user-installed content blockers and Safari extensions.
 
 ## Known Issues / Technical Debt
 
-1. **HNItem pagination not reset**: `currentPage` and `canLoadMore` are never reset when the same item is viewed a second time. Second viewing starts pagination from where it left off. No pull-to-refresh on `ItemDetailView` yet.
-2. **Silent network errors**: errors in `HNItem.loadMoreContent()` and `HNListing` are caught and discarded with `print(error)`. No user-facing error state.
-3. **AuthController username parse**: `components(separatedBy: "&").first` — fragile against HN cookie format changes.
-4. **RequestController thread safety**: `rateLimitQueue: [String: Date]` is mutated from concurrent async tasks with no synchronization. Low practical risk but not actor-safe.
+1. **AuthController username parse**: `components(separatedBy: "&").first` — fragile against HN cookie format changes.
 
 ## Preview Data
 

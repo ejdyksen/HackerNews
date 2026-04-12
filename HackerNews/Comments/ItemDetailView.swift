@@ -89,9 +89,6 @@ struct ItemDetailView: View {
                 }
             }
         }
-        .navigationDestination(for: URL.self) { url in
-            WebView(url: url)
-        }
         .refreshable {
             await withCheckedContinuation { continuation in
                 item.loadMoreContent(reload: true) {

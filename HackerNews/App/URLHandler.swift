@@ -13,9 +13,7 @@ public struct URLHandler: ViewModifier {
             })
             .sheet(isPresented: $showWebView) {
                 if let url = presentedURL {
-                    NavigationView {
-                        WebView(url: url)
-                    }
+                    SafariView(url: url)
                 }
             }
     }

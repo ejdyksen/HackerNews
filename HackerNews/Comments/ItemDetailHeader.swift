@@ -2,17 +2,19 @@ import SwiftUI
 
 struct ItemDetailHeader: View {
     @ObservedObject var item: HNItem
+    @Environment(\.openURL) private var openURL
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
 
-            NavigationLink(value: item.storyLink) {
+            Button { openURL(item.storyLink) } label: {
                 Text(item.title)
                     .font(.title2)
                     .foregroundColor(.primary)
                     .padding(.top, 12)
-                    .multilineTextAlignment(.leading) // TODO: doesn't seem like I should need this.
+                    .multilineTextAlignment(.leading)
             }
+            .buttonStyle(.plain)
 
             Text(item.subheading)
                 .font(.subheadline)
