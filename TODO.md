@@ -14,6 +14,12 @@ Reading experience comes first. Participation features come after the app is a g
 - [x] **Typo** — rename `WebViewWraper` → `WebViewWrapper` (file + struct)
 - [x] **Duplicate enum** — consolidate `HomeDestination` and `ListingType` (currently mirror each other)
 - [x] **Fragile username parse** — `AuthController.loadStoredCookie()` uses `split(separator: "&").first`; parse properly with `URLComponents`
+- [x] **Comment count always 0** — `&nbsp;` between number and "comments" not split by `CharacterSet.whitespaces`; fixed with `prefix(while: isNumber)`
+- [x] **Broken Ask/Show HN story links** — relative hrefs (`item?id=N`) created unusable URLs; now resolved against HN base
+- [x] **Pagination broken for non-news listings** — More link href `?p=2` was concatenated as root URL; now resolved relative to listing base
+- [x] **Fragile comment indent** — was dividing spacer image `width` by 40; now reads the explicit `indent` attribute on `.ind`
+- [x] **Fragile fatitem body selector** — was using position-based `tr[4]`; now uses `table.fatitem .commtext`
+- [x] **More link matched by string** — iterated all `<a>` elements; now uses `a.morelink` CSS selector
 
 ---
 
@@ -61,6 +67,7 @@ Reading experience comes first. Participation features come after the app is a g
 
 - [x] **iPad split view** — three-column `NavigationSplitView` (sidebar/listing/detail) on `.regular` size class; iPhone keeps existing `NavigationStack` unchanged
 - [x] **Flat comment rendering** — replaced recursive `CommentCell` tree with a `LazyVStack` over a pre-order flat list; collapse/expand state centralised in `ItemDetailView`
+- [x] **Value-based navigation** — all navigation migrated to `NavigationLink(value:)` + `navigationDestination(for:)` throughout; old-style destination links removed
 - [ ] **Keyboard navigation** — arrow keys to move between stories/comments on iPad with keyboard
 - [ ] **VoiceOver labels** on vote buttons and collapse/expand controls
 - [ ] **Reduced motion** — respect `accessibilityReduceMotion` in comment collapse animation
