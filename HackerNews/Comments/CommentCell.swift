@@ -3,16 +3,18 @@
 import SwiftUI
 
 struct CommentCell: View {
+    static let contentHorizontalPadding: CGFloat = 16
+    static let indentStep: CGFloat = 12
+    static let maxIndent: CGFloat = 72
+
     @ObservedObject var comment: HNComment
     let isCollapsed: Bool
     let onToggle: () -> Void
     var onCollapseToRoot: ((HNComment) -> Void)? = nil
     var onShowUserProfile: ((String) -> Void)? = nil
-    private let indentStep: CGFloat = 12
-    private let maxIndent: CGFloat = 72
 
     private var leadingIndent: CGFloat {
-        min(CGFloat(comment.indentLevel) * indentStep, maxIndent)
+        min(CGFloat(comment.indentLevel) * Self.indentStep, Self.maxIndent)
     }
 
     private var collapsedPreviewText: String {
@@ -64,7 +66,7 @@ struct CommentCell: View {
                 }
             }
             .padding(.vertical, 8)
-            .padding(.horizontal, 16)
+            .padding(.horizontal, Self.contentHorizontalPadding)
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(Color(uiColor: .systemBackground))
             .contentShape(Rectangle())
@@ -111,8 +113,6 @@ struct CommentCell: View {
                     }
                 }
             }
-
-            Divider()
         }
     }
 }

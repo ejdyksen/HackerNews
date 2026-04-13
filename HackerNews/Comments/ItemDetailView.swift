@@ -82,7 +82,7 @@ struct ItemDetailView: View {
 
         LazyVStack(spacing: 0) {
             ForEach(visibleComments) { comment in
-                CommentCell(
+                CommentThreadRow(
                     comment: comment,
                     isCollapsed: collapsedIDs.contains(comment.id),
                     onToggle: {
@@ -195,6 +195,44 @@ struct ItemDetailView: View {
             item.refreshIfStale()
         }
         .lastUpdatedToast(item.lastUpdated, source: "item/\(item.id)")
+    }
+}
+
+private struct CommentThreadRow: View {
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+
+    @ObservedObject var comment: HNComment
+    let isCollapsed: Bool
+    let onToggle: () -> Void
+    var onCollapseToRoot: ((HNComment) -> Void)? = nil
+    var onShowUserProfile: ((String) -> Void)? = nil
+
+    private var separatorLeadingInset: CGFloat {
+        guard horizontalSizeClass == .regular else { return 0 }
+        return CommentCell.contentHorizontalPadding + min(
+            CGFloat(comment.indentLevel) * CommentCell.indentStep,
+            CommentCell.maxIndent
+        )
+    }
+
+    private var separatorTrailingInset: CGFloat {
+        horizontalSizeClass == .regular ? CommentCell.contentHorizontalPadding : 0
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            CommentCell(
+                comment: comment,
+                isCollapsed: isCollapsed,
+                onToggle: onToggle,
+                onCollapseToRoot: onCollapseToRoot,
+                onShowUserProfile: onShowUserProfile
+            )
+
+            Divider()
+                .padding(.leading, separatorLeadingInset)
+                .padding(.trailing, separatorTrailingInset)
+        }
     }
 }
 
