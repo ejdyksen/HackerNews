@@ -20,6 +20,12 @@ actor LinkPreviewService {
     private let userAgent =
         "Mozilla/5.0 (iPhone; CPU iPhone OS 16_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.5 Mobile/15E148 Safari/604.1"
 
+    /// Maximum bytes we'll accept for a single preview asset. The preview
+    /// renders at 76×76, so even a generously sized og:image should fit well
+    /// under this cap. Enforced both by Content-Length (up-front) and by
+    /// body size after download (defensive, in case the header lied).
+    private let maxPreviewBytes = 1_048_576
+
     func fetchPreview(for url: URL) async throws -> ResolvedLinkPreview? {
         guard let scheme = url.scheme?.lowercased(), scheme == "http" || scheme == "https" else {
             return nil
@@ -133,6 +139,17 @@ actor LinkPreviewService {
               !data.isEmpty else {
             throw RequestError.invalidResponse
         }
+
+        if let lengthHeader = httpResponse.value(forHTTPHeaderField: "Content-Length"),
+           let advertisedLength = Int(lengthHeader),
+           advertisedLength > maxPreviewBytes {
+            throw RequestError.invalidResponse
+        }
+
+        if data.count > maxPreviewBytes {
+            throw RequestError.invalidResponse
+        }
+
         return (data, httpResponse)
     }
 
