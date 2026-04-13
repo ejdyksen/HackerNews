@@ -148,6 +148,7 @@ struct ItemDetailView: View {
                             Button { Task { try? await item.unvote() } } label: {
                                 Label("Unvote", systemImage: "arrow.uturn.backward")
                             }
+                            .disabled(!item.canResetVote)
                         }
                     }
                 } label: {

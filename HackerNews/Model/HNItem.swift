@@ -29,6 +29,7 @@ import SwiftUI
     private var downvoteAuth: String?
     @Published var isUpvoted = false
     @Published var isDownvoted = false
+    @Published var canResetVote = false
 
     private var loadTask: Task<Void, Never>?
     private var activeLoadID: UUID?
@@ -46,6 +47,7 @@ import SwiftUI
         try await HNRepository.shared.submitVote(itemID: id, action: .up, auth: auth)
         isUpvoted = true
         isDownvoted = false
+        canResetVote = true
     }
 
     func downvote() async throws {
@@ -53,6 +55,7 @@ import SwiftUI
         try await HNRepository.shared.submitVote(itemID: id, action: .down, auth: auth)
         isDownvoted = true
         isUpvoted = false
+        canResetVote = true
     }
 
     func unvote() async throws {
@@ -60,6 +63,7 @@ import SwiftUI
         try await HNRepository.shared.submitVote(itemID: id, action: .un, auth: auth)
         isUpvoted = false
         isDownvoted = false
+        canResetVote = false
     }
 
     private static func buildFlatComments(_ root: [HNComment]) -> [HNComment] {
@@ -140,6 +144,7 @@ import SwiftUI
         downvoteAuth = parsed.voteState.downvoteAuth
         isUpvoted = parsed.voteState.isUpvoted
         isDownvoted = parsed.voteState.isDownvoted
+        canResetVote = parsed.voteState.canResetVote
     }
 
     func refreshIfStale() {

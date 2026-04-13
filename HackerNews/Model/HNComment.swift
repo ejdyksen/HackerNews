@@ -14,6 +14,7 @@ import SwiftUI
     private var downvoteAuth: String?
     @Published var isUpvoted: Bool = false
     @Published var isDownvoted: Bool = false
+    @Published var canResetVote: Bool = false
 
     var canUpvote: Bool { upvoteAuth != nil }
     var canDownvote: Bool { downvoteAuth != nil }
@@ -49,6 +50,7 @@ import SwiftUI
         )
         comment.isUpvoted = parsed.voteState.isUpvoted
         comment.isDownvoted = parsed.voteState.isDownvoted
+        comment.canResetVote = parsed.voteState.canResetVote
         comment.children = parsed.children.map(Self.model(from:))
         return comment
     }
@@ -58,6 +60,7 @@ import SwiftUI
         try await HNRepository.shared.submitVote(itemID: id, action: .up, auth: auth)
         isUpvoted = true
         isDownvoted = false
+        canResetVote = true
     }
     
     func downvote() async throws {
@@ -65,6 +68,7 @@ import SwiftUI
         try await HNRepository.shared.submitVote(itemID: id, action: .down, auth: auth)
         isDownvoted = true
         isUpvoted = false
+        canResetVote = true
     }
     
     func unvote() async throws {
@@ -72,5 +76,6 @@ import SwiftUI
         try await HNRepository.shared.submitVote(itemID: id, action: .un, auth: auth)
         isUpvoted = false
         isDownvoted = false
+        canResetVote = false
     }
 }

@@ -62,6 +62,7 @@ struct CommentCell: View {
                         Button { Task { try? await comment.unvote() } } label: {
                             Label("Unvote", systemImage: "arrow.uturn.backward")
                         }
+                        .disabled(!comment.canResetVote)
                     }
                 }
             }

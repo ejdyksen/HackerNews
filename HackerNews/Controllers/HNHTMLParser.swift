@@ -9,6 +9,7 @@ struct ParsedHNVoteState: Sendable {
     let downvoteAuth: String?
     let isUpvoted: Bool
     let isDownvoted: Bool
+    let canResetVote: Bool
 }
 
 struct ParsedHNItem: Sendable {
@@ -175,7 +176,7 @@ enum HNHTMLParser {
         }
 
         let commentCount = parseCommentCount(from: adjacentItem)
-        let voteState = parseVoteState(itemID: id, voteNode: node, stateNode: adjacentItem)
+        let voteState = parseItemVoteState(itemID: id, voteNode: node, stateNode: adjacentItem)
 
         return ParsedHNItem(
             id: id,
@@ -222,7 +223,44 @@ enum HNHTMLParser {
         return URL(string: "https://news.ycombinator.com/\(href)")
     }
 
-    private static func parseVoteState(
+    private static func parseItemVoteState(
+        itemID: Int,
+        voteNode: XMLElement,
+        stateNode: XMLElement
+    ) -> ParsedHNVoteState {
+        let upvoteNode = voteNode.firstChild(css: "#up_\(itemID)")
+        let upvoteAuth = authToken(from: upvoteNode?.attr("href"))
+        let downvoteAuth = authToken(
+            from: voteNode.firstChild(css: "#down_\(itemID)")?.attr("href")
+        )
+        let upvoteClasses = upvoteNode?.attr("class")?
+            .split(separator: " ")
+            .map(String.init) ?? []
+
+        let unvoteNode = stateNode.firstChild(css: "#un_\(itemID)")
+        let canResetVote = unvoteNode != nil
+        var isUpvoted = false
+        var isDownvoted = false
+        if let unvoteNode {
+            if unvoteNode.stringValue.lowercased() == "undown" {
+                isDownvoted = true
+            } else {
+                isUpvoted = true
+            }
+        } else if upvoteClasses.contains("nosee") {
+            isUpvoted = true
+        }
+
+        return ParsedHNVoteState(
+            upvoteAuth: upvoteAuth,
+            downvoteAuth: downvoteAuth,
+            isUpvoted: isUpvoted,
+            isDownvoted: isDownvoted,
+            canResetVote: canResetVote
+        )
+    }
+
+    private static func parseCommentVoteState(
         itemID: Int,
         voteNode: XMLElement,
         stateNode: XMLElement
@@ -234,9 +272,11 @@ enum HNHTMLParser {
             from: voteNode.firstChild(css: "#down_\(itemID)")?.attr("href")
         )
 
+        let unvoteNode = stateNode.firstChild(css: "#un_\(itemID)")
+        let canResetVote = unvoteNode != nil
         var isUpvoted = false
         var isDownvoted = false
-        if let unvoteNode = stateNode.firstChild(css: "#un_\(itemID)") {
+        if let unvoteNode {
             if unvoteNode.stringValue.lowercased() == "undown" {
                 isDownvoted = true
             } else {
@@ -248,7 +288,8 @@ enum HNHTMLParser {
             upvoteAuth: upvoteAuth,
             downvoteAuth: downvoteAuth,
             isUpvoted: isUpvoted,
-            isDownvoted: isDownvoted
+            isDownvoted: isDownvoted,
+            canResetVote: canResetVote
         )
     }
 
@@ -269,7 +310,7 @@ enum HNHTMLParser {
 
             let author = node.firstChild(css: ".comhead .hnuser")?.stringValue ?? ""
             let indentLevel = node.firstChild(css: ".ind")?["indent"].flatMap(Int.init) ?? 0
-            let voteState = parseVoteState(itemID: id, voteNode: node, stateNode: node)
+            let voteState = parseCommentVoteState(itemID: id, voteNode: node, stateNode: node)
 
             let comment = ParsedHNComment(
                 id: id,

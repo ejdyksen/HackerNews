@@ -33,6 +33,7 @@ struct ListingItemCellContent: View {
                     Button { Task { try? await item.unvote() } } label: {
                         Label("Unvote", systemImage: "arrow.uturn.backward")
                     }
+                    .disabled(!item.canResetVote)
                 }
             }
         }
