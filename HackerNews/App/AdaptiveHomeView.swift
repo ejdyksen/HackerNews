@@ -119,7 +119,6 @@ struct AdaptiveHomeView: View {
                 }
             }
         }
-        .navigationTitle("Home")
         .listStyle(.sidebar)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {

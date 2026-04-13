@@ -15,6 +15,15 @@ struct CommentCell: View {
         min(CGFloat(comment.indentLevel) * indentStep, maxIndent)
     }
 
+    private var collapsedPreviewText: String {
+        let plainText = String(comment.content.characters)
+        let compact = plainText
+            .replacingOccurrences(of: "\n", with: " ")
+            .split(whereSeparator: \.isWhitespace)
+            .joined(separator: " ")
+        return compact
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             VStack(alignment: .leading, spacing: 8) {
@@ -35,9 +44,15 @@ struct CommentCell: View {
                     Text(comment.author)
                         .font(.headline)
                         .foregroundColor(.accentColor)
-                    Text(relativeTimeString(from: comment.age, style: .short))
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
+                    if isCollapsed {
+                        Text(collapsedPreviewText)
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                    } else {
+                        Text(relativeTimeString(from: comment.age, style: .short))
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                    }
                 }
                 .lineLimit(1)
                 .padding(.leading, leadingIndent)
