@@ -15,10 +15,10 @@ struct ItemDetailHeader: View {
         guard let score = item.score else { return nil }
         if item.isUpvoted {
             return Text(
-                "\(Text(Image(systemName: "hand.thumbsup.fill")).foregroundStyle(.orange)) \(score) pts"
+                "\(Text(Image(systemName: "hand.thumbsup.fill")).foregroundStyle(.orange)) \(score) points"
             )
         }
-        return Text("\(score) pts")
+        return Text("\(score) points")
     }
 
     @ViewBuilder
@@ -45,7 +45,7 @@ struct ItemDetailHeader: View {
             }
 
             if let age = item.age {
-                Text(relativeTimeString(from: age, style: .short))
+                Text(relativeTimeString(from: age))
             }
         }
         .font(.subheadline)

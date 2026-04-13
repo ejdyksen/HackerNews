@@ -5,6 +5,7 @@ import SwiftUI
 struct ListingItemCellContent: View {
     @ObservedObject var item: HNItem
     var isSelected: Bool = false
+    var leadingInset: CGFloat = 0
     @EnvironmentObject private var readState: ReadStateStore
 
     var body: some View {
@@ -15,10 +16,11 @@ struct ListingItemCellContent: View {
 
             metadataText
                 .font(.footnote)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(isSelected ? .primary : .secondary)
                 .lineLimit(1)
                 .padding(.top, 6)
         }
+        .padding(.leading, leadingInset)
         .frame(maxWidth: .infinity, alignment: .leading)
         .contextMenu {
             ShareLink(
@@ -55,7 +57,7 @@ struct ListingItemCellContent: View {
         guard !item.domain.isEmpty else { return title }
         let domain = Text(" (\(item.domain))")
             .font(.caption)
-            .foregroundStyle(.secondary)
+            .foregroundStyle(isSelected ? .primary : .secondary)
         return Text("\(title)\(domain)")
     }
 

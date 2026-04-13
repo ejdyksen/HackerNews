@@ -162,7 +162,7 @@ private struct ListingContentColumnBody: View {
     let onUpdateDestination: (HNListingDestination) -> Void
 
     var body: some View {
-        List {
+        List(selection: $selectedItem) {
             if destination.explainer != nil {
                 ListingContextHeader(
                     destination: destination,
@@ -172,20 +172,13 @@ private struct ListingContentColumnBody: View {
             }
 
             ForEach(listing.items) { item in
-                Button {
-                    selectedItem = item
-                } label: {
+                NavigationLink(value: item) {
                     ListingItemCellContent(
                         item: item,
-                        isSelected: selectedItem?.id == item.id
+                        isSelected: selectedItem?.id == item.id,
+                        leadingInset: 6
                     )
                 }
-                .buttonStyle(.plain)
-                .listRowBackground(
-                    selectedItem?.id == item.id
-                        ? Color.accentColor.opacity(0.12)
-                        : nil
-                )
             }
 
             if listing.hasMoreContent {
