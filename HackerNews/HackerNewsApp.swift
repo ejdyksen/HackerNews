@@ -6,7 +6,6 @@ import SwiftUI
 struct HackerNewsApp: App {
     @StateObject private var appState = AppState()
     @StateObject private var cache = AppCache()
-    @StateObject private var readState = ReadStateStore()
 
     var body: some Scene {
         WindowGroup {
@@ -14,7 +13,6 @@ struct HackerNewsApp: App {
                 .handleURLs()
                 .environmentObject(appState)
                 .environmentObject(cache)
-                .environmentObject(readState)
         }
     }
 }

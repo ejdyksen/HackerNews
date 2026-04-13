@@ -5,7 +5,6 @@ import SwiftUI
 struct ItemDetailView: View {
     @ObservedObject var item: HNItem
     @EnvironmentObject private var cache: AppCache
-    @EnvironmentObject private var readState: ReadStateStore
     @State private var collapsedIDs: Set<Int> = []
     @State private var showScrolledTitle = false
     @State private var scrollPosition = ScrollPosition()
@@ -188,7 +187,6 @@ struct ItemDetailView: View {
         }
         .onAppear {
             cache.rememberItem(item)
-            readState.markRead(item.id)
             item.refreshIfOlderThan(Freshness.navigationRefreshThreshold)
         }
         .onForegroundActivation {
@@ -242,7 +240,6 @@ struct ItemDetailView_Previews: PreviewProvider {
             NavigationView {
                 ItemDetailView(item: HNItem.itemWithComments())
                     .environmentObject(AppCache())
-                    .environmentObject(ReadStateStore())
             }
         }
     }

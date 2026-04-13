@@ -78,7 +78,6 @@ struct ContentView_Previews: PreviewProvider {
         NavigationStack {
             ListingView(destination: .front(day: HNListingDestination.todayDayString)) { _ in }
                 .environmentObject(AppCache())
-                .environmentObject(ReadStateStore())
         }
     }
 }

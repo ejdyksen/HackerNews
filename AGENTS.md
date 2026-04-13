@@ -34,7 +34,7 @@ HackerNews/
 ├── App/
 │   ├── AdaptiveHomeView.swift       Root adaptive navigation container for iPhone/iPad
 │   ├── AppCache.swift               In-memory cache for canonical items and listing models
-│   ├── AppState.swift               Small app-wide state for deep-link routing plus lightweight read/unread history
+│   ├── AppState.swift               Small app-wide state for deep-link routing
 │   ├── DebugLog.swift               Debug-only logging shim
 │   ├── LastUpdatedToast.swift       Shared toast for refresh timestamps
 │   ├── RelativeTime.swift           Shared date formatting and HN age parsing
@@ -129,8 +129,6 @@ Navigation uses two related listing concepts:
 - `HNListingDestination` is the concrete cached endpoint, including filter state such as `front(day:)` or `best(hours:)`
 
 `AppCache` keys listing models by `HNListingDestination`, not by the broader kind. This lets filtered variants keep separate cached state.
-
-Read/unread state is separate from `HNItem`. `ReadStateStore` persists a short-lived set of recently opened story IDs in `UserDefaults` and listing rows query it to dim read titles.
 
 External story link previews are also cached outside `HNItem`. `AppCache` reuses `LinkPreview` objects keyed by story URL, and `LinkPreviewService` fetches page metadata directly from the linked site to resolve an image or icon for `ItemDetailHeader`.
 

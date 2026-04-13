@@ -6,7 +6,10 @@ struct ListingItemCellContent: View {
     @ObservedObject var item: HNItem
     var isSelected: Bool = false
     var leadingInset: CGFloat = 0
-    @EnvironmentObject private var readState: ReadStateStore
+
+    private var secondaryStyle: Color {
+        isSelected ? Color.white.opacity(0.85) : Color.secondary
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -16,7 +19,7 @@ struct ListingItemCellContent: View {
 
             metadataText
                 .font(.footnote)
-                .foregroundStyle(isSelected ? .primary : .secondary)
+                .foregroundStyle(secondaryStyle)
                 .lineLimit(1)
                 .padding(.top, 6)
         }
@@ -53,11 +56,10 @@ struct ListingItemCellContent: View {
     private var titleWithDomain: Text {
         let title = Text(item.title)
             .font(.headline)
-            .foregroundStyle(isSelected || !readState.isRead(item.id) ? .primary : Color.primary.opacity(0.58))
         guard !item.domain.isEmpty else { return title }
         let domain = Text(" (\(item.domain))")
             .font(.caption)
-            .foregroundStyle(isSelected ? .primary : .secondary)
+            .foregroundStyle(secondaryStyle)
         return Text("\(title)\(domain)")
     }
 
@@ -101,7 +103,6 @@ struct ListingItemCell_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             ListingItemCell(item: itemOne)
-                .environmentObject(ReadStateStore())
                 .previewLayout(.sizeThatFits)
                 .padding()
         }
