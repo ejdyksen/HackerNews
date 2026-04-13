@@ -150,10 +150,17 @@ enum HNHTMLParser {
 
     static func parseRichText(_ node: XMLElement, baseURL: URL? = nil) -> AttributedString {
         var result = AttributedString()
+        var previousRenderedBlock: RenderedBlock? = nil
 
         for child in node.childNodes(ofTypes: [.Element, .Text]) {
             if child.type == .Text {
-                result += AttributedString(child.stringValue)
+                let text = normalizedInlineText(from: child.stringValue)
+                guard !text.isEmpty else { continue }
+                if previousRenderedBlock == .pre && !result.characters.isEmpty {
+                    result += AttributedString("\n\n")
+                }
+                result += AttributedString(text)
+                previousRenderedBlock = nil
                 continue
             }
 
@@ -161,24 +168,33 @@ enum HNHTMLParser {
 
             switch element.tag {
             case "p":
+                let paragraph = parseRichText(element, baseURL: baseURL)
+                guard !paragraph.characters.isEmpty else { continue }
                 if !result.characters.isEmpty {
                     result += AttributedString("\n\n")
                 }
-                result += parseRichText(element, baseURL: baseURL)
+                result += paragraph
+                previousRenderedBlock = .paragraph
             case "i":
                 var italic = parseRichText(element, baseURL: baseURL)
-                italic.font = .italicSystemFont(ofSize: UIFont.systemFontSize)
+                italic.font = bodyItalicFont
                 result += italic
-            case "pre", "code":
+                previousRenderedBlock = nil
+            case "pre":
                 if !result.characters.isEmpty {
                     result += AttributedString("\n\n")
                 }
-                var code = AttributedString(element.stringValue)
-                code.font = .monospacedSystemFont(
-                    ofSize: UIFont.systemFontSize,
-                    weight: .regular
-                )
+                let preformattedText = trimmedPreformattedText(from: element.stringValue)
+                guard !preformattedText.isEmpty else { continue }
+                var code = AttributedString(preformattedText)
+                code.font = bodyMonospacedFont
                 result += code
+                previousRenderedBlock = .pre
+            case "code":
+                var code = AttributedString(element.stringValue)
+                code.font = bodyMonospacedFont
+                result += code
+                previousRenderedBlock = nil
             case "a":
                 let href = element.attr("href") ?? ""
                 var displayURL = href
@@ -192,12 +208,50 @@ enum HNHTMLParser {
                 }
                 link.foregroundColor = .blue
                 result += link
+                previousRenderedBlock = nil
             default:
                 result += parseRichText(element, baseURL: baseURL)
+                previousRenderedBlock = nil
             }
         }
 
         return result
+    }
+
+    private static func normalizedInlineText(from text: String) -> String {
+        guard !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+            return ""
+        }
+
+        return text.replacingOccurrences(
+            of: #"\s+"#,
+            with: " ",
+            options: .regularExpression
+        )
+    }
+
+    private static func trimmedPreformattedText(from text: String) -> String {
+        text.trimmingCharacters(in: CharacterSet(charactersIn: "\n"))
+    }
+
+    private static var bodyTextSize: CGFloat {
+        UIFont.preferredFont(forTextStyle: .body).pointSize
+    }
+
+    private static var bodyItalicFont: UIFont {
+        let descriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
+            .withSymbolicTraits(.traitItalic)
+        return UIFont(descriptor: descriptor ?? UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body),
+                      size: bodyTextSize)
+    }
+
+    private static var bodyMonospacedFont: UIFont {
+        .monospacedSystemFont(ofSize: bodyTextSize - 3, weight: .regular)
+    }
+
+    private enum RenderedBlock {
+        case paragraph
+        case pre
     }
 
     private static func document(from data: Data) throws -> HTMLDocument {

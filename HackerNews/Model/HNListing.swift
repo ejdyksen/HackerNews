@@ -20,7 +20,7 @@ enum ListingKind: String, CaseIterable, Hashable {
     case active
     case classic
 
-    static let storyKinds: [ListingKind] = [.news, .ask, .show, .newest, .jobs]
+    static let storyKinds: [ListingKind] = [.news, .newest, .ask, .show, .jobs]
     static let listKinds: [ListingKind] = [.front, .pool, .invited, .best, .active, .classic]
     static let extraListKinds: Set<ListingKind> = Set(listKinds)
 
