@@ -60,7 +60,7 @@ struct ItemDetailView: View {
             rootComment = comment
         }
 
-        withAnimation(.easeInOut) {
+        _ = withAnimation(.easeInOut) {
             collapsedIDs.insert(rootComment.id)
         }
     }

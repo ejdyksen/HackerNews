@@ -25,7 +25,9 @@ struct SettingsView: View {
                         }
 
                         Button("Logout", role: .destructive) {
-                            authController.logout()
+                            Task {
+                                await authController.logout()
+                            }
                         }
                     } else {
                         Button("Login") {

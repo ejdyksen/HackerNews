@@ -77,7 +77,7 @@ struct ListingItemCellContent: View {
         }
         if let author = item.author { pieces.append(Text("by \(author)")) }
         if let age = item.age { pieces.append(Text(relativeTimeString(from: age, style: .short))) }
-        pieces.append(Text(" · \(item.commentCount) comments"))
+        pieces.append(Text("· \(item.commentCount) comments"))
 
         var result = pieces.first ?? Text("")
         for piece in pieces.dropFirst() {

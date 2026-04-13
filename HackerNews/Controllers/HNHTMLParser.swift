@@ -240,6 +240,16 @@ enum HNHTMLParser {
         text.trimmingCharacters(in: CharacterSet(charactersIn: "\n"))
     }
 
+    /// HN's `.age` span carries a `title` attribute in the form
+    /// "2026-04-12T18:30:29 1776018629" — local ISO time plus a Unix timestamp.
+    /// We parse the Unix timestamp since it's timezone-unambiguous.
+    private static func hnDate(fromAge element: XMLElement) -> Date? {
+        guard let title = element["title"] else { return nil }
+        let parts = title.split(separator: " ")
+        guard parts.count >= 2, let unix = TimeInterval(parts[1]) else { return nil }
+        return Date(timeIntervalSince1970: unix)
+    }
+
     private static var bodyTextSize: CGFloat {
         UIFont.preferredFont(forTextStyle: .body).pointSize
     }
@@ -461,7 +471,13 @@ enum HNHTMLParser {
                 continue
             }
 
-            guard let parentPath = lastCommentAtLevel[indentLevel - 1] else { continue }
+            guard let parentPath = lastCommentAtLevel[indentLevel - 1] else {
+                debugLog(
+                    "parser/comments",
+                    "dropping comment \(id): missing parent path for indent \(indentLevel)"
+                )
+                continue
+            }
             let insertedPath = append(comment, to: &rootComments, parentPath: parentPath)
             lastCommentAtLevel[indentLevel] = insertedPath
         }

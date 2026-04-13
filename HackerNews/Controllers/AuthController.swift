@@ -47,10 +47,8 @@ import Security
         return true
     }
 
-    func logout() {
-        Task {
-            await RequestController.shared.clearHNSessionCookies()
-        }
+    func logout() async {
+        await RequestController.shared.clearHNSessionCookies()
         deleteStoredValue(account: cookieAccount)
         deleteStoredValue(account: usernameAccount)
         isLoggedIn = false
