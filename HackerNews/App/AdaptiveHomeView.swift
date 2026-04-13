@@ -36,7 +36,8 @@ struct AdaptiveHomeView: View {
                 ListingContentColumn(
                     destination: currentListing,
                     selectedItem: $selectedItem,
-                    onUpdateDestination: updateListing
+                    onUpdateDestination: updateListing,
+                    onShowSettings: { showingSettings = true }
                 )
                 .navigationSplitViewColumnWidth(min: 280, ideal: 340, max: 500)
             } detail: {
@@ -125,16 +126,6 @@ struct AdaptiveHomeView: View {
             }
         }
         .listStyle(.sidebar)
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    showingSettings = true
-                } label: {
-                    Image(systemName: "gearshape")
-                }
-                .accessibilityLabel("Settings")
-            }
-        }
     }
 
     private func updateListing(_ destination: HNListingDestination) {
@@ -147,6 +138,7 @@ struct ListingContentColumn: View {
     let destination: HNListingDestination
     @Binding var selectedItem: HNItem?
     let onUpdateDestination: (HNListingDestination) -> Void
+    let onShowSettings: () -> Void
     @EnvironmentObject private var cache: AppCache
 
     var body: some View {
@@ -154,7 +146,8 @@ struct ListingContentColumn: View {
             destination: destination,
             listing: cache.listing(for: destination),
             selectedItem: $selectedItem,
-            onUpdateDestination: onUpdateDestination
+            onUpdateDestination: onUpdateDestination,
+            onShowSettings: onShowSettings
         )
     }
 }
@@ -164,6 +157,7 @@ private struct ListingContentColumnBody: View {
     @ObservedObject var listing: HNListing
     @Binding var selectedItem: HNItem?
     let onUpdateDestination: (HNListingDestination) -> Void
+    let onShowSettings: () -> Void
 
     var body: some View {
         List(selection: $selectedItem) {
@@ -193,6 +187,14 @@ private struct ListingContentColumnBody: View {
         }
         .navigationTitle(destination.displayName)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button(action: onShowSettings) {
+                    Image(systemName: "gearshape")
+                }
+                .accessibilityLabel("Settings")
+            }
+        }
         .task(id: destination) {
             listing.loadInitialContent()
             listing.refreshIfStale()
