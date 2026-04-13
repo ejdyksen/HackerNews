@@ -106,9 +106,11 @@ struct ItemDetailHeader: View {
     }
 }
 
+#if DEBUG
 struct ItemDetailHeader_Previews: PreviewProvider {
     static var previews: some View {
         ItemDetailHeader(item: HNItem.itemWithComments())
             .environmentObject(AppCache())
     }
 }
+#endif

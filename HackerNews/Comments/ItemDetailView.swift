@@ -234,6 +234,7 @@ private struct CommentThreadRow: View {
     }
 }
 
+#if DEBUG
 struct ItemDetailView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
@@ -244,3 +245,4 @@ struct ItemDetailView_Previews: PreviewProvider {
         }
     }
 }
+#endif

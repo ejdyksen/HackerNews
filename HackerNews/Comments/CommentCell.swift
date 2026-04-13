@@ -117,6 +117,7 @@ struct CommentCell: View {
     }
 }
 
+#if DEBUG
 struct CommentCell_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -131,3 +132,4 @@ struct CommentCell_Previews: PreviewProvider {
         .previewLayout(.sizeThatFits)
     }
 }
+#endif
