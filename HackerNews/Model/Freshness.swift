@@ -9,7 +9,7 @@ enum Freshness: Equatable {
 
     static let freshThreshold: TimeInterval = 60 * 5
     static let staleThreshold: TimeInterval = 60 * 60
-    static let navigationRefreshThreshold: TimeInterval = 60
+    static let navigationRefreshThreshold: TimeInterval = 60 * 5
 
     init(for date: Date?, now: Date = .now) {
         guard let date else {

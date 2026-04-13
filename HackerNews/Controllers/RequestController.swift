@@ -1,5 +1,5 @@
-// Low-level HTTP transport for the app. This actor owns request retries,
-// throttling, and cookie helpers, but it does not know how to parse HN pages.
+// Low-level HTTP transport for the app. This actor owns request retries
+// and cookie helpers, but it does not know how to parse HN pages.
 import Foundation
 
 enum RequestError: Error {
@@ -34,8 +34,6 @@ actor RequestController {
     private let hackerNewsDomain = "news.ycombinator.com"
     private let maxRetries = 3
     private let baseDelay: TimeInterval = 1.0
-    private let minimumRequestInterval: TimeInterval = 1.0
-    private var nextRequestEarliestAt: Date = .distantPast
 
     private init() {}
 
@@ -106,27 +104,6 @@ actor RequestController {
             .forEach(HTTPCookieStorage.shared.deleteCookie)
     }
 
-    /// Reserves the next request slot, sleeping if the caller would otherwise
-    /// fire within `minimumRequestInterval` of the previous reservation.
-    ///
-    /// Reservation advances `nextRequestEarliestAt` *before* the caller
-    /// suspends on the network. Without that, two Tasks that entered the
-    /// actor close together would both see the same old timestamp, both pass
-    /// the guard, and issue duplicate network requests. Advancing the
-    /// reservation up-front makes subsequent callers wait for the correct
-    /// slot even while an earlier caller is still waiting for URLSession to
-    /// resume.
-    private func reserveRequestSlot() async throws {
-        let now = Date()
-        let earliest = max(now, nextRequestEarliestAt)
-        nextRequestEarliestAt = earliest.addingTimeInterval(minimumRequestInterval)
-
-        let waitInterval = earliest.timeIntervalSince(now)
-        if waitInterval > 0 {
-            try await Task.sleep(nanoseconds: UInt64(waitInterval * 1_000_000_000))
-        }
-    }
-
     private func requestWithRetry(
         endpoint: String,
         method: String,
@@ -138,8 +115,6 @@ actor RequestController {
         guard let url = URL(string: endpoint) else {
             throw RequestError.invalidURL
         }
-
-        try await reserveRequestSlot()
 
         var request = URLRequest(url: url)
         request.httpMethod = method

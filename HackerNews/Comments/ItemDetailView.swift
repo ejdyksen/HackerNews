@@ -187,7 +187,9 @@ struct ItemDetailView: View {
         }
         .onAppear {
             cache.rememberItem(item)
-            item.refreshIfOlderThan(Freshness.navigationRefreshThreshold)
+            if item.lastUpdated != nil {
+                item.refreshIfOlderThan(Freshness.navigationRefreshThreshold)
+            }
         }
         .onForegroundActivation {
             item.refreshIfStale()
