@@ -38,7 +38,7 @@ struct AdaptiveHomeView: View {
                     selectedItem: $selectedItem,
                     onUpdateDestination: updateListing
                 )
-                .navigationSplitViewColumnWidth(min: 280, ideal: 370, max: 520)
+                .navigationSplitViewColumnWidth(min: 280, ideal: 340, max: 500)
             } detail: {
                 NavigationStack(path: $detailPath) {
                     if let item = selectedItem {
@@ -175,7 +175,10 @@ private struct ListingContentColumnBody: View {
                 Button {
                     selectedItem = item
                 } label: {
-                    ListingItemCellContent(item: item)
+                    ListingItemCellContent(
+                        item: item,
+                        isSelected: selectedItem?.id == item.id
+                    )
                 }
                 .buttonStyle(.plain)
                 .listRowBackground(
@@ -192,6 +195,7 @@ private struct ListingContentColumnBody: View {
             }
         }
         .navigationTitle(destination.displayName)
+        .navigationBarTitleDisplayMode(.inline)
         .task(id: destination) {
             listing.loadInitialContent()
             listing.refreshIfStale()

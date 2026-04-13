@@ -4,6 +4,7 @@ import SwiftUI
 
 struct ListingItemCellContent: View {
     @ObservedObject var item: HNItem
+    var isSelected: Bool = false
     @EnvironmentObject private var readState: ReadStateStore
 
     var body: some View {
@@ -50,7 +51,7 @@ struct ListingItemCellContent: View {
     private var titleWithDomain: Text {
         let title = Text(item.title)
             .font(.headline)
-            .foregroundStyle(readState.isRead(item.id) ? Color.primary.opacity(0.58) : .primary)
+            .foregroundStyle(isSelected || !readState.isRead(item.id) ? .primary : Color.primary.opacity(0.58))
         guard !item.domain.isEmpty else { return title }
         let domain = Text(" (\(item.domain))")
             .font(.caption)
@@ -73,7 +74,7 @@ struct ListingItemCellContent: View {
             }
         }
         if let author = item.author { pieces.append(Text("by \(author)")) }
-        if let age = item.age { pieces.append(Text(relativeTimeString(from: age))) }
+        if let age = item.age { pieces.append(Text(relativeTimeString(from: age, style: .short))) }
         pieces.append(Text(" · \(item.commentCount) comments"))
 
         var result = pieces.first ?? Text("")
