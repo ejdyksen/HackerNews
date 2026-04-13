@@ -54,7 +54,7 @@ struct CommentCell: View {
             .background(Color(uiColor: .systemBackground))
             .contentShape(Rectangle())
             .onTapGesture {
-                withAnimation(.easeInOut(duration: 0.2)) {
+                withAnimation(.easeInOut(duration: 0.3)) {
                     onToggle()
                 }
             }

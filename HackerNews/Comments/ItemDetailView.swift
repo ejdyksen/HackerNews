@@ -60,7 +60,7 @@ struct ItemDetailView: View {
             rootComment = comment
         }
 
-        withAnimation(.easeInOut(duration: 0.2)) {
+        withAnimation(.easeInOut) {
             collapsedIDs.insert(rootComment.id)
         }
     }
@@ -74,7 +74,7 @@ struct ItemDetailView: View {
             } action: { maxY in
                 let shouldShow = maxY < 0
                 if shouldShow != showScrolledTitle {
-                    withAnimation(.easeInOut(duration: 0.2)) {
+                    withAnimation(.easeInOut) {
                         showScrolledTitle = shouldShow
                     }
                 }
