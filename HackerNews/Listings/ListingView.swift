@@ -3,27 +3,39 @@
 import SwiftUI
 
 struct ListingView: View {
-    let listingType: ListingType
+    let destination: HNListingDestination
+    let onUpdateDestination: (HNListingDestination) -> Void
     @EnvironmentObject private var cache: AppCache
 
     var body: some View {
         ListingViewBody(
-            listingType: listingType,
-            listing: cache.listing(for: listingType)
+            destination: destination,
+            listing: cache.listing(for: destination),
+            onUpdateDestination: onUpdateDestination
         )
     }
 }
 
 private struct ListingViewBody: View {
-    let listingType: ListingType
+    let destination: HNListingDestination
     @ObservedObject var listing: HNListing
+    let onUpdateDestination: (HNListingDestination) -> Void
     @State private var showRefresh = false
 
     var body: some View {
         List {
+            if destination.explainer != nil {
+                ListingContextHeader(
+                    destination: destination,
+                    onUpdateDestination: onUpdateDestination
+                )
+                .listRowSeparator(.hidden)
+            }
+
             ForEach(listing.items) { item in
                 ListingItemCell(item: item)
             }
+
             if !showRefresh, listing.hasMoreContent {
                 ProgressView()
                     .frame(maxWidth: .infinity)
@@ -35,7 +47,7 @@ private struct ListingViewBody: View {
             await listing.loadMoreContent(reload: true)
             showRefresh = false
         }
-        .task {
+        .task(id: destination) {
             listing.loadInitialContent()
             listing.refreshIfStale()
         }
@@ -55,25 +67,16 @@ private struct ListingViewBody: View {
                 }
             }
         }
-        .listStyle(PlainListStyle())
-        .navigationTitle(listingType.displayName)
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Menu {
-                    Text("Placeholder")
-                } label: {
-                    Image(systemName: "ellipsis")
-                }
-            }
-        }
-        .lastUpdatedToast(listing.lastUpdated, source: "listing/\(listingType)")
+        .listStyle(.plain)
+        .navigationTitle(destination.displayName)
+        .lastUpdatedToast(listing.lastUpdated, source: "listing/\(destination.logKey)")
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
-            ListingView(listingType: .news)
+            ListingView(destination: .front(day: HNListingDestination.todayDayString)) { _ in }
                 .environmentObject(AppCache())
         }
     }

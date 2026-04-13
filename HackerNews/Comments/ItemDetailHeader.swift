@@ -16,8 +16,9 @@ struct ItemDetailHeader: View {
         if let score = item.score {
             if item.isUpvoted {
                 pieces.append(
-                    Text(Image(systemName: "hand.thumbsup.fill")).foregroundColor(.orange)
-                    + Text(" \(score) points")
+                    Text(
+                        "\(Text(Image(systemName: "hand.thumbsup.fill")).foregroundStyle(.orange)) \(score) points"
+                    )
                 )
             } else {
                 pieces.append(Text("\(score) points"))
@@ -28,7 +29,7 @@ struct ItemDetailHeader: View {
 
         var result = pieces.first ?? Text("")
         for piece in pieces.dropFirst() {
-            result = result + Text(" ") + piece
+            result = Text("\(result) \(piece)")
         }
         return result
     }

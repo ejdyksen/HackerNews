@@ -62,14 +62,11 @@ extension HNParsingError: LocalizedError {
 enum HNHTMLParser {
     static func parseListingPage(
         data: Data,
-        listingType: ListingType
+        baseURLString: String
     ) throws -> ParsedHNListingPage {
         let doc = try document(from: data)
         let items = doc.css("tr.athing").compactMap(parseItem)
-        let nextPageURL = parseMoreLink(
-            doc: doc,
-            baseURLString: "https://news.ycombinator.com/\(listingType.rawValue)"
-        )
+        let nextPageURL = parseMoreLink(doc: doc, baseURLString: baseURLString)
         return ParsedHNListingPage(items: items, nextPageURL: nextPageURL)
     }
 

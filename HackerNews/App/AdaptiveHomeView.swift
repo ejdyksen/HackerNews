@@ -3,24 +3,41 @@
 import SwiftUI
 
 struct AdaptiveHomeView: View {
+    @AppStorage("showExtraLists") private var showExtraLists = false
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @EnvironmentObject private var appState: AppState
     @EnvironmentObject private var cache: AppCache
-    @State private var selectedListing: ListingType? = .news
+    @State private var selectedListing: HNListingDestination? = .news
+    @State private var rememberedListings: [ListingKind: HNListingDestination] = [
+        .news: .news
+    ]
     @State private var selectedItem: HNItem?
     @State private var columnVisibility: NavigationSplitViewVisibility = .all
-    @StateObject private var authController = AuthController.shared
-    @State private var showingLoginSheet = false
+    @State private var showingSettings = false
 
-    private var currentListing: ListingType { selectedListing ?? .news }
+    private var currentListing: HNListingDestination { selectedListing ?? .news }
+
+    private var selectedListingKind: Binding<ListingKind?> {
+        Binding(
+            get: { selectedListing?.kind },
+            set: { newKind in
+                guard let newKind else { return }
+                selectedListing = rememberedListings[newKind] ?? newKind.defaultDestination
+            }
+        )
+    }
 
     var body: some View {
         if horizontalSizeClass == .regular {
             NavigationSplitView(columnVisibility: $columnVisibility) {
                 sidebarView
             } content: {
-                ListingContentColumn(listingType: currentListing, selectedItem: $selectedItem)
-                    .navigationSplitViewColumnWidth(min: 280, ideal: 370, max: 520)
+                ListingContentColumn(
+                    destination: currentListing,
+                    selectedItem: $selectedItem,
+                    onUpdateDestination: updateListing
+                )
+                .navigationSplitViewColumnWidth(min: 280, ideal: 370, max: 520)
             } detail: {
                 NavigationStack {
                     if let item = selectedItem {
@@ -59,8 +76,13 @@ struct AdaptiveHomeView: View {
                 columnVisibility = .detailOnly
                 appState.deepLinkItemID = nil
             }
-            .sheet(isPresented: $showingLoginSheet) {
-                LoginView()
+            .sheet(isPresented: $showingSettings) {
+                SettingsView()
+            }
+            .onChange(of: showExtraLists) { _, isEnabled in
+                guard !isEnabled, currentListing.kind.isExtraList else { return }
+                selectedListing = .news
+                selectedItem = nil
             }
         } else {
             HomeView()
@@ -69,55 +91,74 @@ struct AdaptiveHomeView: View {
 
     @ViewBuilder
     private var sidebarView: some View {
-        List(selection: $selectedListing) {
-            Section("Stories") {
-                ForEach(ListingType.allCases, id: \.self) { type in
-                    Label(type.displayName, systemImage: type.iconName)
-                        .tag(type as ListingType?)
+        List(selection: selectedListingKind) {
+            Section(ListingSection.stories.rawValue) {
+                ForEach(ListingKind.storyKinds, id: \.self) { kind in
+                    Label(kind.displayName, systemImage: kind.iconName)
+                        .tag(kind as ListingKind?)
                 }
             }
-            Section("Account") {
-                if authController.isLoggedIn {
-                    Text(authController.username ?? "User")
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                    Button("Logout") {
-                        authController.logout()
-                    }
-                    .foregroundColor(.red)
-                } else {
-                    Button("Login") {
-                        showingLoginSheet = true
+            if showExtraLists {
+                Section(ListingSection.lists.rawValue) {
+                    ForEach(ListingKind.listKinds, id: \.self) { kind in
+                        Label(kind.displayName, systemImage: kind.iconName)
+                            .tag(kind as ListingKind?)
                     }
                 }
             }
         }
-        .navigationTitle("HN")
+        .navigationTitle("Home")
         .listStyle(.sidebar)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    showingSettings = true
+                } label: {
+                    Image(systemName: "gearshape")
+                }
+                .accessibilityLabel("Settings")
+            }
+        }
+    }
+
+    private func updateListing(_ destination: HNListingDestination) {
+        selectedListing = destination
+        rememberedListings[destination.kind] = destination
     }
 }
 
 struct ListingContentColumn: View {
-    let listingType: ListingType
+    let destination: HNListingDestination
     @Binding var selectedItem: HNItem?
+    let onUpdateDestination: (HNListingDestination) -> Void
     @EnvironmentObject private var cache: AppCache
 
     var body: some View {
         ListingContentColumnBody(
-            listingType: listingType,
-            listing: cache.listing(for: listingType),
-            selectedItem: $selectedItem
+            destination: destination,
+            listing: cache.listing(for: destination),
+            selectedItem: $selectedItem,
+            onUpdateDestination: onUpdateDestination
         )
     }
 }
 
 private struct ListingContentColumnBody: View {
-    let listingType: ListingType
+    let destination: HNListingDestination
     @ObservedObject var listing: HNListing
     @Binding var selectedItem: HNItem?
+    let onUpdateDestination: (HNListingDestination) -> Void
 
     var body: some View {
         List {
+            if destination.explainer != nil {
+                ListingContextHeader(
+                    destination: destination,
+                    onUpdateDestination: onUpdateDestination
+                )
+                .listRowSeparator(.hidden)
+            }
+
             ForEach(listing.items) { item in
                 Button {
                     selectedItem = item
@@ -131,14 +172,15 @@ private struct ListingContentColumnBody: View {
                         : nil
                 )
             }
+
             if listing.hasMoreContent {
                 ProgressView()
                     .frame(maxWidth: .infinity)
                     .onAppear { listing.loadMoreContent() }
             }
         }
-        .navigationTitle(listingType.displayName)
-        .task(id: listingType) {
+        .navigationTitle(destination.displayName)
+        .task(id: destination) {
             listing.loadInitialContent()
             listing.refreshIfStale()
         }
@@ -161,6 +203,6 @@ private struct ListingContentColumnBody: View {
                 }
             }
         }
-        .lastUpdatedToast(listing.lastUpdated, source: "column/\(listingType)")
+        .lastUpdatedToast(listing.lastUpdated, source: "column/\(destination.logKey)")
     }
 }

@@ -4,15 +4,15 @@ import Foundation
 import SwiftUI
 
 @MainActor final class AppCache: ObservableObject {
-    private var listings: [ListingType: HNListing] = [:]
+    private var listings: [HNListingDestination: HNListing] = [:]
     private var items: [Int: HNItem] = [:]
     private var accessOrder: [Int] = []
     private let maxItems = 20
 
-    func listing(for type: ListingType) -> HNListing {
-        if let existing = listings[type] { return existing }
-        let created = HNListing(type, cache: self)
-        listings[type] = created
+    func listing(for destination: HNListingDestination) -> HNListing {
+        if let existing = listings[destination] { return existing }
+        let created = HNListing(destination, cache: self)
+        listings[destination] = created
         return created
     }
 

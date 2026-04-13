@@ -45,15 +45,17 @@ HackerNews/
 │   ├── HNRepository.swift           HN-specific endpoint orchestration and vote submission
 │   └── HNHTMLParser.swift           Fuzi-based HTML parsing into lightweight DTOs
 ├── Model/
-│   ├── HNListing.swift              Feed state and pagination for one listing type
+│   ├── HNListing.swift              Listing kinds, parameterized listing destinations, and feed pagination state
 │   ├── HNItem.swift                 Story state, metadata, comments, and vote state
 │   ├── HNComment.swift              Comment state mapped from parsed comment trees
 │   └── Freshness.swift              Shared staleness thresholds
 ├── Home/
-│   ├── HomeView.swift               iPhone home screen and top-level navigation menu
-│   └── LoginView.swift              Sheet-based username/password form
+│   ├── HomeView.swift               iPhone root container; starts on Front Page and hosts toolbar-based listing switching
+│   ├── LoginView.swift              Sheet-based username/password form
+│   └── SettingsView.swift           Modal settings sheet; currently only exposes account actions
 ├── Listings/
 │   ├── ListingView.swift            Phone listing screen bound to one cached HNListing
+│   ├── ListingContextHeader.swift   Shared list explainer/filter header for HN list pages
 │   └── ListingItemCell.swift        Story row rendering and row-level vote menu
 ├── Comments/
 │   ├── ItemDetailView.swift         Story detail screen with flat comment thread
@@ -88,15 +90,17 @@ All network calls use `async/await`. Core models are `@MainActor ObservableObjec
 
 **iPhone path** (compact size class → `HomeView`):
 ```
-HomeView (NavigationStack)
-  → NavigationLink(value: ListingType) → ListingView
-    → NavigationLink(value: HNItem)    → ItemDetailView
+HomeView (NavigationStack; root defaults to `.news`)
+  → ListingView(selectedListing)
+    → NavigationLink(value: HNItem) → ItemDetailView
 ```
+
+Listing switching on iPhone is handled from the root toolbar menu rather than by pushing sibling listing screens onto the stack. The menu is grouped into `Stories` and `Lists`.
 
 **iPad path** (regular size class → `AdaptiveHomeView`):
 ```
 NavigationSplitView(columnVisibility: $columnVisibility)
-  ├── Sidebar: ListingType selection
+  ├── Sidebar: ListingKind selection
   ├── Content: ListingContentColumn sets $selectedItem
   └── Detail: NavigationStack.id(selectedItem?.id)
         └── ItemDetailView
@@ -111,6 +115,12 @@ All URLs go through `openURL` and are intercepted by `URLHandler`, which is atta
 There is no separate Safari wrapper file anymore. `URLHandler` presents `SFSafariViewController` directly.
 
 ### Listing and Item Loading
+
+Navigation uses two related listing concepts:
+- `ListingKind` is the stable menu/sidebar identity (`news`, `ask`, `front`, `best`, etc.)
+- `HNListingDestination` is the concrete cached endpoint, including filter state such as `front(day:)` or `best(hours:)`
+
+`AppCache` keys listing models by `HNListingDestination`, not by the broader kind. This lets filtered variants keep separate cached state.
 
 `HNListing` and `HNItem` both use a **single-flight** loading pattern:
 - repeated non-reload load requests reuse the active task

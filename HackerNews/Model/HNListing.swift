@@ -2,12 +2,27 @@
 // story feed, while HNRepository handles the actual page fetch and parsing.
 import Foundation
 
-enum ListingType: String, CaseIterable {
+enum ListingSection: String {
+    case stories = "Stories"
+    case lists = "Lists"
+}
+
+enum ListingKind: String, CaseIterable, Hashable {
     case news
     case ask
     case show
     case newest
     case jobs
+    case front
+    case pool
+    case invited
+    case best
+    case active
+    case classic
+
+    static let storyKinds: [ListingKind] = [.news, .ask, .show, .newest, .jobs]
+    static let listKinds: [ListingKind] = [.front, .pool, .invited, .best, .active, .classic]
+    static let extraListKinds: Set<ListingKind> = Set(listKinds)
 
     var displayName: String {
         switch self {
@@ -16,6 +31,12 @@ enum ListingType: String, CaseIterable {
         case .show: return "Show HN"
         case .newest: return "New Stories"
         case .jobs: return "Jobs"
+        case .front: return "Front"
+        case .pool: return "Pool"
+        case .invited: return "Invited"
+        case .best: return "Best"
+        case .active: return "Active"
+        case .classic: return "Classic"
         }
     }
 
@@ -26,12 +47,209 @@ enum ListingType: String, CaseIterable {
         case .show: return "eye"
         case .newest: return "clock"
         case .jobs: return "briefcase"
+        case .front: return "calendar"
+        case .pool: return "arrow.triangle.2.circlepath"
+        case .invited: return "envelope"
+        case .best: return "star"
+        case .active: return "flame"
+        case .classic: return "hourglass"
         }
+    }
+
+    var section: ListingSection {
+        switch self {
+        case .news, .ask, .show, .newest, .jobs:
+            return .stories
+        case .front, .pool, .invited, .best, .active, .classic:
+            return .lists
+        }
+    }
+
+    var explainer: String? {
+        switch self {
+        case .front:
+            return "Front page submissions for a given day."
+        case .pool:
+            return "Links selected for a second chance at the front page."
+        case .invited:
+            return "Overlooked links, invited to repost."
+        case .best:
+            return "Highest-voted recent links."
+        case .active:
+            return "Most active current discussions."
+        case .classic:
+            return "Front page as voted by ancient accounts."
+        case .news, .ask, .show, .newest, .jobs:
+            return nil
+        }
+    }
+
+    var defaultDestination: HNListingDestination {
+        switch self {
+        case .news: return .news
+        case .ask: return .ask
+        case .show: return .show
+        case .newest: return .newest
+        case .jobs: return .jobs
+        case .front: return .front(day: HNListingDestination.todayDayString)
+        case .pool: return .pool
+        case .invited: return .invited
+        case .best: return .best(hours: 48)
+        case .active: return .active
+        case .classic: return .classic
+        }
+    }
+
+    var isExtraList: Bool {
+        Self.extraListKinds.contains(self)
     }
 }
 
+enum HNListingDestination: Hashable {
+    case news
+    case ask
+    case show
+    case newest
+    case jobs
+    case front(day: String)
+    case pool
+    case invited
+    case best(hours: Int)
+    case active
+    case classic
+
+    static var todayDayString: String {
+        dayString(from: .now)
+    }
+
+    var kind: ListingKind {
+        switch self {
+        case .news: return .news
+        case .ask: return .ask
+        case .show: return .show
+        case .newest: return .newest
+        case .jobs: return .jobs
+        case .front: return .front
+        case .pool: return .pool
+        case .invited: return .invited
+        case .best: return .best
+        case .active: return .active
+        case .classic: return .classic
+        }
+    }
+
+    var displayName: String { kind.displayName }
+
+    var iconName: String { kind.iconName }
+
+    var explainer: String? { kind.explainer }
+
+    var endpointURLString: String {
+        switch self {
+        case .news:
+            return "https://news.ycombinator.com/news"
+        case .ask:
+            return "https://news.ycombinator.com/ask"
+        case .show:
+            return "https://news.ycombinator.com/show"
+        case .newest:
+            return "https://news.ycombinator.com/newest"
+        case .jobs:
+            return "https://news.ycombinator.com/jobs"
+        case .front(let day):
+            return "https://news.ycombinator.com/front?day=\(day)"
+        case .pool:
+            return "https://news.ycombinator.com/pool"
+        case .invited:
+            return "https://news.ycombinator.com/invited"
+        case .best(let hours):
+            return "https://news.ycombinator.com/best?h=\(hours)"
+        case .active:
+            return "https://news.ycombinator.com/active"
+        case .classic:
+            return "https://news.ycombinator.com/classic"
+        }
+    }
+
+    var logKey: String {
+        switch self {
+        case .front(let day):
+            return "front/\(day)"
+        case .best(let hours):
+            return "best/\(hours)h"
+        default:
+            return kind.rawValue
+        }
+    }
+
+    var frontDay: String? {
+        guard case .front(let day) = self else { return nil }
+        return day
+    }
+
+    var bestHours: Int? {
+        guard case .best(let hours) = self else { return nil }
+        return hours
+    }
+
+    static func dayString(from date: Date) -> String {
+        dayFormatter.string(from: Calendar.current.startOfDay(for: date))
+    }
+
+    static func date(from day: String) -> Date? {
+        dayFormatter.date(from: day)
+    }
+
+    static func frontDayLabel(for day: String) -> String {
+        guard let date = date(from: day) else { return day }
+        return frontLabelFormatter.string(from: date)
+    }
+
+    static func previousDayString(from day: String) -> String? {
+        guard
+            let date = date(from: day),
+            let previous = Calendar.current.date(byAdding: .day, value: -1, to: date)
+        else {
+            return nil
+        }
+        return dayString(from: previous)
+    }
+
+    static func nextDayString(from day: String) -> String? {
+        guard
+            let date = date(from: day),
+            let next = Calendar.current.date(byAdding: .day, value: 1, to: date)
+        else {
+            return nil
+        }
+
+        let today = Calendar.current.startOfDay(for: .now)
+        guard next <= today else { return nil }
+        return dayString(from: next)
+    }
+
+    private static let dayFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.calendar = Calendar(identifier: .gregorian)
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.timeZone = .current
+        formatter.dateFormat = "yyyy-MM-dd"
+        return formatter
+    }()
+
+    private static let frontLabelFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.calendar = Calendar(identifier: .gregorian)
+        formatter.locale = .current
+        formatter.timeZone = .current
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .none
+        return formatter
+    }()
+}
+
 @MainActor final class HNListing: ObservableObject {
-    let listingType: ListingType
+    let destination: HNListingDestination
 
     @Published var items: [HNItem] = []
     @Published var isLoading = false
@@ -44,8 +262,8 @@ enum ListingType: String, CaseIterable {
     private var activeLoadID: UUID?
     weak var cache: AppCache?
 
-    init(_ listingType: ListingType, cache: AppCache? = nil) {
-        self.listingType = listingType
+    init(_ destination: HNListingDestination, cache: AppCache? = nil) {
+        self.destination = destination
         self.cache = cache
     }
 
@@ -65,7 +283,7 @@ enum ListingType: String, CaseIterable {
 
     func refreshIfStale() {
         if case .stale = Freshness(for: lastUpdated) {
-            debugLog("listing/\(listingType)", "stale -> refresh")
+            debugLog("listing/\(destination.logKey)", "stale -> refresh")
             staleRefresh()
         }
     }
@@ -108,7 +326,7 @@ enum ListingType: String, CaseIterable {
 
             do {
                 let page = try await HNRepository.shared.fetchListingPage(
-                    listingType: self.listingType,
+                    destination: self.destination,
                     nextPageURL: pageURL
                 )
                 self.finishLoad(
@@ -162,14 +380,14 @@ enum ListingType: String, CaseIterable {
             if isFirstPageFetch {
                 lastUpdated = .now
                 debugLog(
-                    "listing/\(listingType)",
+                    "listing/\(destination.logKey)",
                     "loaded \(items.count) items\(reload ? " (reload)" : "")"
                 )
             }
 
         case .failure(let error):
             loadError = error.localizedDescription
-            debugLog("listing/\(listingType)", "load error: \(error.localizedDescription)")
+            debugLog("listing/\(destination.logKey)", "load error: \(error.localizedDescription)")
         }
     }
 

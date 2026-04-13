@@ -12,15 +12,15 @@ actor HNRepository {
     static let shared = HNRepository()
 
     func fetchListingPage(
-        listingType: ListingType,
+        destination: HNListingDestination,
         nextPageURL: String?
     ) async throws -> ParsedHNListingPage {
-        let endpoint = nextPageURL ?? "https://news.ycombinator.com/\(listingType.rawValue)"
+        let endpoint = nextPageURL ?? destination.endpointURLString
         let data = try await RequestController.shared.request(
             endpoint: endpoint,
             shouldRetry: true
         )
-        return try HNHTMLParser.parseListingPage(data: data, listingType: listingType)
+        return try HNHTMLParser.parseListingPage(data: data, baseURLString: endpoint)
     }
 
     func fetchItemPage(itemID: Int, page: Int) async throws -> ParsedHNItemPage {
