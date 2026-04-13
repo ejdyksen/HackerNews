@@ -7,6 +7,7 @@ import SwiftUI
     private var listings: [HNListingDestination: HNListing] = [:]
     private var items: [Int: HNItem] = [:]
     private var users: [String: HNUser] = [:]
+    private var linkPreviews: [URL: LinkPreview] = [:]
     private var accessOrder: [Int] = []
     private let maxItems = 20
 
@@ -48,6 +49,14 @@ import SwiftUI
         if let existing = users[username] { return existing }
         let created = HNUser(username: username)
         users[username] = created
+        return created
+    }
+
+    func linkPreview(for url: URL) -> LinkPreview {
+        let cacheKey = url.absoluteURL
+        if let existing = linkPreviews[cacheKey] { return existing }
+        let created = LinkPreview(url: cacheKey)
+        linkPreviews[cacheKey] = created
         return created
     }
 

@@ -163,14 +163,15 @@ struct ItemDetailView: View {
                 }
             }
             ToolbarItem(placement: .topBarTrailing) {
+                ShareLink(
+                    item: item.shareLink,
+                    preview: SharePreview(item.title)
+                ) {
+                    Image(systemName: "square.and.arrow.up")
+                }
+            }
+            ToolbarItem(placement: .topBarTrailing) {
                 Menu {
-                    ShareLink(
-                        item: item.shareLink,
-                        preview: SharePreview(item.title)
-                    ) {
-                        Label("Share", systemImage: "square.and.arrow.up")
-                    }
-
                     Button {
                         UIApplication.shared.open(safariURL)
                     } label: {
@@ -203,6 +204,7 @@ struct ItemDetailView_Previews: PreviewProvider {
             NavigationView {
                 ItemDetailView(item: HNItem.itemWithComments())
                     .environmentObject(AppCache())
+                    .environmentObject(ReadStateStore())
             }
         }
     }

@@ -5,6 +5,7 @@ import SwiftUI
 struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss
     @AppStorage("showExtraLists") private var showExtraLists = false
+    @AppStorage("hideWebsitePreviews") private var hideWebsitePreviews = false
     @StateObject private var authController = AuthController.shared
     @State private var showingLoginSheet = false
 
@@ -13,6 +14,7 @@ struct SettingsView: View {
             Form {
                 Section("Home") {
                     Toggle("Show Extra Lists", isOn: $showExtraLists)
+                    Toggle("Hide Website Previews", isOn: $hideWebsitePreviews)
                 }
 
                 Section("Account") {

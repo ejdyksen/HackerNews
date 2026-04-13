@@ -43,12 +43,14 @@ HackerNews/
 │   ├── RequestController.swift      Low-level HTTP transport, rate limiting, retry, cookie helpers
 │   ├── AuthController.swift         Login/logout and HN session persistence in Keychain
 │   ├── HNRepository.swift           HN-specific endpoint orchestration and vote submission
-│   └── HNHTMLParser.swift           Fuzi-based HTML parsing into lightweight DTOs
+│   ├── HNHTMLParser.swift           Fuzi-based HTML parsing into lightweight DTOs
+│   └── LinkPreviewService.swift     External-site preview discovery and image/icon fetching for story headers
 ├── Model/
 │   ├── HNListing.swift              Listing kinds, parameterized listing destinations, and feed pagination state
 │   ├── HNItem.swift                 Story state, metadata, comments, and vote state
 │   ├── HNComment.swift              Comment state mapped from parsed comment trees
 │   ├── HNUser.swift                 User profile route and observable user-page state
+│   ├── LinkPreview.swift            Observable cached state for external story preview images
 │   └── Freshness.swift              Shared staleness thresholds
 ├── Home/
 │   ├── HomeView.swift               iPhone root container; starts on Front Page and hosts toolbar-based listing switching
@@ -61,6 +63,7 @@ HackerNews/
 ├── Comments/
 │   ├── ItemDetailView.swift         Story detail screen with flat comment thread
 │   ├── ItemDetailHeader.swift       Story header with title, metadata, and self-post body
+│   ├── ExternalLinkPreviewView.swift Square preview affordance for external story links
 │   └── CommentCell.swift            Flat comment row with collapse and vote menu
 ├── Profile/
 │   └── UserProfileView.swift        Native Hacker News user profile screen
@@ -128,6 +131,8 @@ Navigation uses two related listing concepts:
 `AppCache` keys listing models by `HNListingDestination`, not by the broader kind. This lets filtered variants keep separate cached state.
 
 Read/unread state is separate from `HNItem`. `ReadStateStore` persists a short-lived set of recently opened story IDs in `UserDefaults` and listing rows query it to dim read titles.
+
+External story link previews are also cached outside `HNItem`. `AppCache` reuses `LinkPreview` objects keyed by story URL, and `LinkPreviewService` fetches page metadata directly from the linked site to resolve an image or icon for `ItemDetailHeader`.
 
 `HNListing` and `HNItem` both use a **single-flight** loading pattern:
 - repeated non-reload load requests reuse the active task

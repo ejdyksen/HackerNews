@@ -5,6 +5,7 @@ import SwiftUI
 struct ItemDetailHeader: View {
     @ObservedObject var item: HNItem
     var onShowUserProfile: ((String) -> Void)? = nil
+    @AppStorage("hideWebsitePreviews") private var hideWebsitePreviews = false
     @Environment(\.openURL) private var openURL
 
     private var isSelfLink: Bool {
@@ -63,21 +64,36 @@ struct ItemDetailHeader: View {
         return Text("\(title) \(domain)")
     }
 
-    var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-
-            if isSelfLink {
+    @ViewBuilder
+    private var titleView: some View {
+        if isSelfLink {
+            titleWithDomain
+                .multilineTextAlignment(.leading)
+        } else {
+            Button { openURL(item.storyLink) } label: {
                 titleWithDomain
                     .multilineTextAlignment(.leading)
-            } else {
-                Button { openURL(item.storyLink) } label: {
-                    titleWithDomain
-                        .multilineTextAlignment(.leading)
-                }
-                .buttonStyle(.plain)
             }
+            .buttonStyle(.plain)
+        }
+    }
 
-            subheadingView
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            if isSelfLink || hideWebsitePreviews {
+                titleView
+                subheadingView
+            } else {
+                HStack(alignment: .top, spacing: 14) {
+                    VStack(alignment: .leading, spacing: 10) {
+                        titleView
+                        subheadingView
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                    ExternalLinkPreviewView(url: item.storyLink)
+                }
+            }
 
             Divider()
 
@@ -93,5 +109,6 @@ struct ItemDetailHeader: View {
 struct ItemDetailHeader_Previews: PreviewProvider {
     static var previews: some View {
         ItemDetailHeader(item: HNItem.itemWithComments())
+            .environmentObject(AppCache())
     }
 }
