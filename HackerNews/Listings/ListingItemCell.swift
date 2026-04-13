@@ -19,6 +19,13 @@ struct ListingItemCellContent: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .contextMenu {
+            ShareLink(
+                item: item.shareLink,
+                preview: SharePreview(item.title)
+            ) {
+                Label("Share", systemImage: "square.and.arrow.up")
+            }
+
             if item.canUpvote {
                 if !item.isUpvoted && !item.isDownvoted {
                     Button { Task { try? await item.upvote() } } label: {

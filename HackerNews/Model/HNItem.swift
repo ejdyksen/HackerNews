@@ -84,6 +84,10 @@ import SwiftUI
         URL(string: "https://news.ycombinator.com/item?id=\(id)")!
     }
 
+    var shareLink: URL {
+        storyLink.absoluteString == itemLink.absoluteString ? itemLink : storyLink
+    }
+
     var subheading: String {
         var parts: [String] = []
         if let score { parts.append("\(score) points") }

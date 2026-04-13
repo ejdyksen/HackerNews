@@ -53,9 +53,19 @@ struct CommentCell: View {
                 }
                 .padding(.vertical, 8)
                 .padding(.horizontal, 16)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(Color(uiColor: .systemBackground))
+                .contentShape(Rectangle())
             }
             .buttonStyle(PlainButtonStyle())
             .contextMenu {
+                ShareLink(
+                    item: comment.itemLink,
+                    preview: SharePreview(comment.shareTitle)
+                ) {
+                    Label("Share", systemImage: "square.and.arrow.up")
+                }
+
                 if comment.canUpvote {
                     if !comment.isUpvoted && !comment.isDownvoted {
                         Button { Task { try? await comment.upvote() } } label: {

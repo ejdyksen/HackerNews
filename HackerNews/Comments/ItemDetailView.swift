@@ -12,6 +12,10 @@ struct ItemDetailView: View {
     var isFullScreen: Bool = false
     private let readableContentWidth: CGFloat = 760
 
+    private var safariURL: URL {
+        item.shareLink
+    }
+
     private var truncatedTitle: String {
         let maxChars = 35
         if item.title.count > maxChars {
@@ -137,22 +141,17 @@ struct ItemDetailView: View {
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Menu {
-                    if item.canUpvote {
-                        if !item.isUpvoted && !item.isDownvoted {
-                            Button { Task { try? await item.upvote() } } label: {
-                                Label("Upvote", systemImage: "hand.thumbsup")
-                            }
-                            if item.canDownvote {
-                                Button { Task { try? await item.downvote() } } label: {
-                                    Label("Downvote", systemImage: "hand.thumbsdown")
-                                }
-                            }
-                        } else {
-                            Button { Task { try? await item.unvote() } } label: {
-                                Label("Unvote", systemImage: "arrow.uturn.backward")
-                            }
-                            .disabled(!item.canResetVote)
-                        }
+                    ShareLink(
+                        item: item.shareLink,
+                        preview: SharePreview(item.title)
+                    ) {
+                        Label("Share", systemImage: "square.and.arrow.up")
+                    }
+
+                    Button {
+                        UIApplication.shared.open(safariURL)
+                    } label: {
+                        Label("Open in Safari", systemImage: "safari")
                     }
                 } label: {
                     Image(systemName: "ellipsis")

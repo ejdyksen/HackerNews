@@ -18,6 +18,8 @@ import SwiftUI
 
     var canUpvote: Bool { upvoteAuth != nil }
     var canDownvote: Bool { downvoteAuth != nil }
+    var itemLink: URL { URL(string: "https://news.ycombinator.com/item?id=\(id)")! }
+    var shareTitle: String { "Comment by \(author)" }
 
     nonisolated init(id: Int, author: String, age: Date, indentLevel: Int, content: AttributedString) {
         self.id = id
