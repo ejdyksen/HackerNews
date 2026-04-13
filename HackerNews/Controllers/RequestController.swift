@@ -5,25 +5,23 @@ import Foundation
 enum RequestError: Error {
     case networkError(Error)
     case serverError(Int)
-    case rateLimitExceeded
     case maxRetriesExceeded
     case invalidResponse
     case invalidURL
+    case invalidBody
     case emptyResponse
 }
 
 extension RequestError: LocalizedError {
     var errorDescription: String? {
         switch self {
-        case .rateLimitExceeded:
-            return "Loading too quickly — please wait a moment and try again."
         case .maxRetriesExceeded:
             return "Server is busy. Please try again later."
         case .serverError(let code):
             return "Server error (\(code)). Please try again."
         case .networkError(let underlying):
             return "Network error: \(underlying.localizedDescription)"
-        case .invalidURL, .invalidResponse, .emptyResponse:
+        case .invalidURL, .invalidResponse, .invalidBody, .emptyResponse:
             return "Unexpected response from server."
         }
     }
@@ -36,8 +34,8 @@ actor RequestController {
     private let hackerNewsDomain = "news.ycombinator.com"
     private let maxRetries = 3
     private let baseDelay: TimeInterval = 1.0
-    private var rateLimitQueue: [String: Date] = [:]
     private let minimumRequestInterval: TimeInterval = 1.0
+    private var nextRequestEarliestAt: Date = .distantPast
 
     private init() {}
 
@@ -68,7 +66,7 @@ actor RequestController {
         components.queryItems = items
 
         guard let body = components.percentEncodedQuery?.data(using: .utf8) else {
-            throw RequestError.invalidResponse
+            throw RequestError.invalidBody
         }
 
         return try await request(
@@ -108,6 +106,27 @@ actor RequestController {
             .forEach(HTTPCookieStorage.shared.deleteCookie)
     }
 
+    /// Reserves the next request slot, sleeping if the caller would otherwise
+    /// fire within `minimumRequestInterval` of the previous reservation.
+    ///
+    /// Reservation advances `nextRequestEarliestAt` *before* the caller
+    /// suspends on the network. Without that, two Tasks that entered the
+    /// actor close together would both see the same old timestamp, both pass
+    /// the guard, and issue duplicate network requests. Advancing the
+    /// reservation up-front makes subsequent callers wait for the correct
+    /// slot even while an earlier caller is still waiting for URLSession to
+    /// resume.
+    private func reserveRequestSlot() async throws {
+        let now = Date()
+        let earliest = max(now, nextRequestEarliestAt)
+        nextRequestEarliestAt = earliest.addingTimeInterval(minimumRequestInterval)
+
+        let waitInterval = earliest.timeIntervalSince(now)
+        if waitInterval > 0 {
+            try await Task.sleep(nanoseconds: UInt64(waitInterval * 1_000_000_000))
+        }
+    }
+
     private func requestWithRetry(
         endpoint: String,
         method: String,
@@ -116,14 +135,11 @@ actor RequestController {
         retryCount: Int,
         shouldRetry: Bool
     ) async throws -> Data {
-        if let lastRequestTime = rateLimitQueue[endpoint],
-           Date().timeIntervalSince(lastRequestTime) < minimumRequestInterval {
-            throw RequestError.rateLimitExceeded
-        }
-
         guard let url = URL(string: endpoint) else {
             throw RequestError.invalidURL
         }
+
+        try await reserveRequestSlot()
 
         var request = URLRequest(url: url)
         request.httpMethod = method
@@ -139,8 +155,6 @@ actor RequestController {
             guard let httpResponse = response as? HTTPURLResponse else {
                 throw RequestError.invalidResponse
             }
-
-            rateLimitQueue[endpoint] = Date()
 
             switch httpResponse.statusCode {
             case 200...299:
