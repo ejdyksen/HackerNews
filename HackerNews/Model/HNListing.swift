@@ -275,9 +275,10 @@ enum HNListingDestination: Hashable {
 
     func staleRefresh() {
         guard !isLoading else { return }
-        items = []
-        nextPageURL = nil
-        hasMoreContent = false
+        // Don't clear `items` up-front: if the refresh fails, the user would
+        // be left staring at an empty error screen instead of the previously
+        // loaded (but stale) stories. `finishLoad` replaces `items` atomically
+        // on success and leaves them untouched on failure.
         loadMoreContent(reload: true)
     }
 

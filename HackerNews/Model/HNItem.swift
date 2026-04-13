@@ -188,19 +188,15 @@ import SwiftUI
             return Task {}
         }
 
-        if reload {
-            currentPage = 1
-            canLoadMore = true
-            rootComments = []
-            flatComments = []
-            body = nil
-            loadError = nil
-        }
-
         isLoading = true
         loadError = nil
 
-        let page = currentPage
+        // Reloads always refetch page 1, but the existing rootComments /
+        // flatComments / body / pagination state are kept until the new
+        // response lands in `finishLoad`. That way a failing reload leaves
+        // the user reading the previously loaded thread instead of staring
+        // at an empty error screen.
+        let page = reload ? 1 : currentPage
         let loadID = UUID()
         activeLoadID = loadID
 
@@ -254,11 +250,24 @@ import SwiftUI
             }
 
             let newRootComments = HNComment.models(from: pageData.rootComments)
-            let updatedRootComments = rootComments + newRootComments
 
-            rootComments = updatedRootComments
-            flatComments = Self.buildFlatComments(updatedRootComments)
-            body = pageData.body
+            if reload {
+                // page is forced to 1 on reload, so replace rather than append.
+                rootComments = newRootComments
+                flatComments = Self.buildFlatComments(newRootComments)
+                body = pageData.body
+            } else {
+                let updatedRootComments = rootComments + newRootComments
+                rootComments = updatedRootComments
+                flatComments = Self.buildFlatComments(updatedRootComments)
+                // HN only emits the fatitem (self-post body) on page 1. On
+                // later pagination pages pageData.body is nil, and blindly
+                // assigning would erase the body we loaded earlier.
+                if let newBody = pageData.body {
+                    body = newBody
+                }
+            }
+
             canLoadMore = pageData.hasMoreContent
             currentPage = page + 1
             loadError = nil
