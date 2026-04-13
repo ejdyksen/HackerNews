@@ -73,6 +73,12 @@ extension HNParsingError: LocalizedError {
 }
 
 enum HNHTMLParser {
+    /// Base URL used to resolve relative links inside HN-authored rich text
+    /// (comment bodies, self-post bodies, user about fields). HN markup emits
+    /// hrefs like `item?id=123` and `user?id=pg` without a host, so these must
+    /// be resolved against the site root before they become routable URLs.
+    static let hnBaseURL = URL(string: "https://news.ycombinator.com/")!
+
     static func parseListingPage(
         data: Data,
         baseURLString: String
@@ -124,7 +130,7 @@ enum HNHTMLParser {
         )
 
         let about = aboutNode
-            .map { parseRichText($0, baseURL: URL(string: "https://news.ycombinator.com/")) }
+            .map { parseRichText($0, baseURL: hnBaseURL) }
             .flatMap { $0.characters.isEmpty ? nil : $0 }
 
         return ParsedHNUserPage(
@@ -145,7 +151,7 @@ enum HNHTMLParser {
     }
 
     static func parseCommentText(_ node: XMLElement) -> AttributedString {
-        parseRichText(node)
+        parseRichText(node, baseURL: hnBaseURL)
     }
 
     static func parseRichText(_ node: XMLElement, baseURL: URL? = nil) -> AttributedString {

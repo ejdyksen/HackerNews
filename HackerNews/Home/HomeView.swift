@@ -66,6 +66,11 @@ struct HomeView: View {
             path.append(target)
             appState.deepLinkItemID = nil
         }
+        .onChange(of: appState.deepLinkUsername) { _, username in
+            guard let username else { return }
+            path.append(HNUserRoute(username: username))
+            appState.deepLinkUsername = nil
+        }
         .sheet(isPresented: $showingSettings) {
             SettingsView()
         }

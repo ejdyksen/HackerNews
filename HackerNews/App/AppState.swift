@@ -5,6 +5,7 @@ import SwiftUI
 
 @MainActor final class AppState: ObservableObject {
     @Published var deepLinkItemID: Int?
+    @Published var deepLinkUsername: String?
 }
 
 @MainActor final class ReadStateStore: ObservableObject {

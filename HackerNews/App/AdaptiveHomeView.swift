@@ -88,6 +88,11 @@ struct AdaptiveHomeView: View {
                 columnVisibility = .detailOnly
                 appState.deepLinkItemID = nil
             }
+            .onChange(of: appState.deepLinkUsername) { _, username in
+                guard let username else { return }
+                detailPath.append(HNUserRoute(username: username))
+                appState.deepLinkUsername = nil
+            }
             .sheet(isPresented: $showingSettings) {
                 SettingsView()
             }

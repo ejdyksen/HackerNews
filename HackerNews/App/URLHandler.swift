@@ -7,12 +7,15 @@ public struct URLHandler: ViewModifier {
     @EnvironmentObject private var appState: AppState
     @State private var pendingURL: URL?
     @State private var pendingItemID: Int?
+    @State private var pendingUsername: String?
 
     public func body(content: Content) -> some View {
         content
             .environment(\.openURL, OpenURLAction { url in
                 if let id = Self.hnItemID(from: url) {
                     pendingItemID = id
+                } else if let username = Self.hnUsername(from: url) {
+                    pendingUsername = username
                 } else {
                     pendingURL = url
                 }
@@ -22,6 +25,11 @@ public struct URLHandler: ViewModifier {
                 guard let id else { return }
                 appState.deepLinkItemID = id
                 pendingItemID = nil
+            }
+            .onChange(of: pendingUsername) { _, username in
+                guard let username else { return }
+                appState.deepLinkUsername = username
+                pendingUsername = nil
             }
             .onChange(of: pendingURL) { _, url in
                 guard let url else { return }
@@ -38,6 +46,17 @@ public struct URLHandler: ViewModifier {
             let id = components.queryItems?.first(where: { $0.name == "id" })?.value.flatMap(Int.init)
         else { return nil }
         return id
+    }
+
+    private static func hnUsername(from url: URL) -> String? {
+        guard
+            let host = url.host, host.contains("ycombinator.com"),
+            url.path == "/user",
+            let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
+            let username = components.queryItems?.first(where: { $0.name == "id" })?.value,
+            !username.isEmpty
+        else { return nil }
+        return username
     }
 
     private func presentSafari(url: URL) {
