@@ -6,6 +6,7 @@ import SwiftUI
 @MainActor final class AppCache: ObservableObject {
     private var listings: [HNListingDestination: HNListing] = [:]
     private var items: [Int: HNItem] = [:]
+    private var users: [String: HNUser] = [:]
     private var accessOrder: [Int] = []
     private let maxItems = 20
 
@@ -41,6 +42,13 @@ import SwiftUI
         touch(parsed.id)
         evictIfNeeded()
         return item
+    }
+
+    func user(for username: String) -> HNUser {
+        if let existing = users[username] { return existing }
+        let created = HNUser(username: username)
+        users[username] = created
+        return created
     }
 
     private func touch(_ id: Int) {

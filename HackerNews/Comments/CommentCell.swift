@@ -6,6 +6,7 @@ struct CommentCell: View {
     @ObservedObject var comment: HNComment
     let isCollapsed: Bool
     let onToggle: () -> Void
+    var onShowUserProfile: ((String) -> Void)? = nil
     private let indentStep: CGFloat = 12
     private let maxIndent: CGFloat = 72
 
@@ -59,6 +60,14 @@ struct CommentCell: View {
             }
             .buttonStyle(PlainButtonStyle())
             .contextMenu {
+                if !comment.author.isEmpty {
+                    Button {
+                        onShowUserProfile?(comment.author)
+                    } label: {
+                        Label("View Profile", systemImage: "person.crop.circle")
+                    }
+                }
+
                 ShareLink(
                     item: comment.itemLink,
                     preview: SharePreview(comment.shareTitle)

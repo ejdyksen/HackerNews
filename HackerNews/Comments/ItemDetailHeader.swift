@@ -4,34 +4,52 @@ import SwiftUI
 
 struct ItemDetailHeader: View {
     @ObservedObject var item: HNItem
+    var onShowUserProfile: ((String) -> Void)? = nil
     @Environment(\.openURL) private var openURL
 
     private var isSelfLink: Bool {
         item.storyLink.absoluteString == item.itemLink.absoluteString
     }
 
-    private var subheadingText: Text {
-        var pieces: [Text] = []
+    private var scoreText: Text? {
+        guard let score = item.score else { return nil }
+        if item.isUpvoted {
+            return Text(
+                "\(Text(Image(systemName: "hand.thumbsup.fill")).foregroundStyle(.orange)) \(score) points"
+            )
+        }
+        return Text("\(score) points")
+    }
 
-        if let score = item.score {
-            if item.isUpvoted {
-                pieces.append(
-                    Text(
-                        "\(Text(Image(systemName: "hand.thumbsup.fill")).foregroundStyle(.orange)) \(score) points"
-                    )
-                )
-            } else {
-                pieces.append(Text("\(score) points"))
+    @ViewBuilder
+    private var subheadingView: some View {
+        HStack(spacing: 4) {
+            if let scoreText {
+                scoreText
+            }
+
+            if let author = item.author, !author.isEmpty {
+                Text("by")
+
+                if let onShowUserProfile {
+                    Button {
+                        onShowUserProfile(author)
+                    } label: {
+                        Text(author)
+                            .foregroundStyle(.accent)
+                    }
+                    .buttonStyle(.plain)
+                } else {
+                    Text(author)
+                }
+            }
+
+            if let age = item.age {
+                Text(relativeTimeString(from: age))
             }
         }
-        if let author = item.author { pieces.append(Text("by \(author)")) }
-        if let age = item.age { pieces.append(Text(relativeTimeString(from: age))) }
-
-        var result = pieces.first ?? Text("")
-        for piece in pieces.dropFirst() {
-            result = Text("\(result) \(piece)")
-        }
-        return result
+        .font(.subheadline)
+        .foregroundStyle(.secondary)
     }
 
     private var titleWithDomain: Text {
@@ -59,9 +77,7 @@ struct ItemDetailHeader: View {
                 .buttonStyle(.plain)
             }
 
-            subheadingText
-                .font(.subheadline)
-                .foregroundColor(.secondary)
+            subheadingView
 
             Divider()
 

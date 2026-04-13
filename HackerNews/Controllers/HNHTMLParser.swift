@@ -46,8 +46,19 @@ struct ParsedHNItemPage: Sendable {
     let hasMoreContent: Bool
 }
 
+struct ParsedHNUserPage: Sendable {
+    let username: String
+    let createdText: String?
+    let karma: Int?
+    let about: AttributedString?
+    let submissionsURL: URL?
+    let commentsURL: URL?
+    let favoritesURL: URL?
+}
+
 enum HNParsingError: Error {
     case htmlParseError(Error)
+    case missingUserProfile
 }
 
 extension HNParsingError: LocalizedError {
@@ -55,6 +66,8 @@ extension HNParsingError: LocalizedError {
         switch self {
         case .htmlParseError:
             return "Couldn't read the page content. HN may have changed its layout."
+        case .missingUserProfile:
+            return "Couldn't find that Hacker News user."
         }
     }
 }
@@ -88,7 +101,54 @@ enum HNHTMLParser {
         )
     }
 
+    static func parseUserPage(data: Data) throws -> ParsedHNUserPage {
+        let doc = try document(from: data)
+
+        guard
+            let usernameNode = doc.firstChild(
+                xpath: "//tr[@id='bigbox']//tr[td[1][normalize-space()='user:']]/td[2]//*[@class='hnuser']"
+            )
+        else {
+            throw HNParsingError.missingUserProfile
+        }
+
+        let username = usernameNode.stringValue
+        let createdText = doc.firstChild(
+            xpath: "//tr[@id='bigbox']//tr[td[1][normalize-space()='created:']]/td[2]"
+        )?.stringValue
+        let karmaText = doc.firstChild(
+            xpath: "//tr[@id='bigbox']//tr[td[1][normalize-space()='karma:']]/td[2]"
+        )?.stringValue
+        let aboutNode = doc.firstChild(
+            xpath: "//tr[@id='bigbox']//tr[td[1][normalize-space()='about:']]/td[2]"
+        )
+
+        let about = aboutNode
+            .map { parseRichText($0, baseURL: URL(string: "https://news.ycombinator.com/")) }
+            .flatMap { $0.characters.isEmpty ? nil : $0 }
+
+        return ParsedHNUserPage(
+            username: username,
+            createdText: createdText,
+            karma: karmaText.flatMap(Int.init),
+            about: about,
+            submissionsURL: resolvedHNURL(
+                from: doc.firstChild(xpath: "//tr[@id='bigbox']//a[contains(@href, 'submitted?id=')]")?.attr("href")
+            ),
+            commentsURL: resolvedHNURL(
+                from: doc.firstChild(xpath: "//tr[@id='bigbox']//a[contains(@href, 'threads?id=')]")?.attr("href")
+            ),
+            favoritesURL: resolvedHNURL(
+                from: doc.firstChild(xpath: "//tr[@id='bigbox']//a[contains(@href, 'favorites?id=')]")?.attr("href")
+            )
+        )
+    }
+
     static func parseCommentText(_ node: XMLElement) -> AttributedString {
+        parseRichText(node)
+    }
+
+    static func parseRichText(_ node: XMLElement, baseURL: URL? = nil) -> AttributedString {
         var result = AttributedString()
 
         for child in node.childNodes(ofTypes: [.Element, .Text]) {
@@ -104,9 +164,9 @@ enum HNHTMLParser {
                 if !result.characters.isEmpty {
                     result += AttributedString("\n\n")
                 }
-                result += parseCommentText(element)
+                result += parseRichText(element, baseURL: baseURL)
             case "i":
-                var italic = parseCommentText(element)
+                var italic = parseRichText(element, baseURL: baseURL)
                 italic.font = .italicSystemFont(ofSize: UIFont.systemFontSize)
                 result += italic
             case "pre", "code":
@@ -127,13 +187,13 @@ enum HNHTMLParser {
                 }
 
                 var link = AttributedString(displayURL)
-                if let url = URL(string: href) {
+                if let url = resolvedURL(from: href, baseURL: baseURL) {
                     link.link = url
                 }
                 link.foregroundColor = .blue
                 result += link
             default:
-                result += parseCommentText(element)
+                result += parseRichText(element, baseURL: baseURL)
             }
         }
 
@@ -218,6 +278,23 @@ enum HNHTMLParser {
             return URL(string: href)
         }
         return URL(string: "https://news.ycombinator.com/\(href)")
+    }
+
+    private static func resolvedHNURL(from href: String?) -> URL? {
+        guard let href else { return nil }
+        return URL(string: href, relativeTo: URL(string: "https://news.ycombinator.com/"))?.absoluteURL
+    }
+
+    private static func resolvedURL(from href: String, baseURL: URL?) -> URL? {
+        if href.hasPrefix("http://") || href.hasPrefix("https://") {
+            return URL(string: href)
+        }
+
+        if let baseURL {
+            return URL(string: href, relativeTo: baseURL)?.absoluteURL
+        }
+
+        return URL(string: href)
     }
 
     private static func parseItemVoteState(

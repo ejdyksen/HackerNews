@@ -12,6 +12,7 @@ struct AdaptiveHomeView: View {
         .news: .news
     ]
     @State private var selectedItem: HNItem?
+    @State private var detailPath = NavigationPath()
     @State private var columnVisibility: NavigationSplitViewVisibility = .all
     @State private var showingSettings = false
 
@@ -39,10 +40,13 @@ struct AdaptiveHomeView: View {
                 )
                 .navigationSplitViewColumnWidth(min: 280, ideal: 370, max: 520)
             } detail: {
-                NavigationStack {
+                NavigationStack(path: $detailPath) {
                     if let item = selectedItem {
                         ItemDetailView(
                             item: item,
+                            onShowUserProfile: { username in
+                                detailPath.append(HNUserRoute(username: username))
+                            },
                             onToggleFullScreen: {
                                 withAnimation {
                                     columnVisibility = columnVisibility == .detailOnly ? .all : .detailOnly
@@ -58,11 +62,18 @@ struct AdaptiveHomeView: View {
                         }
                     }
                 }
+                .navigationDestination(for: HNUserRoute.self) { route in
+                    UserProfileView(route: route)
+                }
                 .id(selectedItem?.id)
             }
             .navigationSplitViewStyle(.balanced)
             .onChange(of: selectedListing) {
                 selectedItem = nil
+                detailPath = NavigationPath()
+            }
+            .onChange(of: selectedItem?.id) { _, _ in
+                detailPath = NavigationPath()
             }
             .onChange(of: appState.deepLinkItemID) { _, id in
                 guard let id else { return }
@@ -73,6 +84,7 @@ struct AdaptiveHomeView: View {
                     cache.rememberItem(stub)
                     selectedItem = stub
                 }
+                detailPath = NavigationPath()
                 columnVisibility = .detailOnly
                 appState.deepLinkItemID = nil
             }

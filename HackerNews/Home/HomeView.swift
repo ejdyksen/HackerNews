@@ -42,7 +42,15 @@ struct HomeView: View {
                 }
             }
             .navigationDestination(for: HNItem.self) { item in
-                ItemDetailView(item: item)
+                ItemDetailView(
+                    item: item,
+                    onShowUserProfile: { username in
+                        path.append(HNUserRoute(username: username))
+                    }
+                )
+            }
+            .navigationDestination(for: HNUserRoute.self) { route in
+                UserProfileView(route: route)
             }
         }
         .onChange(of: appState.deepLinkItemID) { _, id in

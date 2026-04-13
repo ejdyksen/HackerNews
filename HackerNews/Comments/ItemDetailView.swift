@@ -8,6 +8,7 @@ struct ItemDetailView: View {
     @State private var collapsedIDs: Set<Int> = []
     @State private var showScrolledTitle = false
     @State private var scrollPosition = ScrollPosition()
+    var onShowUserProfile: ((String) -> Void)? = nil
     var onToggleFullScreen: (() -> Void)? = nil
     var isFullScreen: Bool = false
     private let readableContentWidth: CGFloat = 760
@@ -46,7 +47,7 @@ struct ItemDetailView: View {
 
     @ViewBuilder
     private var scrollContent: some View {
-        ItemDetailHeader(item: item)
+        ItemDetailHeader(item: item, onShowUserProfile: onShowUserProfile)
             .padding(.horizontal)
             .onGeometryChange(for: CGFloat.self) { proxy in
                 proxy.frame(in: .scrollView).maxY
@@ -70,7 +71,8 @@ struct ItemDetailView: View {
                         } else {
                             collapsedIDs.insert(comment.id)
                         }
-                    }
+                    },
+                    onShowUserProfile: onShowUserProfile
                 )
             }
         }

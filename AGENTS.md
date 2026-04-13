@@ -48,6 +48,7 @@ HackerNews/
 │   ├── HNListing.swift              Listing kinds, parameterized listing destinations, and feed pagination state
 │   ├── HNItem.swift                 Story state, metadata, comments, and vote state
 │   ├── HNComment.swift              Comment state mapped from parsed comment trees
+│   ├── HNUser.swift                 User profile route and observable user-page state
 │   └── Freshness.swift              Shared staleness thresholds
 ├── Home/
 │   ├── HomeView.swift               iPhone root container; starts on Front Page and hosts toolbar-based listing switching
@@ -61,6 +62,8 @@ HackerNews/
 │   ├── ItemDetailView.swift         Story detail screen with flat comment thread
 │   ├── ItemDetailHeader.swift       Story header with title, metadata, and self-post body
 │   └── CommentCell.swift            Flat comment row with collapse and vote menu
+├── Profile/
+│   └── UserProfileView.swift        Native Hacker News user profile screen
 └── Preview Content/
     └── PreviewData.swift            Static preview fixtures and preview-only helpers
 ```
@@ -93,6 +96,7 @@ All network calls use `async/await`. Core models are `@MainActor ObservableObjec
 HomeView (NavigationStack; root defaults to `.news`)
   → ListingView(selectedListing)
     → NavigationLink(value: HNItem) → ItemDetailView
+      → HNUserRoute               → UserProfileView
 ```
 
 Listing switching on iPhone is handled from the root toolbar menu rather than by pushing sibling listing screens onto the stack. The menu is grouped into `Stories` and `Lists`.
@@ -104,6 +108,7 @@ NavigationSplitView(columnVisibility: $columnVisibility)
   ├── Content: ListingContentColumn sets $selectedItem
   └── Detail: NavigationStack.id(selectedItem?.id)
         └── ItemDetailView
+            └── HNUserRoute → UserProfileView
 ```
 
 The `.id(selectedItem?.id)` on the detail `NavigationStack` is intentional and important: it forces SwiftUI to recreate the stack when the selected story changes. Do not remove it casually.
@@ -187,6 +192,18 @@ HN's HTML structure drives all parsing. When HN changes markup, update `HNHTMLPa
 | Story body | `table.fatitem .commtext` |
 | Comment rows | `table.comment-tree tr.athing` |
 | More comments link | `.morelink` |
+
+### User Page (`/user?id=name`)
+
+| Data | Selector |
+|------|----------|
+| Username | `//tr[@id='bigbox']//tr[td[1][normalize-space()='user:']]/td[2]//*[@class='hnuser']` |
+| Created | `//tr[@id='bigbox']//tr[td[1][normalize-space()='created:']]/td[2]` |
+| Karma | `//tr[@id='bigbox']//tr[td[1][normalize-space()='karma:']]/td[2]` |
+| About | `//tr[@id='bigbox']//tr[td[1][normalize-space()='about:']]/td[2]` |
+| Submissions | `a[href*='submitted?id=']` |
+| Comments | `a[href*='threads?id=']` |
+| Favorites | `a[href*='favorites?id=']` |
 
 ### Comment Node
 
