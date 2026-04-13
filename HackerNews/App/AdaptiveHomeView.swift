@@ -20,6 +20,7 @@ struct AdaptiveHomeView: View {
                 sidebarView
             } content: {
                 ListingContentColumn(listingType: currentListing, selectedItem: $selectedItem)
+                    .navigationSplitViewColumnWidth(min: 280, ideal: 370, max: 520)
             } detail: {
                 NavigationStack {
                     if let item = selectedItem {
@@ -137,7 +138,7 @@ private struct ListingContentColumnBody: View {
             }
         }
         .navigationTitle(listingType.displayName)
-        .task {
+        .task(id: listingType) {
             listing.loadInitialContent()
             listing.refreshIfStale()
         }

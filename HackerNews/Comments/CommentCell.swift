@@ -6,6 +6,12 @@ struct CommentCell: View {
     @ObservedObject var comment: HNComment
     let isCollapsed: Bool
     let onToggle: () -> Void
+    private let indentStep: CGFloat = 12
+    private let maxIndent: CGFloat = 72
+
+    private var leadingIndent: CGFloat {
+        min(CGFloat(comment.indentLevel) * indentStep, maxIndent)
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -37,11 +43,11 @@ struct CommentCell: View {
                             .foregroundColor(.secondary)
                     }
                     .lineLimit(1)
-                    .padding(.leading, CGFloat(comment.indentLevel * 12))
+                    .padding(.leading, leadingIndent)
 
                     if !isCollapsed {
                         Text(comment.content)
-                            .padding(.leading, CGFloat(comment.indentLevel * 12))
+                            .padding(.leading, leadingIndent)
                             .transition(.opacity)
                     }
                 }

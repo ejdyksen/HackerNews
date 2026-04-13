@@ -10,6 +10,7 @@ struct ItemDetailView: View {
     @State private var scrollPosition = ScrollPosition()
     var onToggleFullScreen: (() -> Void)? = nil
     var isFullScreen: Bool = false
+    private let readableContentWidth: CGFloat = 760
 
     private var truncatedTitle: String {
         let maxChars = 35
@@ -100,6 +101,8 @@ struct ItemDetailView: View {
             VStack(alignment: .leading, spacing: 0) {
                 scrollContent
             }
+            .frame(maxWidth: readableContentWidth, alignment: .leading)
+            .frame(maxWidth: .infinity, alignment: .center)
         }
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
