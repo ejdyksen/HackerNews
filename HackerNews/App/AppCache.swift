@@ -8,9 +8,12 @@ import SwiftUI
     private var items: [Int: HNItem] = [:]
     private var users: [String: HNUser] = [:]
     private var linkPreviews: [URL: LinkPreview] = [:]
-    private var accessOrder: [Int] = []
-    private let maxItems = 20
 
+    // HNItem instances are intentionally retained for the full session. Listings
+    // hold strong references to their items, so an LRU eviction here couldn't
+    // actually free memory — it only allowed a second HNItem with the same id
+    // to be created on the next parse, silently splitting vote and metadata
+    // state between the two instances.
     func listing(for destination: HNListingDestination) -> HNListing {
         if let existing = listings[destination] { return existing }
         let created = HNListing(destination, cache: self)
@@ -19,29 +22,22 @@ import SwiftUI
     }
 
     func item(for id: Int) -> HNItem? {
-        guard let item = items[id] else { return nil }
-        touch(id)
-        return item
+        items[id]
     }
 
     func rememberItem(_ item: HNItem) {
         if items[item.id] == nil {
             items[item.id] = item
         }
-        touch(item.id)
-        evictIfNeeded()
     }
 
     func canonicalize(_ parsed: ParsedHNItem) -> HNItem {
         if let existing = items[parsed.id] {
             existing.updateMetadata(from: parsed)
-            touch(parsed.id)
             return existing
         }
         let item = HNItem(parsed: parsed)
         items[parsed.id] = item
-        touch(parsed.id)
-        evictIfNeeded()
         return item
     }
 
@@ -58,17 +54,5 @@ import SwiftUI
         let created = LinkPreview(url: cacheKey)
         linkPreviews[cacheKey] = created
         return created
-    }
-
-    private func touch(_ id: Int) {
-        accessOrder.removeAll { $0 == id }
-        accessOrder.append(id)
-    }
-
-    private func evictIfNeeded() {
-        while accessOrder.count > maxItems {
-            let oldest = accessOrder.removeFirst()
-            items.removeValue(forKey: oldest)
-        }
     }
 }
