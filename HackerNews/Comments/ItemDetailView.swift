@@ -5,6 +5,7 @@ import SwiftUI
 struct ItemDetailView: View {
     @ObservedObject var item: HNItem
     @EnvironmentObject private var cache: AppCache
+    @EnvironmentObject private var readState: ReadStateStore
     @State private var collapsedIDs: Set<Int> = []
     @State private var showScrolledTitle = false
     @State private var scrollPosition = ScrollPosition()
@@ -45,6 +46,25 @@ struct ItemDetailView: View {
         return result
     }
 
+    private func collapseToRoot(for comment: HNComment) {
+        guard let commentIndex = item.flatComments.firstIndex(where: { $0.id == comment.id }) else {
+            return
+        }
+
+        let rootComment: HNComment
+        if comment.indentLevel == 0 {
+            rootComment = comment
+        } else if let rootIndex = item.flatComments[..<commentIndex].lastIndex(where: { $0.indentLevel == 0 }) {
+            rootComment = item.flatComments[rootIndex]
+        } else {
+            rootComment = comment
+        }
+
+        withAnimation(.easeInOut(duration: 0.2)) {
+            collapsedIDs.insert(rootComment.id)
+        }
+    }
+
     @ViewBuilder
     private var scrollContent: some View {
         ItemDetailHeader(item: item, onShowUserProfile: onShowUserProfile)
@@ -72,6 +92,7 @@ struct ItemDetailView: View {
                             collapsedIDs.insert(comment.id)
                         }
                     },
+                    onCollapseToRoot: collapseToRoot(for:),
                     onShowUserProfile: onShowUserProfile
                 )
             }
@@ -166,6 +187,7 @@ struct ItemDetailView: View {
         }
         .onAppear {
             cache.rememberItem(item)
+            readState.markRead(item.id)
             item.refreshIfOlderThan(Freshness.navigationRefreshThreshold)
         }
         .onForegroundActivation {

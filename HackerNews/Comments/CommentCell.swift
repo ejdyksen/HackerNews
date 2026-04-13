@@ -6,6 +6,7 @@ struct CommentCell: View {
     @ObservedObject var comment: HNComment
     let isCollapsed: Bool
     let onToggle: () -> Void
+    var onCollapseToRoot: ((HNComment) -> Void)? = nil
     var onShowUserProfile: ((String) -> Void)? = nil
     private let indentStep: CGFloat = 12
     private let maxIndent: CGFloat = 72
@@ -16,50 +17,54 @@ struct CommentCell: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Button(action: {
+            VStack(alignment: .leading, spacing: 8) {
+                HStack(alignment: .lastTextBaseline) {
+                    if comment.canUpvote {
+                        Group {
+                            if comment.isUpvoted {
+                                Image(systemName: "hand.thumbsup.fill")
+                                    .foregroundColor(.orange)
+                            } else if comment.isDownvoted {
+                                Image(systemName: "hand.thumbsdown.fill")
+                                    .foregroundColor(.gray)
+                        }
+                    }
+                        .font(.caption)
+                        .frame(width: 12, height: 12)
+                    }
+                    Text(comment.author)
+                        .font(.headline)
+                        .foregroundColor(.accentColor)
+                    Text(relativeTimeString(from: comment.age))
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                }
+                .lineLimit(1)
+                .padding(.leading, leadingIndent)
+
+                if !isCollapsed {
+                    Text(comment.content)
+                        .padding(.leading, leadingIndent)
+                        .transition(.opacity)
+                }
+            }
+            .padding(.vertical, 8)
+            .padding(.horizontal, 16)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(Color(uiColor: .systemBackground))
+            .contentShape(Rectangle())
+            .onTapGesture {
                 withAnimation(.easeInOut(duration: 0.2)) {
                     onToggle()
                 }
-            }) {
-                VStack(alignment: .leading, spacing: 8) {
-                    HStack(alignment: .lastTextBaseline) {
-                        if comment.canUpvote {
-                            Group {
-                                if comment.isUpvoted {
-                                    Image(systemName: "hand.thumbsup.fill")
-                                        .foregroundColor(.orange)
-                                } else if comment.isDownvoted {
-                                    Image(systemName: "hand.thumbsdown.fill")
-                                        .foregroundColor(.gray)
-                                }
-                            }
-                            .font(.caption)
-                            .frame(width: 12, height: 12)
-                        }
-                        Text(comment.author)
-                            .font(.headline)
-                            .foregroundColor(.accentColor)
-                        Text(relativeTimeString(from: comment.age))
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
-                    }
-                    .lineLimit(1)
-                    .padding(.leading, leadingIndent)
-
-                    if !isCollapsed {
-                        Text(comment.content)
-                            .padding(.leading, leadingIndent)
-                            .transition(.opacity)
-                    }
-                }
-                .padding(.vertical, 8)
-                .padding(.horizontal, 16)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .background(Color(uiColor: .systemBackground))
-                .contentShape(Rectangle())
             }
-            .buttonStyle(PlainButtonStyle())
             .contextMenu {
+                Button {
+                    onCollapseToRoot?(comment)
+                } label: {
+                    Label("Collapse to Root", systemImage: "arrow.up.to.line")
+                }
+
                 if !comment.author.isEmpty {
                     Button {
                         onShowUserProfile?(comment.author)

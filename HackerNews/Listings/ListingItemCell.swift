@@ -4,6 +4,7 @@ import SwiftUI
 
 struct ListingItemCellContent: View {
     @ObservedObject var item: HNItem
+    @EnvironmentObject private var readState: ReadStateStore
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -49,7 +50,7 @@ struct ListingItemCellContent: View {
     private var titleWithDomain: Text {
         let title = Text(item.title)
             .font(.headline)
-            .foregroundStyle(.primary)
+            .foregroundStyle(readState.isRead(item.id) ? Color.primary.opacity(0.58) : .primary)
         guard !item.domain.isEmpty else { return title }
         let domain = Text(" (\(item.domain))")
             .font(.caption)
@@ -97,6 +98,7 @@ struct ListingItemCell_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             ListingItemCell(item: itemOne)
+                .environmentObject(ReadStateStore())
                 .previewLayout(.sizeThatFits)
                 .padding()
         }

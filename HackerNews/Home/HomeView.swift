@@ -104,5 +104,6 @@ struct Home_Previews: PreviewProvider {
         HomeView()
             .environmentObject(AppState())
             .environmentObject(AppCache())
+            .environmentObject(ReadStateStore())
     }
 }

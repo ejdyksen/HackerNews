@@ -36,7 +36,7 @@ Reading experience comes first. Participation features come after the app is a g
 ## Reading Experience
 
 - [ ] **"New comments" highlighting** — track last-seen `commentCount` per story; highlight comments added since last visit
-- [ ] **Mark stories as read** — dim/badge visited stories in the listing
+- [x] **Mark stories as read** — dim/badge visited stories in the listing
 - [ ] **Unread count badge** on comment count in `ListingItemCell`
 - [ ] **Font size control** — respect Dynamic Type throughout; audit current hardcoded font calls
 - [ ] **Reader mode** — option to load article in simplified reader view via `WKWebView` reader mode
