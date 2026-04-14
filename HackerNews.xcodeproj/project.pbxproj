@@ -7,13 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		29477E97263608AC00F8EB1B /* Fuzi in Frameworks */ = {isa = PBXBuildFile; productRef = 29477E96263608AC00F8EB1B /* Fuzi */; };
 		29D8F940256B618B00E37E1E /* Fuzi in Frameworks */ = {isa = PBXBuildFile; productRef = 29D8F93F256B618B00E37E1E /* Fuzi */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		29D8F8D5256B5FB400E37E1E /* HackerNews.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HackerNews.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		29D8F8DD256B5FB400E37E1E /* HackerNews.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HackerNews.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		29D8F8DF256B5FB400E37E1E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		29D8F8E0256B5FB400E37E1E /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -26,18 +24,10 @@
 			);
 			target = 29D8F8D4256B5FB400E37E1E /* HackerNews (iOS) */;
 		};
-		297B66C72F8C267A0052F735 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Home/HomeView.swift,
-				Info.plist,
-			);
-			target = 29D8F8DC256B5FB400E37E1E /* HackerNews (macOS) */;
-		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		297B66992F8C26790052F735 /* HackerNews */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (297B66C62F8C267A0052F735 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 297B66C72F8C267A0052F735 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = HackerNews; sourceTree = "<group>"; };
+		297B66992F8C26790052F735 /* HackerNews */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (297B66C62F8C267A0052F735 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = HackerNews; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,14 +36,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				29D8F940256B618B00E37E1E /* Fuzi in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		29D8F8DA256B5FB400E37E1E /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				29477E97263608AC00F8EB1B /* Fuzi in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -73,7 +55,6 @@
 			isa = PBXGroup;
 			children = (
 				29D8F8D5256B5FB400E37E1E /* HackerNews.app */,
-				29D8F8DD256B5FB400E37E1E /* HackerNews.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -113,29 +94,6 @@
 			productReference = 29D8F8D5256B5FB400E37E1E /* HackerNews.app */;
 			productType = "com.apple.product-type.application";
 		};
-		29D8F8DC256B5FB400E37E1E /* HackerNews (macOS) */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 29D8F902256B5FB500E37E1E /* Build configuration list for PBXNativeTarget "HackerNews (macOS)" */;
-			buildPhases = (
-				29D8F8D9256B5FB400E37E1E /* Sources */,
-				29D8F8DA256B5FB400E37E1E /* Frameworks */,
-				29D8F8DB256B5FB400E37E1E /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				297B66992F8C26790052F735 /* HackerNews */,
-			);
-			name = "HackerNews (macOS)";
-			packageProductDependencies = (
-				29477E96263608AC00F8EB1B /* Fuzi */,
-			);
-			productName = "HackerNews (macOS)";
-			productReference = 29D8F8DD256B5FB400E37E1E /* HackerNews.app */;
-			productType = "com.apple.product-type.application";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -147,9 +105,6 @@
 				LastUpgradeCheck = 2620;
 				TargetAttributes = {
 					29D8F8D4256B5FB400E37E1E = {
-						CreatedOnToolsVersion = 12.2;
-					};
-					29D8F8DC256B5FB400E37E1E = {
 						CreatedOnToolsVersion = 12.2;
 					};
 				};
@@ -171,7 +126,6 @@
 			projectRoot = "";
 			targets = (
 				29D8F8D4256B5FB400E37E1E /* HackerNews (iOS) */,
-				29D8F8DC256B5FB400E37E1E /* HackerNews (macOS) */,
 			);
 		};
 /* End PBXProject section */
@@ -184,24 +138,10 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		29D8F8DB256B5FB400E37E1E /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		29D8F8D1256B5FB400E37E1E /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		29D8F8D9256B5FB400E37E1E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -391,60 +331,6 @@
 			};
 			name = Release;
 		};
-		29D8F903256B5FB500E37E1E /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
-				CODE_SIGN_IDENTITY = "-";
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEAD_CODE_STRIPPING = YES;
-				ENABLE_APP_SANDBOX = YES;
-				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
-				ENABLE_PREVIEWS = YES;
-				ENABLE_USER_SELECTED_FILES = readonly;
-				INFOPLIST_FILE = macOS/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ejdyksen.HackerNews;
-				PRODUCT_NAME = HackerNews;
-				SDKROOT = macosx;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Debug;
-		};
-		29D8F904256B5FB500E37E1E /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
-				CODE_SIGN_IDENTITY = "-";
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEAD_CODE_STRIPPING = YES;
-				ENABLE_APP_SANDBOX = YES;
-				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
-				ENABLE_PREVIEWS = YES;
-				ENABLE_USER_SELECTED_FILES = readonly;
-				INFOPLIST_FILE = macOS/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ejdyksen.HackerNews;
-				PRODUCT_NAME = HackerNews;
-				SDKROOT = macosx;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -466,15 +352,6 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		29D8F902256B5FB500E37E1E /* Build configuration list for PBXNativeTarget "HackerNews (macOS)" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				29D8F903256B5FB500E37E1E /* Debug */,
-				29D8F904256B5FB500E37E1E /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
@@ -489,11 +366,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		29477E96263608AC00F8EB1B /* Fuzi */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 29D8F93E256B618B00E37E1E /* XCRemoteSwiftPackageReference "Fuzi" */;
-			productName = Fuzi;
-		};
 		29D8F93F256B618B00E37E1E /* Fuzi */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 29D8F93E256B618B00E37E1E /* XCRemoteSwiftPackageReference "Fuzi" */;
