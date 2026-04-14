@@ -165,29 +165,77 @@ enum HNHTMLParser {
         parseRichText(node, baseURL: hnBaseURL, italicFont: italicFont, monoFont: monoFont)
     }
 
+    /// Walk an HN rich-text subtree (comment body, self-post body, user about
+    /// field) into an `AttributedString`.
+    ///
+    /// **Why this is shaped the way it is:** `AttributedString` stores text
+    /// by grapheme cluster, so every `AttributedString.init(String)` call
+    /// walks its input to find cluster boundaries — Swift stdlib's
+    /// `getBinaryProperties` territory. Building incrementally (one
+    /// `AttributedString(text)` per text node + one `+=` per element) pays
+    /// that cost N times per comment, plus a COW copy of the underlying
+    /// storage on every concat. On a 1000-comment thread this used to be
+    /// the dominant cost in `parseItemPage`.
+    ///
+    /// Instead, we walk the tree once into a single plain Swift `String`
+    /// (cheap — String append is O(1) amortized, no grapheme work),
+    /// recording styled regions as UTF-16 offset ranges in a small `spans`
+    /// array. At the end we construct `AttributedString` **exactly once**
+    /// from the full plain text — one grapheme-analysis pass on the largest
+    /// unit — then apply each style span via a subscript range. Zero
+    /// intermediate AttributedString objects, no COW chain, no per-fragment
+    /// cluster analysis.
+    ///
+    /// See: https://shadowfacts.net/2023/parsing-html-fast/ — same
+    /// diagnosis on a related problem (their HTML→AttributedString rewrite
+    /// got ~2.7× faster in release with the same insight).
     static func parseRichText(
         _ node: XMLElement,
         baseURL: URL? = nil,
         italicFont: UIFont? = nil,
         monoFont: UIFont? = nil
     ) -> AttributedString {
-        // Resolve fonts once. Recursive calls pass the resolved values down so
-        // bodyItalicFont / bodyMonospacedFont (which call into UIKit) are never
-        // hit per-element on the hot comment path.
         let italic = italicFont ?? bodyItalicFont
         let mono = monoFont ?? bodyMonospacedFont
 
-        var result = AttributedString()
+        var plain = ""
+        plain.reserveCapacity(256)
+        var spans: [StyleSpan] = []
+        spans.reserveCapacity(8)
+
+        collectInline(into: &plain, spans: &spans, from: node, baseURL: baseURL)
+
+        return materialize(plain: plain, spans: spans, italic: italic, mono: mono)
+    }
+
+    private struct StyleSpan {
+        let start: Int      // UTF-16 offset into the accumulator
+        let end: Int        // UTF-16 offset (exclusive)
+        let style: Style
+
+        enum Style {
+            case italic
+            case mono
+            case link(URL?)
+        }
+    }
+
+    private static func collectInline(
+        into plain: inout String,
+        spans: inout [StyleSpan],
+        from node: XMLElement,
+        baseURL: URL?
+    ) {
         var previousRenderedBlock: RenderedBlock? = nil
 
         for child in node.childNodes(ofTypes: [.Element, .Text]) {
             if child.type == .Text {
                 let text = child.stringValue
-                guard !text.isEmpty else { continue }
-                if previousRenderedBlock == .pre && !result.characters.isEmpty {
-                    result += AttributedString("\n\n")
+                if text.isEmpty { continue }
+                if previousRenderedBlock == .pre && !plain.isEmpty {
+                    plain += "\n\n"
                 }
-                result += AttributedString(text)
+                plain += text
                 previousRenderedBlock = nil
                 continue
             }
@@ -196,54 +244,102 @@ enum HNHTMLParser {
 
             switch element.tag {
             case "p":
-                let paragraph = parseRichText(element, baseURL: baseURL, italicFont: italic, monoFont: mono)
-                guard !paragraph.characters.isEmpty else { continue }
-                if !result.characters.isEmpty {
-                    result += AttributedString("\n\n")
+                // Speculatively insert "\n\n" before recursing; undo if the
+                // recursion produced nothing.
+                let preBreakLen = plain.utf16.count
+                if !plain.isEmpty { plain += "\n\n" }
+                let postBreakLen = plain.utf16.count
+                collectInline(into: &plain, spans: &spans, from: element, baseURL: baseURL)
+                if plain.utf16.count == postBreakLen {
+                    while plain.utf16.count > preBreakLen { plain.removeLast() }
+                } else {
+                    previousRenderedBlock = .paragraph
                 }
-                result += paragraph
-                previousRenderedBlock = .paragraph
+
             case "i":
-                var italicRun = parseRichText(element, baseURL: baseURL, italicFont: italic, monoFont: mono)
-                italicRun.font = italic
-                result += italicRun
-                previousRenderedBlock = nil
-            case "pre":
-                if !result.characters.isEmpty {
-                    result += AttributedString("\n\n")
+                let start = plain.utf16.count
+                collectInline(into: &plain, spans: &spans, from: element, baseURL: baseURL)
+                let end = plain.utf16.count
+                if end > start {
+                    spans.append(StyleSpan(start: start, end: end, style: .italic))
                 }
-                let preformattedText = trimmedPreformattedText(from: element.stringValue)
-                guard !preformattedText.isEmpty else { continue }
-                var code = AttributedString(preformattedText)
-                code.font = mono
-                result += code
-                previousRenderedBlock = .pre
-            case "code":
-                var code = AttributedString(element.stringValue)
-                code.font = mono
-                result += code
                 previousRenderedBlock = nil
+
+            case "pre":
+                let pre = trimmedPreformattedText(from: element.stringValue)
+                if pre.isEmpty { continue }
+                if !plain.isEmpty { plain += "\n\n" }
+                let start = plain.utf16.count
+                plain += pre
+                let end = plain.utf16.count
+                spans.append(StyleSpan(start: start, end: end, style: .mono))
+                previousRenderedBlock = .pre
+
+            case "code":
+                let s = element.stringValue
+                if s.isEmpty { continue }
+                let start = plain.utf16.count
+                plain += s
+                let end = plain.utf16.count
+                spans.append(StyleSpan(start: start, end: end, style: .mono))
+                previousRenderedBlock = nil
+
             case "a":
                 let href = element.attr("href") ?? ""
                 var displayURL = href
                 if displayURL.count > 50 {
                     displayURL = String(displayURL.prefix(47)) + "..."
                 }
-
-                var link = AttributedString(displayURL)
-                if let url = resolvedURL(from: href, baseURL: baseURL) {
-                    link.link = url
-                }
-                link.foregroundColor = .blue
-                result += link
+                if displayURL.isEmpty { continue }
+                let start = plain.utf16.count
+                plain += displayURL
+                let end = plain.utf16.count
+                spans.append(StyleSpan(
+                    start: start,
+                    end: end,
+                    style: .link(resolvedURL(from: href, baseURL: baseURL))
+                ))
                 previousRenderedBlock = nil
+
             default:
-                result += parseRichText(element, baseURL: baseURL, italicFont: italic, monoFont: mono)
+                collectInline(into: &plain, spans: &spans, from: element, baseURL: baseURL)
                 previousRenderedBlock = nil
             }
         }
+    }
 
-        return result
+    private static func materialize(
+        plain: String,
+        spans: [StyleSpan],
+        italic: UIFont,
+        mono: UIFont
+    ) -> AttributedString {
+        if plain.isEmpty { return AttributedString() }
+
+        // The single grapheme-analysis pass. After this, AttributedString's
+        // internal cluster storage is built once for the entire comment.
+        var attr = AttributedString(plain)
+
+        for span in spans {
+            let stringStart = String.Index(utf16Offset: span.start, in: plain)
+            let stringEnd = String.Index(utf16Offset: span.end, in: plain)
+            guard
+                let attrStart = AttributedString.Index(stringStart, within: attr),
+                let attrEnd = AttributedString.Index(stringEnd, within: attr)
+            else { continue }
+            let range = attrStart..<attrEnd
+            switch span.style {
+            case .italic:
+                attr[range].font = italic
+            case .mono:
+                attr[range].font = mono
+            case .link(let url):
+                if let url { attr[range].link = url }
+                attr[range].foregroundColor = .blue
+            }
+        }
+
+        return attr
     }
 
     private static func trimmedPreformattedText(from text: String) -> String {
