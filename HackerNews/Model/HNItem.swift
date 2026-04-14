@@ -249,28 +249,36 @@ import SwiftUI
                 updateMetadata(from: metadata)
             }
 
-            let newRootComments = HNComment.models(from: pageData.rootComments)
-
-            if reload {
-                // page is forced to 1 on reload, so replace rather than append.
-                rootComments = newRootComments
-                flatComments = Self.buildFlatComments(newRootComments)
-                body = pageData.body
-            } else {
-                let updatedRootComments = rootComments + newRootComments
-                rootComments = updatedRootComments
-                flatComments = Self.buildFlatComments(updatedRootComments)
-                // HN only emits the fatitem (self-post body) on page 1. On
-                // later pagination pages pageData.body is nil, and blindly
-                // assigning would erase the body we loaded earlier.
-                if let newBody = pageData.body {
-                    body = newBody
-                }
+            let newRootComments = PerfLog.measure(PerfLog.models, "buildModels") {
+                HNComment.models(from: pageData.rootComments)
             }
 
-            canLoadMore = pageData.hasMoreContent
-            currentPage = page + 1
-            loadError = nil
+            PerfLog.measure(PerfLog.models, "applyToMain") {
+                if reload {
+                    // page is forced to 1 on reload, so replace rather than append.
+                    rootComments = newRootComments
+                    flatComments = PerfLog.measure(PerfLog.models, "flatten") {
+                        Self.buildFlatComments(newRootComments)
+                    }
+                    body = pageData.body
+                } else {
+                    let updatedRootComments = rootComments + newRootComments
+                    rootComments = updatedRootComments
+                    flatComments = PerfLog.measure(PerfLog.models, "flatten") {
+                        Self.buildFlatComments(updatedRootComments)
+                    }
+                    // HN only emits the fatitem (self-post body) on page 1. On
+                    // later pagination pages pageData.body is nil, and blindly
+                    // assigning would erase the body we loaded earlier.
+                    if let newBody = pageData.body {
+                        body = newBody
+                    }
+                }
+
+                canLoadMore = pageData.hasMoreContent
+                currentPage = page + 1
+                loadError = nil
+            }
 
             if page == 1 {
                 lastUpdated = .now

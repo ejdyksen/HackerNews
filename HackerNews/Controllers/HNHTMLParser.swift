@@ -90,21 +90,31 @@ enum HNHTMLParser {
     }
 
     static func parseItemPage(data: Data) throws -> ParsedHNItemPage {
-        let doc = try document(from: data)
+        try PerfLog.measure(PerfLog.parser, "parseItemPage") {
+            let doc = try PerfLog.measure(PerfLog.parser, "htmlParse") {
+                try document(from: data)
+            }
 
-        let metadata = doc.css("table.fatitem tr.athing").first.flatMap(parseItem)
-        let body = doc.css("table.fatitem .commtext").first
-            .map(parseCommentText)
-            .flatMap { $0.characters.isEmpty ? nil : $0 }
-        let rootComments = createCommentTree(nodes: doc.css("table.comment-tree tr.athing"))
-        let hasMoreContent = !doc.css(".morelink").isEmpty
+            let metadata = PerfLog.measure(PerfLog.parser, "itemMetadata") {
+                doc.css("table.fatitem tr.athing").first.flatMap(parseItem)
+            }
+            let body = PerfLog.measure(PerfLog.parser, "itemBody") {
+                doc.css("table.fatitem .commtext").first
+                    .map { parseCommentText($0) }
+                    .flatMap { $0.characters.isEmpty ? nil : $0 }
+            }
+            let rootComments = PerfLog.measure(PerfLog.parser, "commentTree") {
+                createCommentTree(nodes: doc.css("table.comment-tree tr.athing"))
+            }
+            let hasMoreContent = !doc.css(".morelink").isEmpty
 
-        return ParsedHNItemPage(
-            metadata: metadata,
-            body: body,
-            rootComments: rootComments,
-            hasMoreContent: hasMoreContent
-        )
+            return ParsedHNItemPage(
+                metadata: metadata,
+                body: body,
+                rootComments: rootComments,
+                hasMoreContent: hasMoreContent
+            )
+        }
     }
 
     static func parseUserPage(data: Data) throws -> ParsedHNUserPage {
@@ -150,11 +160,26 @@ enum HNHTMLParser {
         )
     }
 
-    static func parseCommentText(_ node: XMLElement) -> AttributedString {
-        parseRichText(node, baseURL: hnBaseURL)
+    static func parseCommentText(
+        _ node: XMLElement,
+        italicFont: UIFont? = nil,
+        monoFont: UIFont? = nil
+    ) -> AttributedString {
+        parseRichText(node, baseURL: hnBaseURL, italicFont: italicFont, monoFont: monoFont)
     }
 
-    static func parseRichText(_ node: XMLElement, baseURL: URL? = nil) -> AttributedString {
+    static func parseRichText(
+        _ node: XMLElement,
+        baseURL: URL? = nil,
+        italicFont: UIFont? = nil,
+        monoFont: UIFont? = nil
+    ) -> AttributedString {
+        // Resolve fonts once. Recursive calls pass the resolved values down so
+        // bodyItalicFont / bodyMonospacedFont (which call into UIKit) are never
+        // hit per-element on the hot comment path.
+        let italic = italicFont ?? bodyItalicFont
+        let mono = monoFont ?? bodyMonospacedFont
+
         var result = AttributedString()
         var previousRenderedBlock: RenderedBlock? = nil
 
@@ -174,7 +199,7 @@ enum HNHTMLParser {
 
             switch element.tag {
             case "p":
-                let paragraph = parseRichText(element, baseURL: baseURL)
+                let paragraph = parseRichText(element, baseURL: baseURL, italicFont: italic, monoFont: mono)
                 guard !paragraph.characters.isEmpty else { continue }
                 if !result.characters.isEmpty {
                     result += AttributedString("\n\n")
@@ -182,9 +207,9 @@ enum HNHTMLParser {
                 result += paragraph
                 previousRenderedBlock = .paragraph
             case "i":
-                var italic = parseRichText(element, baseURL: baseURL)
-                italic.font = bodyItalicFont
-                result += italic
+                var italicRun = parseRichText(element, baseURL: baseURL, italicFont: italic, monoFont: mono)
+                italicRun.font = italic
+                result += italicRun
                 previousRenderedBlock = nil
             case "pre":
                 if !result.characters.isEmpty {
@@ -193,12 +218,12 @@ enum HNHTMLParser {
                 let preformattedText = trimmedPreformattedText(from: element.stringValue)
                 guard !preformattedText.isEmpty else { continue }
                 var code = AttributedString(preformattedText)
-                code.font = bodyMonospacedFont
+                code.font = mono
                 result += code
                 previousRenderedBlock = .pre
             case "code":
                 var code = AttributedString(element.stringValue)
-                code.font = bodyMonospacedFont
+                code.font = mono
                 result += code
                 previousRenderedBlock = nil
             case "a":
@@ -216,7 +241,7 @@ enum HNHTMLParser {
                 result += link
                 previousRenderedBlock = nil
             default:
-                result += parseRichText(element, baseURL: baseURL)
+                result += parseRichText(element, baseURL: baseURL, italicFont: italic, monoFont: mono)
                 previousRenderedBlock = nil
             }
         }
@@ -224,16 +249,42 @@ enum HNHTMLParser {
         return result
     }
 
+    /// Single-pass whitespace collapse. No regex, no NSString round-trip, no
+    /// throwaway trim-allocation early-out. Matches the previous semantics:
+    /// any run of Unicode whitespace becomes a single space; leading/trailing
+    /// whitespace is preserved (the original regex also preserved it — the
+    /// trim was only used as an emptiness check).
     private static func normalizedInlineText(from text: String) -> String {
-        guard !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
-            return ""
+        var out = String()
+        out.reserveCapacity(text.utf8.count)
+        var pendingSpace = false
+        var sawNonWhitespace = false
+        var leadingWhitespace = false
+
+        for scalar in text.unicodeScalars {
+            if scalar.properties.isWhitespace {
+                if sawNonWhitespace {
+                    pendingSpace = true
+                } else {
+                    leadingWhitespace = true
+                }
+            } else {
+                if leadingWhitespace {
+                    out.unicodeScalars.append(" ")
+                    leadingWhitespace = false
+                }
+                if pendingSpace {
+                    out.unicodeScalars.append(" ")
+                    pendingSpace = false
+                }
+                out.unicodeScalars.append(scalar)
+                sawNonWhitespace = true
+            }
         }
 
-        return text.replacingOccurrences(
-            of: #"\s+"#,
-            with: " ",
-            options: .regularExpression
-        )
+        if !sawNonWhitespace { return "" }
+        if pendingSpace { out.unicodeScalars.append(" ") }
+        return out
     }
 
     private static func trimmedPreformattedText(from text: String) -> String {
@@ -404,85 +455,161 @@ enum HNHTMLParser {
         )
     }
 
-    private static func parseCommentVoteState(
-        itemID: Int,
-        voteNode: XMLElement,
-        stateNode: XMLElement
-    ) -> ParsedHNVoteState {
-        let upvoteAuth = authToken(
-            from: voteNode.firstChild(css: "#up_\(itemID)")?.attr("href")
-        )
-        let downvoteAuth = authToken(
-            from: voteNode.firstChild(css: "#down_\(itemID)")?.attr("href")
-        )
-
-        let unvoteNode = stateNode.firstChild(css: "#un_\(itemID)")
-        let canResetVote = unvoteNode != nil
-        var isUpvoted = false
-        var isDownvoted = false
-        if let unvoteNode {
-            if unvoteNode.stringValue.lowercased() == "undown" {
-                isDownvoted = true
-            } else {
-                isUpvoted = true
-            }
-        }
-
-        return ParsedHNVoteState(
-            upvoteAuth: upvoteAuth,
-            downvoteAuth: downvoteAuth,
-            isUpvoted: isUpvoted,
-            isDownvoted: isDownvoted,
-            canResetVote: canResetVote
-        )
-    }
-
     private static func createCommentTree(nodes: NodeSet) -> [ParsedHNComment] {
+        // Hoist UIFont lookups out of the per-row hot path so the recursive
+        // rich-text builder doesn't hit UIKit on every <i>, <pre>, or <code>.
+        let italicFont = bodyItalicFont
+        let monoFont = bodyMonospacedFont
+
         var rootComments: [ParsedHNComment] = []
         var lastCommentAtLevel: [Int: [Int]] = [:]
+        var commentCount = 0
 
         for node in nodes {
-            guard
-                let idString = node.attr("id"),
-                let id = Int(idString),
-                let textNode = node.firstChild(css: ".commtext"),
-                let ageNode = node.firstChild(css: ".comhead .age"),
-                let age = hnDate(fromAge: ageNode)
-            else {
+            commentCount += 1
+            guard let comment = parseCommentRow(
+                node,
+                italicFont: italicFont,
+                monoFont: monoFont
+            ) else {
                 continue
             }
 
-            let author = node.firstChild(css: ".comhead .hnuser")?.stringValue ?? ""
-            let indentLevel = node.firstChild(css: ".ind")?["indent"].flatMap(Int.init) ?? 0
-            let voteState = parseCommentVoteState(itemID: id, voteNode: node, stateNode: node)
-
-            let comment = ParsedHNComment(
-                id: id,
-                author: author,
-                age: age,
-                indentLevel: indentLevel,
-                content: parseCommentText(textNode),
-                voteState: voteState
-            )
-
-            if indentLevel == 0 {
+            if comment.indentLevel == 0 {
                 rootComments.append(comment)
-                lastCommentAtLevel[indentLevel] = [rootComments.count - 1]
+                lastCommentAtLevel[comment.indentLevel] = [rootComments.count - 1]
                 continue
             }
 
-            guard let parentPath = lastCommentAtLevel[indentLevel - 1] else {
+            guard let parentPath = lastCommentAtLevel[comment.indentLevel - 1] else {
                 debugLog(
                     "parser/comments",
-                    "dropping comment \(id): missing parent path for indent \(indentLevel)"
+                    "dropping comment \(comment.id): missing parent path for indent \(comment.indentLevel)"
                 )
                 continue
             }
             let insertedPath = append(comment, to: &rootComments, parentPath: parentPath)
-            lastCommentAtLevel[indentLevel] = insertedPath
+            lastCommentAtLevel[comment.indentLevel] = insertedPath
         }
 
+        PerfLog.logger.info("commentTree count=\(commentCount, privacy: .public)")
         return rootComments
+    }
+
+    // Walks a comment <tr> using direct child accessors instead of CSS selectors.
+    // HN's row markup is fixed:
+    //   tr.athing#ID > td > table > tr > [td.ind, td.votelinks, td.default]
+    //   td.default holds an unclassed div containing span.comhead, plus
+    //   div.comment > div.commtext for the body.
+    // Every CSS query on the parser's hot path becomes a linked-list walk over
+    // libxml2 child nodes. If HN ever changes the markup the structural-miss
+    // debugLog below makes the failure loud.
+    private static func parseCommentRow(
+        _ row: XMLElement,
+        italicFont: UIFont,
+        monoFont: UIFont
+    ) -> ParsedHNComment? {
+        guard let idString = row.attr("id"), let id = Int(idString) else {
+            return nil
+        }
+
+        guard
+            let outerTd = row.firstChild(staticTag: "td"),
+            let innerTable = outerTd.firstChild(staticTag: "table"),
+            let innerTR = innerTable.firstChild(staticTag: "tr")
+        else {
+            debugLog("parser/comments", "structural miss (no inner tr) for id=\(id)")
+            return nil
+        }
+
+        var indentLevel = 0
+        var upvoteAuth: String? = nil
+        var downvoteAuth: String? = nil
+        var canResetVote = false
+        var isUpvoted = false
+        var isDownvoted = false
+        var author = ""
+        var ageDate: Date? = nil
+        var commTextNode: XMLElement? = nil
+
+        for cell in innerTR.children(staticTag: "td") {
+            switch cell.attr("class") {
+            case "ind":
+                if let s = cell.attr("indent"), let n = Int(s) {
+                    indentLevel = n
+                }
+            case "votelinks":
+                if let center = cell.firstChild(staticTag: "center") {
+                    for a in center.children(staticTag: "a") {
+                        let aid = a.attr("id") ?? ""
+                        if aid.hasPrefix("up_") {
+                            upvoteAuth = authToken(from: a.attr("href"))
+                        } else if aid.hasPrefix("down_") {
+                            downvoteAuth = authToken(from: a.attr("href"))
+                        }
+                    }
+                }
+            case "default":
+                for div in cell.children(staticTag: "div") {
+                    if div.attr("class") == "comment" {
+                        commTextNode = div.children(staticTag: "div").first { d in
+                            (d.attr("class") ?? "").hasPrefix("commtext")
+                        }
+                        continue
+                    }
+                    // The comhead-containing div has no class.
+                    guard let comhead = div.children(staticTag: "span").first(where: {
+                        $0.attr("class") == "comhead"
+                    }) else { continue }
+
+                    for child in comhead.children {
+                        switch child.tag {
+                        case "a":
+                            let cls = child.attr("class") ?? ""
+                            let cid = child.attr("id") ?? ""
+                            if cls == "hnuser" {
+                                author = child.stringValue
+                            } else if cid.hasPrefix("un_") {
+                                canResetVote = true
+                                if child.stringValue.lowercased() == "undown" {
+                                    isDownvoted = true
+                                } else {
+                                    isUpvoted = true
+                                }
+                            }
+                        case "span":
+                            if child.attr("class") == "age" {
+                                ageDate = hnDate(fromAge: child)
+                            }
+                        default:
+                            break
+                        }
+                    }
+                }
+            default:
+                break
+            }
+        }
+
+        guard let age = ageDate, let textNode = commTextNode else {
+            debugLog("parser/comments", "structural miss (no age/commtext) for id=\(id)")
+            return nil
+        }
+
+        return ParsedHNComment(
+            id: id,
+            author: author,
+            age: age,
+            indentLevel: indentLevel,
+            content: parseCommentText(textNode, italicFont: italicFont, monoFont: monoFont),
+            voteState: ParsedHNVoteState(
+                upvoteAuth: upvoteAuth,
+                downvoteAuth: downvoteAuth,
+                isUpvoted: isUpvoted,
+                isDownvoted: isDownvoted,
+                canResetVote: canResetVote
+            )
+        )
     }
 
     @discardableResult
