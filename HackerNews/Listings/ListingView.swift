@@ -5,13 +5,15 @@ import SwiftUI
 struct ListingView: View {
     let destination: HNListingDestination
     let onUpdateDestination: (HNListingDestination) -> Void
+    let onSelectItem: (HNItem) -> Void
     @EnvironmentObject private var cache: AppCache
 
     var body: some View {
         ListingViewBody(
             destination: destination,
             listing: cache.listing(for: destination),
-            onUpdateDestination: onUpdateDestination
+            onUpdateDestination: onUpdateDestination,
+            onSelectItem: onSelectItem
         )
     }
 }
@@ -20,6 +22,7 @@ private struct ListingViewBody: View {
     let destination: HNListingDestination
     @ObservedObject var listing: HNListing
     let onUpdateDestination: (HNListingDestination) -> Void
+    let onSelectItem: (HNItem) -> Void
     @State private var showRefresh = false
 
     var body: some View {
@@ -33,7 +36,9 @@ private struct ListingViewBody: View {
             }
 
             ForEach(listing.items) { item in
-                ListingItemCell(item: item)
+                ListingItemCell(item: item) {
+                    onSelectItem(item)
+                }
             }
 
             if !showRefresh, listing.hasMoreContent {
@@ -76,8 +81,12 @@ private struct ListingViewBody: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
-            ListingView(destination: .front(day: HNListingDestination.todayDayString)) { _ in }
-                .environmentObject(AppCache())
+            ListingView(
+                destination: .front(day: HNListingDestination.todayDayString),
+                onUpdateDestination: { _ in },
+                onSelectItem: { _ in }
+            )
+            .environmentObject(AppCache())
         }
     }
 }

@@ -75,6 +75,18 @@ struct AdaptiveHomeView: View {
             }
             .onChange(of: selectedItem?.id) { _, _ in
                 detailPath = NavigationPath()
+                // Pre-warm the fetch at selection-change time so URLSession
+                // runs in parallel with the detail column's view
+                // construction. onChange fires during state reconciliation,
+                // synchronously after List(selection:) updates and before
+                // ItemDetailView.onAppear.
+                if let item = selectedItem {
+                    if item.lastUpdated == nil {
+                        item.loadMoreContent()
+                    } else {
+                        item.refreshIfOlderThan(Freshness.navigationRefreshThreshold)
+                    }
+                }
             }
             .onChange(of: appState.deepLinkItemID) { _, id in
                 guard let id else { return }

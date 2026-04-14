@@ -253,7 +253,25 @@ Comments arrive as a flat document-order list. `HNHTMLParser.createCommentTree(n
 
 ### Listing Rows
 
-`ListingItemCellContent` is the reusable layout-only story row. `ListingItemCell` wraps it in navigation for the phone flow, while the iPad split view uses `ListingItemCellContent` directly inside a `Button`.
+`ListingItemCellContent` is the reusable layout-only story row. The two platforms wrap it differently, and they are currently wrapped *asymmetrically* for iOS 26 compatibility reasons — see the tech-debt note below before "fixing" the asymmetry.
+
+- **iPhone (`ListingItemCell`)** wraps the content in a plain-styled `Button` that calls an `onSelect: () -> Void` closure passed in from `ListingView` → `HomeView`. `HomeView`'s closure runs `item.loadMoreContent()` **synchronously**, then appends to its `NavigationPath`. This kicks the URLSession request into flight *before* SwiftUI starts the push animation, saving ~200–400 ms of wall-clock on first-load navigation.
+
+- **iPad (`AdaptiveHomeView.ListingContentColumnBody`)** wraps the content in `NavigationLink(value: item)` inside `List(selection: $selectedItem)`. The native iPad split-view selection styling depends on this exact shape — commit `dc3fb08` explicitly tuned it. Do not replace this with a `Button`. The equivalent pre-warm is done in `AdaptiveHomeView`'s `.onChange(of: selectedItem?.id)` handler, which fires synchronously when the `List(selection:)` binding updates, before the detail column's `ItemDetailView` is constructed.
+
+**Tech debt — revisit in iOS 27+:** The iPhone `Button`-with-closure shape exists because iOS 26 refactored SwiftUI's gesture recognizer system and `NavigationLink(value:) + .simultaneousGesture(TapGesture())` no longer works — `NavigationLink`'s default button style swallows simultaneous taps in iOS 26 (see ["Fixing SwiftUI NavigationLink Gesture Conflicts in iOS 26"](https://iosdev03.medium.com/fixing-swiftui-navigationlink-gesture-conflicts-in-ios-26-1d2e08cc214b) on Medium). When a future iOS (likely 27) fixes this regression, the cleaner shape is:
+
+```swift
+// Preferred post-iOS-26 shape (currently broken in iOS 26)
+NavigationLink(value: item) {
+    ListingItemCellContent(item: item)
+}
+.simultaneousGesture(TapGesture().onEnded {
+    // pre-warm loadMoreContent()
+})
+```
+
+When that works again, revert `ListingItemCell` to `NavigationLink(value:)` + `.simultaneousGesture` and **drop the `onSelect: (HNItem) -> Void` closure threading in `ListingView` and `HomeView`**. The iPad side doesn't need to change — its onChange-driven pre-warm is independent of this workaround and works fine regardless.
 
 ### Vote Menus
 

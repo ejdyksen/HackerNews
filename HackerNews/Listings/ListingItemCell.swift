@@ -89,13 +89,25 @@ struct ListingItemCellContent: View {
     }
 }
 
+// Button-based (not NavigationLink) so the tap action runs synchronously
+// *before* SwiftUI starts the push animation. The parent's `onSelect`
+// closure fires `item.loadMoreContent()` in-line, getting URLSession
+// into the queue ~200-400 ms earlier than waiting for
+// `ItemDetailView.onAppear`.
+//
+// TODO(iOS 27+): This is a workaround for an iOS 26 gesture-recognizer
+// regression that broke NavigationLink(value:) + .simultaneousGesture.
+// See AGENTS.md "Listing Rows" for the simpler shape to revert to when
+// a future iOS fixes it, and drop the onSelect closure threading.
 struct ListingItemCell: View {
     var item: HNItem
+    var onSelect: () -> Void
 
     var body: some View {
-        NavigationLink(value: item) {
+        Button(action: onSelect) {
             ListingItemCellContent(item: item)
         }
+        .buttonStyle(.plain)
     }
 }
 
@@ -103,7 +115,7 @@ struct ListingItemCell: View {
 struct ListingItemCell_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            ListingItemCell(item: itemOne)
+            ListingItemCell(item: itemOne, onSelect: {})
                 .previewLayout(.sizeThatFits)
                 .padding()
         }

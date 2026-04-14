@@ -17,7 +17,27 @@ struct HomeView: View {
         NavigationStack(path: $path) {
             ListingView(
                 destination: selectedListing,
-                onUpdateDestination: updateListing
+                onUpdateDestination: updateListing,
+                onSelectItem: { item in
+                    // Pre-warm the fetch on tap — runs synchronously before
+                    // SwiftUI starts the push animation so URLSession is
+                    // already in flight by the time ItemDetailView.onAppear
+                    // fires (~200-400 ms of wall-clock saved on first load).
+                    // HNItem.startLoad is single-flight, so the duplicate
+                    // call from ItemDetailView.onAppear is a safe no-op.
+                    //
+                    // This closure-threaded shape exists because
+                    // NavigationLink(value:) + .simultaneousGesture doesn't
+                    // work in iOS 26. When that gets fixed (iOS 27+?), see
+                    // AGENTS.md "Listing Rows" for the simpler shape to
+                    // revert to, and drop the onSelectItem plumbing.
+                    if item.lastUpdated == nil {
+                        item.loadMoreContent()
+                    } else {
+                        item.refreshIfOlderThan(Freshness.navigationRefreshThreshold)
+                    }
+                    path.append(item)
+                }
             )
             .id(selectedListing)
             .toolbar {
