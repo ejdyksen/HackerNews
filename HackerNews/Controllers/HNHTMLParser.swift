@@ -182,7 +182,7 @@ enum HNHTMLParser {
 
         for child in node.childNodes(ofTypes: [.Element, .Text]) {
             if child.type == .Text {
-                let text = normalizedInlineText(from: child.stringValue)
+                let text = child.stringValue
                 guard !text.isEmpty else { continue }
                 if previousRenderedBlock == .pre && !result.characters.isEmpty {
                     result += AttributedString("\n\n")
@@ -244,44 +244,6 @@ enum HNHTMLParser {
         }
 
         return result
-    }
-
-    /// Single-pass whitespace collapse. No regex, no NSString round-trip, no
-    /// throwaway trim-allocation early-out. Matches the previous semantics:
-    /// any run of Unicode whitespace becomes a single space; leading/trailing
-    /// whitespace is preserved (the original regex also preserved it — the
-    /// trim was only used as an emptiness check).
-    private static func normalizedInlineText(from text: String) -> String {
-        var out = String()
-        out.reserveCapacity(text.utf8.count)
-        var pendingSpace = false
-        var sawNonWhitespace = false
-        var leadingWhitespace = false
-
-        for scalar in text.unicodeScalars {
-            if scalar.properties.isWhitespace {
-                if sawNonWhitespace {
-                    pendingSpace = true
-                } else {
-                    leadingWhitespace = true
-                }
-            } else {
-                if leadingWhitespace {
-                    out.unicodeScalars.append(" ")
-                    leadingWhitespace = false
-                }
-                if pendingSpace {
-                    out.unicodeScalars.append(" ")
-                    pendingSpace = false
-                }
-                out.unicodeScalars.append(scalar)
-                sawNonWhitespace = true
-            }
-        }
-
-        if !sawNonWhitespace { return "" }
-        if pendingSpace { out.unicodeScalars.append(" ") }
-        return out
     }
 
     private static func trimmedPreformattedText(from text: String) -> String {
