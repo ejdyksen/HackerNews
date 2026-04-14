@@ -43,7 +43,6 @@ struct ParsedHNItemPage: Sendable {
     let metadata: ParsedHNItem?
     let body: AttributedString?
     let rootComments: [ParsedHNComment]
-    let hasMoreContent: Bool
 }
 
 struct ParsedHNUserPage: Sendable {
@@ -106,13 +105,11 @@ enum HNHTMLParser {
             let rootComments = PerfLog.measure(PerfLog.parser, "commentTree") {
                 createCommentTree(nodes: doc.css("table.comment-tree tr.athing"))
             }
-            let hasMoreContent = !doc.css(".morelink").isEmpty
 
             return ParsedHNItemPage(
                 metadata: metadata,
                 body: body,
-                rootComments: rootComments,
-                hasMoreContent: hasMoreContent
+                rootComments: rootComments
             )
         }
     }

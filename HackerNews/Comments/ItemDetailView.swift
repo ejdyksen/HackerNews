@@ -105,15 +105,14 @@ struct ItemDetailView: View {
                     .font(.caption)
                     .foregroundColor(.secondary)
                     .multilineTextAlignment(.center)
-                Button("Retry") { item.loadMoreContent() }
+                Button("Retry") { item.loadMoreContent(reload: true) }
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 20)
-        } else if item.canLoadMore {
+        } else if item.isLoading && item.flatComments.isEmpty {
             ProgressView()
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 10)
-                .onAppear { item.loadMoreContent() }
         } else if item.flatComments.isEmpty {
             Text("No comments yet")
                 .foregroundColor(.secondary)
@@ -187,7 +186,9 @@ struct ItemDetailView: View {
         }
         .onAppear {
             cache.rememberItem(item)
-            if item.lastUpdated != nil {
+            if item.lastUpdated == nil {
+                item.loadMoreContent()
+            } else {
                 item.refreshIfOlderThan(Freshness.navigationRefreshThreshold)
             }
         }

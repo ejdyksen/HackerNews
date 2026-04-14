@@ -23,8 +23,8 @@ actor HNRepository {
         return try HNHTMLParser.parseListingPage(data: data, baseURLString: endpoint)
     }
 
-    func fetchItemPage(itemID: Int, page: Int) async throws -> ParsedHNItemPage {
-        let endpoint = "https://news.ycombinator.com/item?id=\(itemID)&p=\(page)"
+    func fetchItemPage(itemID: Int) async throws -> ParsedHNItemPage {
+        let endpoint = "https://news.ycombinator.com/item?id=\(itemID)"
         let data = try await RequestController.shared.request(
             endpoint: endpoint,
             shouldRetry: true

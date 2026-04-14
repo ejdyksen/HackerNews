@@ -9,9 +9,6 @@ import SwiftUI
     var storyLink: URL
     var domain: String
 
-    private var currentPage = 1
-    var canLoadMore = true
-
     var age: Date?
     var author: String?
 
@@ -184,19 +181,20 @@ import SwiftUI
             return loadTask
         }
 
-        if !reload && !canLoadMore {
+        // Non-reload calls after a successful load are no-ops. HN serves the
+        // entire comment thread on a single page, so there's nothing to fetch
+        // unless the caller explicitly asks to reload.
+        if !reload && lastUpdated != nil {
             return Task {}
         }
 
         isLoading = true
         loadError = nil
 
-        // Reloads always refetch page 1, but the existing rootComments /
-        // flatComments / body / pagination state are kept until the new
-        // response lands in `finishLoad`. That way a failing reload leaves
-        // the user reading the previously loaded thread instead of staring
-        // at an empty error screen.
-        let page = reload ? 1 : currentPage
+        // Reloads keep the existing rootComments / flatComments / body until
+        // the new response lands in `finishLoad`. That way a failing reload
+        // leaves the user reading the previously loaded thread instead of
+        // staring at an empty error screen.
         let loadID = UUID()
         activeLoadID = loadID
 
@@ -204,13 +202,9 @@ import SwiftUI
             guard let self else { return }
 
             do {
-                let pageData = try await HNRepository.shared.fetchItemPage(
-                    itemID: self.id,
-                    page: page
-                )
+                let pageData = try await HNRepository.shared.fetchItemPage(itemID: self.id)
                 self.finishLoad(
                     loadID: loadID,
-                    page: page,
                     reload: reload,
                     result: .success(pageData)
                 )
@@ -219,7 +213,6 @@ import SwiftUI
             } catch {
                 self.finishLoad(
                     loadID: loadID,
-                    page: page,
                     reload: reload,
                     result: .failure(error)
                 )
@@ -232,7 +225,6 @@ import SwiftUI
 
     private func finishLoad(
         loadID: UUID,
-        page: Int,
         reload: Bool,
         result: Result<ParsedHNItemPage, Error>
     ) {
@@ -254,39 +246,19 @@ import SwiftUI
             }
 
             PerfLog.measure(PerfLog.models, "applyToMain") {
-                if reload {
-                    // page is forced to 1 on reload, so replace rather than append.
-                    rootComments = newRootComments
-                    flatComments = PerfLog.measure(PerfLog.models, "flatten") {
-                        Self.buildFlatComments(newRootComments)
-                    }
-                    body = pageData.body
-                } else {
-                    let updatedRootComments = rootComments + newRootComments
-                    rootComments = updatedRootComments
-                    flatComments = PerfLog.measure(PerfLog.models, "flatten") {
-                        Self.buildFlatComments(updatedRootComments)
-                    }
-                    // HN only emits the fatitem (self-post body) on page 1. On
-                    // later pagination pages pageData.body is nil, and blindly
-                    // assigning would erase the body we loaded earlier.
-                    if let newBody = pageData.body {
-                        body = newBody
-                    }
+                rootComments = newRootComments
+                flatComments = PerfLog.measure(PerfLog.models, "flatten") {
+                    Self.buildFlatComments(newRootComments)
                 }
-
-                canLoadMore = pageData.hasMoreContent
-                currentPage = page + 1
+                body = pageData.body
                 loadError = nil
             }
 
-            if page == 1 {
-                lastUpdated = .now
-                debugLog(
-                    "item/\(id)",
-                    "loaded \(flatComments.count) comments\(reload ? " (reload)" : "")"
-                )
-            }
+            lastUpdated = .now
+            debugLog(
+                "item/\(id)",
+                "loaded \(flatComments.count) comments\(reload ? " (reload)" : "")"
+            )
 
         case .failure(let error):
             loadError = error.localizedDescription
