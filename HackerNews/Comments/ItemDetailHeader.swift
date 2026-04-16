@@ -95,13 +95,11 @@ struct ItemDetailHeader: View {
                 }
             }
 
-            Divider()
-
             if let body = item.body {
                 Text(body)
-
-                Divider()
             }
+
+            Divider()
         }
     }
 }

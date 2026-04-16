@@ -98,7 +98,7 @@ enum HNHTMLParser {
                 doc.css("table.fatitem tr.athing").first.flatMap(parseItem)
             }
             let body = PerfLog.measure(PerfLog.parser, "itemBody") {
-                doc.css("table.fatitem .commtext").first
+                doc.css("table.fatitem div.toptext").first
                     .map { parseCommentText($0) }
                     .flatMap { $0.characters.isEmpty ? nil : $0 }
             }
