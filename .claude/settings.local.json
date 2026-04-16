@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(xcodebuild -project /Users/ejd/Dev/HackerNews/HackerNews.xcodeproj*)"
+    ]
+  }
+}
