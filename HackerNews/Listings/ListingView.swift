@@ -77,22 +77,7 @@ private struct ListingViewBody: View {
                 }
             }
             .listStyle(.plain)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    TimelineView(.periodic(from: .now, by: 60)) { timeline in
-                        VStack(spacing: 1) {
-                            Text(destination.displayName)
-                                .font(.headline)
-                            if let lastUpdated = listing.lastUpdated {
-                                Text(relativeTimeString(from: lastUpdated, now: timeline.date))
-                                    .font(.caption2)
-                                    .foregroundStyle(.secondary)
-                            }
-                        }
-                    }
-                }
-            }
+            .navigationTitle(destination.displayName)
             .lastUpdatedToast(listing.lastUpdated, style: .refresh, source: "listing/\(destination.logKey)") {
                 if let firstID = listing.items.first?.id {
                     withAnimation(.easeOut(duration: 0.3)) {
@@ -111,7 +96,7 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
             ListingView(
-                destination: .front(day: HNListingDestination.todayDayString),
+                destination: .news,
                 onUpdateDestination: { _ in },
                 onSelectItem: { _ in }
             )

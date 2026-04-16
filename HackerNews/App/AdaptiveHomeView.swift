@@ -195,21 +195,9 @@ private struct ListingContentColumnBody: View {
                         .onAppear { listing.loadMoreContent() }
                 }
             }
+            .navigationTitle(destination.displayName)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .principal) {
-                    TimelineView(.periodic(from: .now, by: 60)) { timeline in
-                        VStack(spacing: 1) {
-                            Text(destination.displayName)
-                                .font(.headline)
-                            if let lastUpdated = listing.lastUpdated {
-                                Text(relativeTimeString(from: lastUpdated, now: timeline.date))
-                                    .font(.caption2)
-                                    .foregroundStyle(.secondary)
-                            }
-                        }
-                    }
-                }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: onShowSettings) {
                         Image(systemName: "gearshape")
