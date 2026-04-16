@@ -79,7 +79,7 @@ private struct ListingViewBody: View {
             }
             .listStyle(.plain)
             .navigationTitle(destination.displayName)
-            .navigationSubtitle(listing.lastUpdated.map { relativeTimeString(from: $0, now: now) } ?? "")
+            .navigationSubtitle(listing.lastUpdated.map { relativeTimeString(from: $0, now: now) } ?? " ")
             .onReceive(Timer.publish(every: 60, on: .main, in: .common).autoconnect()) { now = $0 }
             .lastUpdatedToast(listing.lastUpdated, style: .refresh, source: "listing/\(destination.logKey)") {
                 if let firstID = listing.items.first?.id {

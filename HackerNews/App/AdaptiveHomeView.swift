@@ -197,7 +197,7 @@ private struct ListingContentColumnBody: View {
                 }
             }
             .navigationTitle(destination.displayName)
-            .navigationSubtitle(listing.lastUpdated.map { relativeTimeString(from: $0, now: now) } ?? "")
+            .navigationSubtitle(listing.lastUpdated.map { relativeTimeString(from: $0, now: now) } ?? " ")
             .onReceive(Timer.publish(every: 60, on: .main, in: .common).autoconnect()) { now = $0 }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
