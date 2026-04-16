@@ -30,13 +30,13 @@ Operational note: the Xcode MCP only works when the project is already open in X
 
 ```
 HackerNews/
-├── HackerNewsApp.swift              Entry point; injects AppState and AppCache
+├── HackerNewsApp.swift              Entry point; injects AppState/AppCache; tracks scenePhase for session restart
 ├── App/
 │   ├── AdaptiveHomeView.swift       Root adaptive navigation container for iPhone/iPad
-│   ├── AppCache.swift               In-memory cache for canonical items and listing models
-│   ├── AppState.swift               Small app-wide state for deep-link routing
+│   ├── AppCache.swift               In-memory cache for canonical items and listing models; markListingsForFreshLoad()
+│   ├── AppState.swift               App-wide state: deep-link routing and lastBackgroundedAt for veryStale detection
 │   ├── DebugLog.swift               Debug-only logging shim
-│   ├── LastUpdatedToast.swift       Shared toast for refresh timestamps
+│   ├── LastUpdatedToast.swift       Toast system with ToastStyle (.refresh/.timestamp), tap-to-refresh, horizontal dismiss
 │   ├── RelativeTime.swift           Shared date formatting and HN age parsing
 │   └── URLHandler.swift             openURL interceptor that routes HN item links in-app and presents SFSafariViewController for external links
 ├── Controllers/
@@ -51,7 +51,7 @@ HackerNews/
 │   ├── HNComment.swift              Comment state mapped from parsed comment trees
 │   ├── HNUser.swift                 User profile route and observable user-page state
 │   ├── LinkPreview.swift            Observable cached state for external story preview images
-│   └── Freshness.swift              Shared staleness thresholds
+│   └── Freshness.swift              Three-level freshness model (fresh/stale/veryStale)
 ├── Home/
 │   ├── HomeView.swift               iPhone root container; starts on Front Page and hosts toolbar-based listing switching
 │   ├── LoginView.swift              Sheet-based username/password form
@@ -138,6 +138,56 @@ External story link previews are also cached outside `HNItem`. `AppCache` reuses
 - pagination state is updated only by the current active load id
 
 This matters because scroll-triggered pagination and refreshes can overlap if the guardrails are removed.
+
+**Loading methods on models:**
+
+| Method | Purpose | Used by |
+|--------|---------|---------|
+| `loadInitialContent()` | Load if empty (no freshness check) | `.task(id:)` in listing views — fires on first appear and on nav-pop-back, intentionally no-ops when items exist |
+| `loadIfStaleOrMissing()` | Freshness-gated: load if not `.fresh`, clearing stale content first so the spinner shows | Navigation events — tap pre-warm, listing menu/sidebar switch, deep-link handlers |
+| `loadMoreContent(reload:)` | Low-level fetch; `reload: true` cancels in-flight and restarts | Pull-to-refresh, pagination, called internally by the methods above |
+| `reset()` (HNListing only) | Cancels tasks and clears all state without triggering a fetch | `pendingFreshLoad` flow, `loadIfStaleOrMissing()` internally |
+
+**There are no per-screen auto-refresh hooks.** The old `refreshIfStale()`, `refreshIfOlderThan()`, and `.onForegroundActivation` patterns are all removed. Views do not silently re-fetch on their own. The only automatic refresh trigger is the session-restart flow (see Freshness Model below).
+
+### Freshness Model
+
+`Freshness.swift` defines three levels framed around session continuity:
+
+| Level | Threshold | UI behavior |
+|-------|-----------|-------------|
+| `.fresh` | < `staleThreshold` (5 min) | Cache trusted. No UI hints. |
+| `.stale` | < `veryStaleThreshold` (1 hr) | Toast appears. User decides whether to pull-to-refresh or tap the toast. Listing nav subtitle shows the age. |
+| `.veryStale` | ≥ `veryStaleThreshold` | Same toast (orange-tinted). On next app foreground after long backgrounding, listings are marked for fresh reload. |
+
+**Key design principle:** "navigation event" = freshness-gated fetch; "pop-back" = leave the user where they were. Selecting a new item or listing checks freshness and re-fetches if stale. Popping back to a previously-visited screen does nothing — the user sees their scroll position and existing content, plus the toast if it's stale.
+
+**Session restart flow:**
+1. `HackerNewsApp` tracks `scenePhase`. On `.background`, records `appState.lastBackgroundedAt`.
+2. On next `.active`, if the gap exceeds `veryStaleThreshold`, calls `cache.markListingsForFreshLoad()`, which sets `pendingFreshLoad = true` on every cached `HNListing`.
+3. Nothing happens immediately — no navigation is forced.
+4. When the user eventually pops back to a listing, `ListingView.onAppear` checks the flag, clears it, and does `reset()` + `loadInitialContent()` — a full fresh reload with spinner.
+5. Items and users are NOT eagerly reset. They reload lazily via `loadIfStaleOrMissing()` when next navigated to.
+
+**No state restoration** across app termination. Cold launch always starts on Front Page. If iOS state restoration (`@SceneStorage`) is added later, `lastBackgroundedAt` must be persisted to UserDefaults so the veryStale check survives termination.
+
+### Toast System
+
+`LastUpdatedToast` provides staleness affordances with two styles:
+
+| Style | Label | Used by |
+|-------|-------|---------|
+| `.refresh` | "↻ Refresh" | Listing views — a call-to-action for the user |
+| `.timestamp` | "🕒 Updated X ago" | Item detail view — informational with tap-to-refresh |
+
+Both styles:
+- Appear when freshness is `.stale` or `.veryStale`
+- Are tappable when an `onRefresh` closure is provided (dismisses toast + fires reload)
+- Turn orange when `.veryStale`
+- Dismiss via horizontal swipe only (left or right, 40pt threshold) — `.simultaneousGesture` for drag so tap and swipe coexist
+- Reset `isDismissed` when `lastUpdated` changes (so the toast reappears after a refresh)
+
+**Listing navigation subtitle:** Both iPhone and iPad listing views use `.navigationSubtitle()` to always show the data age (e.g. "Updated 3 minutes ago"). A `Timer.publish(every: 60)` ticks the age string. A `" "` placeholder is used before the first load to reserve vertical space and prevent the initial scroll offset from shifting when the real text appears.
 
 ### Comment Rendering
 
@@ -255,9 +305,9 @@ Comments arrive as a flat document-order list. `HNHTMLParser.createCommentTree(n
 
 `ListingItemCellContent` is the reusable layout-only story row. The two platforms wrap it differently, and they are currently wrapped *asymmetrically* for iOS 26 compatibility reasons — see the tech-debt note below before "fixing" the asymmetry.
 
-- **iPhone (`ListingItemCell`)** wraps the content in a plain-styled `Button` that calls an `onSelect: () -> Void` closure passed in from `ListingView` → `HomeView`. `HomeView`'s closure runs `item.loadMoreContent()` **synchronously**, then appends to its `NavigationPath`. This kicks the URLSession request into flight *before* SwiftUI starts the push animation, saving ~200–400 ms of wall-clock on first-load navigation.
+- **iPhone (`ListingItemCell`)** wraps the content in a plain-styled `Button` that calls an `onSelect: () -> Void` closure passed in from `ListingView` → `HomeView`. `HomeView`'s closure runs `item.loadIfStaleOrMissing()` **synchronously**, then appends to its `NavigationPath`. This is freshness-gated: fresh cached items load instantly; stale items clear their comments and start a fresh fetch before the push animation begins.
 
-- **iPad (`AdaptiveHomeView.ListingContentColumnBody`)** wraps the content in `NavigationLink(value: item)` inside `List(selection: $selectedItem)`. The native iPad split-view selection styling depends on this exact shape — commit `dc3fb08` explicitly tuned it. Do not replace this with a `Button`. The equivalent pre-warm is done in `AdaptiveHomeView`'s `.onChange(of: selectedItem?.id)` handler, which fires synchronously when the `List(selection:)` binding updates, before the detail column's `ItemDetailView` is constructed.
+- **iPad (`AdaptiveHomeView.ListingContentColumnBody`)** wraps the content in `NavigationLink(value: item)` inside `List(selection: $selectedItem)`. The native iPad split-view selection styling depends on this exact shape — commit `dc3fb08` explicitly tuned it. Do not replace this with a `Button`. The equivalent pre-warm is done in `AdaptiveHomeView`'s `.onChange(of: selectedItem?.id)` handler, which calls `selectedItem?.loadIfStaleOrMissing()` synchronously when the `List(selection:)` binding updates, before the detail column's `ItemDetailView` is constructed.
 
 **Tech debt — revisit in iOS 27+:** The iPhone `Button`-with-closure shape exists because iOS 26 refactored SwiftUI's gesture recognizer system and `NavigationLink(value:) + .simultaneousGesture(TapGesture())` no longer works — `NavigationLink`'s default button style swallows simultaneous taps in iOS 26 (see ["Fixing SwiftUI NavigationLink Gesture Conflicts in iOS 26"](https://iosdev03.medium.com/fixing-swiftui-navigationlink-gesture-conflicts-in-ios-26-1d2e08cc214b) on Medium). When a future iOS (likely 27) fixes this regression, the cleaner shape is:
 
@@ -301,3 +351,6 @@ Do not collapse `isUpvoted` and `canResetVote` into one concept for story items.
 - If auth stops working, compare against the live HN form submission before simplifying headers or cookie handling.
 - The repo still has no tests, so build verification and careful HTML reasoning matter more than usual.
 - If Xcode MCP appears stuck during startup, remind the human that the project usually needs to be open already and that Xcode may be waiting on another approval prompt.
+- `ScrollPosition.scrollTo(edge:)` does **not** work reliably with `List`. Use `ScrollViewReader` + `proxy.scrollTo(id:anchor:)` for any `List` scrolling. `ScrollPosition` works fine with `ScrollView` (e.g. `ItemDetailView`). The listing views currently use `ScrollViewReader` for toast-triggered scroll-to-top.
+- The listing scroll-to-top on toast refresh uses a 0.35s `DispatchQueue.main.asyncAfter` delay before the reload to prevent the reload's `isLoading = true` state change from interrupting the scroll animation mid-flight.
+- Do not add per-screen `.onForegroundActivation` refresh hooks. The old pattern of `refreshIfStale()` on foreground is intentionally removed. Freshness-gated loading only happens at explicit navigation events; the session-restart flow handles long-backgrounding scenarios.

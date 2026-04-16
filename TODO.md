@@ -45,9 +45,9 @@ Reading experience comes first. Participation features come after the app is a g
 ## Navigation & Discovery
 
 - [ ] **Search** — integrate Algolia HN search (`hn.algolia.com/api`) for full-text story and comment search
-- [ ] **User profiles** — tap username anywhere → scrape `/user?id=` for bio, karma, submission history
+- [x] **User profiles** — tap username anywhere → scrape `/user?id=` for bio, karma, submission history
 - [ ] **Story from comment** — tap story title in a comment's context to navigate back up
-- [ ] **Deep links** — handle `news.ycombinator.com/item?id=N` URLs opened from Safari / share sheet → push `ItemDetailView` instead of opening WebView
+- [x] **Deep links** — handle `news.ycombinator.com/item?id=N` URLs opened from Safari / share sheet → push `ItemDetailView` instead of opening WebView
 
 ---
 
@@ -57,7 +57,7 @@ Reading experience comes first. Participation features come after the app is a g
 - [x] **Pull-to-refresh on `ItemDetailView`** (currently only on listings)
 - [ ] **Scroll-to-top** on nav title tap (standard iOS convention)
 - [ ] **Loading skeleton** instead of plain spinner in listing
-- [ ] **Open story in Safari** button in `ItemDetailHeader` (alongside the NavigationLink)
+- [x] **Open story in Safari** button in `ItemDetailView` toolbar menu
 - [ ] **Copy link** context menu on stories and comments
 
 ---
@@ -83,7 +83,7 @@ Reading experience comes first. Participation features come after the app is a g
 
 ## Infrastructure / Tech Debt
 
-- [ ] **Caching** — cache listing pages and item pages with short TTL so back-navigation is instant
+- [x] **Caching & freshness** — in-memory cache with three-level freshness model (fresh/stale/veryStale). Navigation is freshness-gated: fresh cached content loads instantly, stale content re-fetches. Session restart on long backgrounding marks listings for fresh reload. Toast system for staleness UX.
 - [x] **`@MainActor` audit** — annotated `HNListing`, `HNItem`, `HNComment` with `@MainActor`; removed all `await MainActor.run {}` boilerplate; vote methods on `HNComment` now guaranteed to resume on main thread
 - [x] **`canLoadMore` reset on reload** — `HNItem` doesn't reset `currentPage` or `canLoadMore` when reloaded
 - [x] **Rate-limit UX** — `RequestController` throws `rateLimitExceeded` silently; added `LocalizedError` conformance so user-facing error messages propagate through to UI
@@ -93,7 +93,7 @@ Reading experience comes first. Participation features come after the app is a g
 
 ## Interactions (authenticated)
 
-- [ ] **Vote on stories** — upvote/unvote stories from the listing and detail views (same auth-token pattern as comment voting)
+- [x] **Vote on stories** — upvote/unvote stories from the listing and detail views (same auth-token pattern as comment voting)
 - [ ] **Reply to comments** — POST to `/comment` with `parent` + `text` + `hmac` fields
 - [ ] **Post top-level comment** — reply to the story itself from `ItemDetailView`
 - [ ] **Submit a story** — form posting to `/submit` (URL or text post)
