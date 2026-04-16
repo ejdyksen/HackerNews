@@ -24,6 +24,7 @@ private struct ListingViewBody: View {
     let onUpdateDestination: (HNListingDestination) -> Void
     let onSelectItem: (HNItem) -> Void
     @State private var showRefresh = false
+    @State private var now = Date.now
 
     var body: some View {
         ScrollViewReader { proxy in
@@ -78,6 +79,8 @@ private struct ListingViewBody: View {
             }
             .listStyle(.plain)
             .navigationTitle(destination.displayName)
+            .navigationSubtitle(listing.lastUpdated.map { relativeTimeString(from: $0, now: now) } ?? "")
+            .onReceive(Timer.publish(every: 60, on: .main, in: .common).autoconnect()) { now = $0 }
             .lastUpdatedToast(listing.lastUpdated, style: .refresh, source: "listing/\(destination.logKey)") {
                 if let firstID = listing.items.first?.id {
                     withAnimation(.easeOut(duration: 0.3)) {

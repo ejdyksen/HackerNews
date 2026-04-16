@@ -167,6 +167,7 @@ private struct ListingContentColumnBody: View {
     @Binding var selectedItem: HNItem?
     let onUpdateDestination: (HNListingDestination) -> Void
     let onShowSettings: () -> Void
+    @State private var now = Date.now
 
     var body: some View {
         ScrollViewReader { proxy in
@@ -196,6 +197,8 @@ private struct ListingContentColumnBody: View {
                 }
             }
             .navigationTitle(destination.displayName)
+            .navigationSubtitle(listing.lastUpdated.map { relativeTimeString(from: $0, now: now) } ?? "")
+            .onReceive(Timer.publish(every: 60, on: .main, in: .common).autoconnect()) { now = $0 }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
