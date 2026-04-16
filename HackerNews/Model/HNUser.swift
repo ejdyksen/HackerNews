@@ -35,13 +35,6 @@ struct HNUserRoute: Hashable {
         }
     }
 
-    func refreshIfStale() {
-        if case .stale = Freshness(for: lastUpdated) {
-            debugLog("user/\(username)", "stale -> refresh")
-            loadContent(reload: true)
-        }
-    }
-
     func loadContent(reload: Bool = false) async {
         await startLoad(reload: reload).value
     }

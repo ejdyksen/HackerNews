@@ -256,6 +256,11 @@ enum HNListingDestination: Hashable {
     @Published var hasMoreContent = false
     @Published var loadError: String?
     @Published private(set) var lastUpdated: Date?
+    // Set by the scene-level veryStale check. The next appearance of a
+    // ListingView bound to this listing does a fresh reset+load before
+    // rendering, so the user pops back into a clean list instead of landing
+    // on the scroll position they left.
+    var pendingFreshLoad = false
 
     private var nextPageURL: String?
     private var loadTask: Task<Void, Never>?
@@ -273,20 +278,30 @@ enum HNListingDestination: Hashable {
         }
     }
 
-    func staleRefresh() {
-        guard !isLoading else { return }
-        // Don't clear `items` up-front: if the refresh fails, the user would
-        // be left staring at an empty error screen instead of the previously
-        // loaded (but stale) stories. `finishLoad` replaces `items` atomically
-        // on success and leaves them untouched on failure.
-        loadMoreContent(reload: true)
+    func reset() {
+        loadTask?.cancel()
+        loadTask = nil
+        activeLoadID = nil
+        items = []
+        nextPageURL = nil
+        hasMoreContent = false
+        loadError = nil
+        isLoading = false
+        lastUpdated = nil
     }
 
-    func refreshIfStale() {
-        if case .stale = Freshness(for: lastUpdated) {
-            debugLog("listing/\(destination.logKey)", "stale -> refresh")
-            staleRefresh()
+    // Called when the user selects this listing as a new navigation target
+    // (menu / sidebar / filter control). Fresh cached listings stay untouched
+    // so the user gets an instant transition; stale ones reset so the
+    // spinner overlay replaces the old items during the fetch.
+    func loadIfStaleOrMissing() {
+        if isLoading { return }
+        guard Freshness(for: lastUpdated) != .fresh else { return }
+
+        if !items.isEmpty {
+            reset()
         }
+        loadMoreContent()
     }
 
     func loadMoreContent(reload: Bool = false) async {

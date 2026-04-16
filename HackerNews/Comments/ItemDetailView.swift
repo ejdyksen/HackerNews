@@ -188,14 +188,15 @@ struct ItemDetailView: View {
             cache.rememberItem(item)
             if item.lastUpdated == nil {
                 item.loadMoreContent()
-            } else {
-                item.refreshIfOlderThan(Freshness.navigationRefreshThreshold)
             }
         }
-        .onForegroundActivation {
-            item.refreshIfStale()
+        .lastUpdatedToast(item.lastUpdated, source: "item/\(item.id)") {
+            withAnimation {
+                scrollPosition.scrollTo(edge: .top)
+            } completion: {
+                item.loadMoreContent(reload: true)
+            }
         }
-        .lastUpdatedToast(item.lastUpdated, source: "item/\(item.id)")
     }
 }
 

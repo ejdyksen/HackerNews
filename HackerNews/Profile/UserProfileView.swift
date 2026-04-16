@@ -40,10 +40,6 @@ private struct UserProfileViewBody: View {
         .navigationBarTitleDisplayMode(.inline)
         .task(id: user.username) {
             user.loadInitialContent()
-            user.refreshIfStale()
-        }
-        .onForegroundActivation {
-            user.refreshIfStale()
         }
         .overlay {
             if user.isLoading, user.createdText == nil, user.karma == nil {

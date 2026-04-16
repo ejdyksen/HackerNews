@@ -26,55 +26,84 @@ private struct ListingViewBody: View {
     @State private var showRefresh = false
 
     var body: some View {
-        List {
-            if destination.explainer != nil {
-                ListingContextHeader(
-                    destination: destination,
-                    onUpdateDestination: onUpdateDestination
-                )
-                .listRowSeparator(.hidden)
-            }
+        ScrollViewReader { proxy in
+            List {
+                if destination.explainer != nil {
+                    ListingContextHeader(
+                        destination: destination,
+                        onUpdateDestination: onUpdateDestination
+                    )
+                    .listRowSeparator(.hidden)
+                }
 
-            ForEach(listing.items) { item in
-                ListingItemCell(item: item) {
-                    onSelectItem(item)
+                ForEach(listing.items) { item in
+                    ListingItemCell(item: item) {
+                        onSelectItem(item)
+                    }
+                }
+
+                if !showRefresh, listing.hasMoreContent {
+                    ProgressView()
+                        .frame(maxWidth: .infinity)
+                        .onAppear { listing.loadMoreContent() }
                 }
             }
-
-            if !showRefresh, listing.hasMoreContent {
-                ProgressView()
-                    .frame(maxWidth: .infinity)
-                    .onAppear { listing.loadMoreContent() }
+            .refreshable {
+                showRefresh = true
+                await listing.loadMoreContent(reload: true)
+                showRefresh = false
             }
-        }
-        .refreshable {
-            showRefresh = true
-            await listing.loadMoreContent(reload: true)
-            showRefresh = false
-        }
-        .task(id: destination) {
-            listing.loadInitialContent()
-            listing.refreshIfStale()
-        }
-        .onForegroundActivation {
-            listing.refreshIfStale()
-        }
-        .overlay {
-            if listing.isLoading && listing.items.isEmpty {
-                ProgressView()
-            } else if let error = listing.loadError, listing.items.isEmpty {
-                ContentUnavailableView {
-                    Label("Failed to Load", systemImage: "exclamationmark.triangle")
-                } description: {
-                    Text(error)
-                } actions: {
-                    Button("Retry") { listing.loadMoreContent(reload: true) }
+            .task(id: destination) {
+                listing.loadInitialContent()
+            }
+            .onAppear {
+                if listing.pendingFreshLoad {
+                    listing.pendingFreshLoad = false
+                    listing.reset()
+                    listing.loadInitialContent()
+                }
+            }
+            .overlay {
+                if listing.isLoading && listing.items.isEmpty {
+                    ProgressView()
+                } else if let error = listing.loadError, listing.items.isEmpty {
+                    ContentUnavailableView {
+                        Label("Failed to Load", systemImage: "exclamationmark.triangle")
+                    } description: {
+                        Text(error)
+                    } actions: {
+                        Button("Retry") { listing.loadMoreContent(reload: true) }
+                    }
+                }
+            }
+            .listStyle(.plain)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    TimelineView(.periodic(from: .now, by: 60)) { timeline in
+                        VStack(spacing: 1) {
+                            Text(destination.displayName)
+                                .font(.headline)
+                            if let lastUpdated = listing.lastUpdated {
+                                Text(relativeTimeString(from: lastUpdated, now: timeline.date))
+                                    .font(.caption2)
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                    }
+                }
+            }
+            .lastUpdatedToast(listing.lastUpdated, style: .refresh, source: "listing/\(destination.logKey)") {
+                if let firstID = listing.items.first?.id {
+                    withAnimation(.easeOut(duration: 0.3)) {
+                        proxy.scrollTo(firstID, anchor: .top)
+                    }
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                    listing.loadMoreContent(reload: true)
                 }
             }
         }
-        .listStyle(.plain)
-        .navigationTitle(destination.displayName)
-        .lastUpdatedToast(listing.lastUpdated, source: "listing/\(destination.logKey)")
     }
 }
 

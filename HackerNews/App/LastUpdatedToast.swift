@@ -1,10 +1,20 @@
-// Small toast presentation for showing when visible content was last refreshed.
-// It centralizes the shared timing and dismissal behavior for listings and items.
+// Toast presentation for staleness affordances. Two styles:
+//   .refresh   — listing toast: just says "Refresh", triggers reload on tap
+//   .timestamp — item toast: shows "Updated X ago", triggers reload on tap
+// Orange tint when veryStale. Dismissible via horizontal swipe.
 import SwiftUI
+
+enum ToastStyle {
+    case refresh
+    case timestamp
+}
 
 struct LastUpdatedToast: View {
     let lastUpdated: Date
     let now: Date
+    let style: ToastStyle
+    let isVeryStale: Bool
+    var onRefresh: (() -> Void)?
     @Binding var isDismissed: Bool
     @State private var dragOffset: CGFloat = 0
 
@@ -12,30 +22,46 @@ struct LastUpdatedToast: View {
         "Updated \(relativeTimeString(from: lastUpdated, now: now))"
     }
 
+    private var foregroundColor: Color {
+        isVeryStale ? .orange : .secondary
+    }
+
     var body: some View {
         HStack(spacing: 6) {
-            Image(systemName: "clock")
-                .font(.caption2)
-            Text(agoText)
+            switch style {
+            case .refresh:
+                Image(systemName: "arrow.clockwise")
+                    .font(.caption2)
+                Text("Refresh")
+            case .timestamp:
+                Image(systemName: "clock")
+                    .font(.caption2)
+                Text(agoText)
+            }
         }
         .font(.caption)
-        .foregroundStyle(.secondary)
+        .foregroundStyle(foregroundColor)
         .padding(.horizontal, 14)
         .padding(.vertical, 7)
         .background(.ultraThinMaterial, in: Capsule())
         .overlay(Capsule().strokeBorder(.secondary.opacity(0.15), lineWidth: 0.5))
         .shadow(color: .black.opacity(0.08), radius: 4, y: 2)
-        .offset(y: dragOffset)
+        .offset(x: dragOffset)
         .padding(.bottom, 16)
-        .gesture(
+        .onTapGesture {
+            guard let onRefresh else { return }
+            withAnimation(.easeOut(duration: 0.2)) {
+                isDismissed = true
+            }
+            onRefresh()
+        }
+        .simultaneousGesture(
             DragGesture()
                 .onChanged { value in
-                    if value.translation.height > 0 {
-                        dragOffset = value.translation.height
-                    }
+                    dragOffset = value.translation.width
                 }
                 .onEnded { value in
-                    if value.translation.height > 20 {
+                    if abs(value.translation.width) > 40 {
                         withAnimation(.easeOut(duration: 0.2)) {
                             isDismissed = true
                         }
@@ -47,15 +73,17 @@ struct LastUpdatedToast: View {
                 }
         )
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("Last updated")
-        .accessibilityValue(agoText)
-        .accessibilityHint("Swipe down to dismiss")
+        .accessibilityLabel(style == .refresh ? "Refresh" : "Last updated")
+        .accessibilityValue(style == .refresh ? "" : agoText)
+        .accessibilityHint(onRefresh != nil ? "Tap to refresh, swipe to dismiss" : "Swipe to dismiss")
     }
 }
 
 struct LastUpdatedToastModifier: ViewModifier {
     let lastUpdated: Date?
+    let style: ToastStyle
     let source: String
+    var onRefresh: (() -> Void)?
     @State private var isDismissed: Bool = false
 
     func body(content: Content) -> some View {
@@ -63,12 +91,20 @@ struct LastUpdatedToastModifier: ViewModifier {
             .overlay(alignment: .bottom) {
                 TimelineView(.periodic(from: .now, by: 15)) { timeline in
                     let freshness = Freshness(for: lastUpdated, now: timeline.date)
+                    let isAged = freshness == .stale || freshness == .veryStale
                     ZStack {
-                        if case .aging(let date) = freshness, !isDismissed {
-                            LastUpdatedToast(lastUpdated: date, now: timeline.date, isDismissed: $isDismissed)
-                                .transition(.move(edge: .bottom).combined(with: .opacity))
-                                .onAppear { debugLog("toast/\(source)", "visible") }
-                                .onDisappear { debugLog("toast/\(source)", "hidden") }
+                        if isAged, let date = lastUpdated, !isDismissed {
+                            LastUpdatedToast(
+                                lastUpdated: date,
+                                now: timeline.date,
+                                style: style,
+                                isVeryStale: freshness == .veryStale,
+                                onRefresh: onRefresh,
+                                isDismissed: $isDismissed
+                            )
+                            .transition(.move(edge: .bottom).combined(with: .opacity))
+                            .onAppear { debugLog("toast/\(source)", "visible") }
+                            .onDisappear { debugLog("toast/\(source)", "hidden") }
                         }
                     }
                     .animation(.easeInOut(duration: 0.25), value: isDismissed)
@@ -82,8 +118,18 @@ struct LastUpdatedToastModifier: ViewModifier {
 }
 
 extension View {
-    func lastUpdatedToast(_ lastUpdated: Date?, source: String) -> some View {
-        modifier(LastUpdatedToastModifier(lastUpdated: lastUpdated, source: source))
+    func lastUpdatedToast(
+        _ lastUpdated: Date?,
+        style: ToastStyle = .timestamp,
+        source: String,
+        onRefresh: (() -> Void)? = nil
+    ) -> some View {
+        modifier(LastUpdatedToastModifier(
+            lastUpdated: lastUpdated,
+            style: style,
+            source: source,
+            onRefresh: onRefresh
+        ))
     }
 }
 
@@ -113,10 +159,22 @@ extension View {
     .lastUpdatedToast(Date().addingTimeInterval(-30 * 60), source: "preview")
 }
 
-#Preview("Toast only") {
+#Preview("Refresh toast") {
     LastUpdatedToast(
         lastUpdated: Date().addingTimeInterval(-7 * 60),
         now: .now,
+        style: .refresh,
+        isVeryStale: false,
+        isDismissed: .constant(false)
+    )
+}
+
+#Preview("Very stale toast") {
+    LastUpdatedToast(
+        lastUpdated: Date().addingTimeInterval(-90 * 60),
+        now: .now,
+        style: .timestamp,
+        isVeryStale: true,
         isDismissed: .constant(false)
     )
 }

@@ -1,50 +1,38 @@
-// Shared freshness thresholds for deciding when listings and item threads
-// should be refreshed after navigation or app foregrounding.
+// Three-level freshness model for cached listings, items, and user profiles.
+// Levels are framed around session continuity, not raw cache age:
+//   .fresh     – recently loaded, no UI affordance needed
+//   .stale     – old enough to surface a "last updated" toast; user decides
+//   .veryStale – so old that the next foreground triggers a session reset
 import Foundation
 
 enum Freshness: Equatable {
     case fresh
-    case aging(Date)
     case stale
+    case veryStale
 
-    static let freshThreshold: TimeInterval = 60 * 5
-    static let staleThreshold: TimeInterval = 60 * 60
-    static let navigationRefreshThreshold: TimeInterval = 60 * 5
+    static let staleThreshold: TimeInterval = 60 * 5
+    static let veryStaleThreshold: TimeInterval = 60 * 60
 
     init(for date: Date?, now: Date = .now) {
         guard let date else {
-            self = .stale
+            self = .veryStale
             return
         }
         let age = now.timeIntervalSince(date)
-        if age < Self.freshThreshold {
+        if age < Self.staleThreshold {
             self = .fresh
-        } else if age < Self.staleThreshold {
-            self = .aging(date)
-        } else {
+        } else if age < Self.veryStaleThreshold {
             self = .stale
+        } else {
+            self = .veryStale
         }
-    }
-
-    var isAging: Bool {
-        if case .aging = self { return true }
-        return false
-    }
-
-    var agingDate: Date? {
-        if case .aging(let d) = self { return d }
-        return nil
     }
 
     var debugDescription: String {
         switch self {
-        case .fresh:
-            return "fresh"
-        case .aging(let d):
-            let age = Int(Date.now.timeIntervalSince(d))
-            return "aging(\(age)s)"
-        case .stale:
-            return "stale"
+        case .fresh: return "fresh"
+        case .stale: return "stale"
+        case .veryStale: return "veryStale"
         }
     }
 }

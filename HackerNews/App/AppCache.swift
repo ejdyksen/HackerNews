@@ -55,4 +55,10 @@ import SwiftUI
         linkPreviews[cacheKey] = created
         return created
     }
+
+    func markListingsForFreshLoad() {
+        for listing in listings.values {
+            listing.pendingFreshLoad = true
+        }
+    }
 }

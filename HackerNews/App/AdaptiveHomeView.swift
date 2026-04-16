@@ -72,6 +72,9 @@ struct AdaptiveHomeView: View {
             .onChange(of: selectedListing) {
                 selectedItem = nil
                 detailPath = NavigationPath()
+                if let selected = selectedListing {
+                    cache.listing(for: selected).loadIfStaleOrMissing()
+                }
             }
             .onChange(of: selectedItem?.id) { _, _ in
                 detailPath = NavigationPath()
@@ -80,13 +83,7 @@ struct AdaptiveHomeView: View {
                 // construction. onChange fires during state reconciliation,
                 // synchronously after List(selection:) updates and before
                 // ItemDetailView.onAppear.
-                if let item = selectedItem {
-                    if item.lastUpdated == nil {
-                        item.loadMoreContent()
-                    } else {
-                        item.refreshIfOlderThan(Freshness.navigationRefreshThreshold)
-                    }
-                }
+                selectedItem?.loadIfStaleOrMissing()
             }
             .onChange(of: appState.deepLinkItemID) { _, id in
                 guard let id else { return }
@@ -172,64 +169,83 @@ private struct ListingContentColumnBody: View {
     let onShowSettings: () -> Void
 
     var body: some View {
-        List(selection: $selectedItem) {
-            if destination.explainer != nil {
-                ListingContextHeader(
-                    destination: destination,
-                    onUpdateDestination: onUpdateDestination
-                )
-                .listRowSeparator(.hidden)
-            }
-
-            ForEach(listing.items) { item in
-                NavigationLink(value: item) {
-                    ListingItemCellContent(
-                        item: item,
-                        isSelected: selectedItem?.id == item.id,
-                        leadingInset: 6
+        ScrollViewReader { proxy in
+            List(selection: $selectedItem) {
+                if destination.explainer != nil {
+                    ListingContextHeader(
+                        destination: destination,
+                        onUpdateDestination: onUpdateDestination
                     )
+                    .listRowSeparator(.hidden)
                 }
-            }
 
-            if listing.hasMoreContent {
-                ProgressView()
-                    .frame(maxWidth: .infinity)
-                    .onAppear { listing.loadMoreContent() }
-            }
-        }
-        .navigationTitle(destination.displayName)
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button(action: onShowSettings) {
-                    Image(systemName: "gearshape")
+                ForEach(listing.items) { item in
+                    NavigationLink(value: item) {
+                        ListingItemCellContent(
+                            item: item,
+                            isSelected: selectedItem?.id == item.id,
+                            leadingInset: 6
+                        )
+                    }
                 }
-                .accessibilityLabel("Settings")
-            }
-        }
-        .task(id: destination) {
-            listing.loadInitialContent()
-            listing.refreshIfStale()
-        }
-        .onForegroundActivation {
-            listing.refreshIfStale()
-        }
-        .refreshable {
-            await listing.loadMoreContent(reload: true)
-        }
-        .overlay {
-            if listing.isLoading && listing.items.isEmpty {
-                ProgressView("Loading...")
-            } else if let error = listing.loadError, listing.items.isEmpty {
-                ContentUnavailableView {
-                    Label("Failed to Load", systemImage: "exclamationmark.triangle")
-                } description: {
-                    Text(error)
-                } actions: {
-                    Button("Retry") { listing.loadMoreContent(reload: true) }
+
+                if listing.hasMoreContent {
+                    ProgressView()
+                        .frame(maxWidth: .infinity)
+                        .onAppear { listing.loadMoreContent() }
                 }
             }
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    TimelineView(.periodic(from: .now, by: 60)) { timeline in
+                        VStack(spacing: 1) {
+                            Text(destination.displayName)
+                                .font(.headline)
+                            if let lastUpdated = listing.lastUpdated {
+                                Text(relativeTimeString(from: lastUpdated, now: timeline.date))
+                                    .font(.caption2)
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                    }
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(action: onShowSettings) {
+                        Image(systemName: "gearshape")
+                    }
+                    .accessibilityLabel("Settings")
+                }
+            }
+            .task(id: destination) {
+                listing.loadInitialContent()
+            }
+            .refreshable {
+                await listing.loadMoreContent(reload: true)
+            }
+            .overlay {
+                if listing.isLoading && listing.items.isEmpty {
+                    ProgressView("Loading...")
+                } else if let error = listing.loadError, listing.items.isEmpty {
+                    ContentUnavailableView {
+                        Label("Failed to Load", systemImage: "exclamationmark.triangle")
+                    } description: {
+                        Text(error)
+                    } actions: {
+                        Button("Retry") { listing.loadMoreContent(reload: true) }
+                    }
+                }
+            }
+            .lastUpdatedToast(listing.lastUpdated, style: .refresh, source: "column/\(destination.logKey)") {
+                if let firstID = listing.items.first?.id {
+                    withAnimation(.easeOut(duration: 0.3)) {
+                        proxy.scrollTo(firstID, anchor: .top)
+                    }
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                    listing.loadMoreContent(reload: true)
+                }
+            }
         }
-        .lastUpdatedToast(listing.lastUpdated, source: "column/\(destination.logKey)")
     }
 }

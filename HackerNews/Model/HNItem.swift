@@ -148,28 +148,31 @@ import SwiftUI
         canResetVote = parsed.voteState.canResetVote
     }
 
-    func refreshIfStale() {
-        if case .stale = Freshness(for: lastUpdated) {
-            debugLog("item/\(id)", "stale -> refresh")
-            loadMoreContent(reload: true)
-        }
-    }
-
-    func refreshIfOlderThan(_ threshold: TimeInterval) {
-        guard let lastUpdated else { return }
-        let age = Date.now.timeIntervalSince(lastUpdated)
-        if age > threshold {
-            debugLog("item/\(id)", "nav refresh: age=\(Int(age))s > \(Int(threshold))s")
-            loadMoreContent(reload: true)
-        }
-    }
-
     func loadMoreContent(reload: Bool = false) async {
         await startLoad(reload: reload).value
     }
 
     func loadMoreContent(reload: Bool = false) {
         _ = startLoad(reload: reload)
+    }
+
+    // Called at navigation events (tap / deep link): ensures the user lands on
+    // either fresh cached content or a spinner-covered fetch. Fresh cached
+    // content stays untouched; stale content is cleared so the detail view's
+    // existing `isLoading && flatComments.isEmpty` spinner overlay fires.
+    // Metadata (title / score / vote state) is preserved since it comes from
+    // the listing parse and should stay visible during the reload.
+    func loadIfStaleOrMissing() {
+        if isLoading { return }
+        guard Freshness(for: lastUpdated) != .fresh else { return }
+
+        if lastUpdated != nil {
+            rootComments = []
+            flatComments = []
+            body = nil
+            lastUpdated = nil
+        }
+        loadMoreContent()
     }
 
     @discardableResult

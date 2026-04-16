@@ -31,11 +31,7 @@ struct HomeView: View {
                     // work in iOS 26. When that gets fixed (iOS 27+?), see
                     // AGENTS.md "Listing Rows" for the simpler shape to
                     // revert to, and drop the onSelectItem plumbing.
-                    if item.lastUpdated == nil {
-                        item.loadMoreContent()
-                    } else {
-                        item.refreshIfOlderThan(Freshness.navigationRefreshThreshold)
-                    }
+                    item.loadIfStaleOrMissing()
                     path.append(item)
                 }
             )
@@ -83,6 +79,7 @@ struct HomeView: View {
                 cache.rememberItem(stub)
                 target = stub
             }
+            target.loadIfStaleOrMissing()
             path.append(target)
             appState.deepLinkItemID = nil
         }
@@ -98,6 +95,9 @@ struct HomeView: View {
             guard !isEnabled, selectedListing.kind.isExtraList else { return }
             selectedListing = .news
             path = NavigationPath()
+        }
+        .onChange(of: selectedListing) { _, newDestination in
+            cache.listing(for: newDestination).loadIfStaleOrMissing()
         }
     }
 

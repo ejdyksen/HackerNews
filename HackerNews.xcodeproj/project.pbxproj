@@ -281,7 +281,7 @@
 				CODE_SIGN_ENTITLEMENTS = HackerNews/Resources/HackerNews.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "HackerNews/Preview\\ Content";
+				DEVELOPMENT_ASSET_PATHS = "HackerNews/Preview\\ Content/PreviewData.swift";
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				ENABLE_PREVIEWS = YES;
@@ -311,7 +311,7 @@
 				CODE_SIGN_ENTITLEMENTS = HackerNews/Resources/HackerNews.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "HackerNews/Preview\\ Content";
+				DEVELOPMENT_ASSET_PATHS = "HackerNews/Preview\\ Content/PreviewData.swift";
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				ENABLE_PREVIEWS = YES;
