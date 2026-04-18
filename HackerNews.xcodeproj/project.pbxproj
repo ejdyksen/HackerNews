@@ -281,6 +281,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "HackerNews/Preview\\ Content/PreviewData.swift";
+				DEVELOPMENT_TEAM = 8MTWQTYGFQ;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				ENABLE_PREVIEWS = YES;
@@ -290,7 +291,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ejdyksen.test.hackernews;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ejdyksen.hackernews;
 				PRODUCT_NAME = HackerNews;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
@@ -311,6 +312,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "HackerNews/Preview\\ Content/PreviewData.swift";
+				DEVELOPMENT_TEAM = 8MTWQTYGFQ;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				ENABLE_PREVIEWS = YES;
@@ -320,7 +322,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ejdyksen.test.hackernews;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ejdyksen.hackernews;
 				PRODUCT_NAME = HackerNews;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
