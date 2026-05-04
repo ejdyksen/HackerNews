@@ -11,7 +11,7 @@ struct HackerNewsApp: App {
 
     var body: some Scene {
         WindowGroup {
-            AdaptiveHomeView()
+            HomeView()
                 .handleURLs()
                 .environmentObject(appState)
                 .environmentObject(cache)

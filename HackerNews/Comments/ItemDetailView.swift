@@ -4,6 +4,7 @@ import SwiftUI
 
 struct ItemDetailView: View {
     @ObservedObject var item: HNItem
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @EnvironmentObject private var cache: AppCache
     @State private var collapsedIDs: Set<Int> = []
     @State private var showScrolledTitle = false
@@ -131,13 +132,14 @@ struct ItemDetailView: View {
         }
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            if let toggle = onToggleFullScreen {
+            if horizontalSizeClass == .regular, let toggle = onToggleFullScreen {
                 ToolbarItem(placement: .topBarLeading) {
                     Button(action: toggle) {
                         Image(systemName: isFullScreen
                             ? "arrow.down.right.and.arrow.up.left"
                             : "arrow.up.left.and.arrow.down.right")
                     }
+                    .accessibilityLabel(isFullScreen ? "Exit Full Screen" : "Enter Full Screen")
                 }
             }
             ToolbarItem(placement: .principal) {

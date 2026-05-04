@@ -32,7 +32,6 @@ Operational note: the Xcode MCP only works when the project is already open in X
 HackerNews/
 ├── HackerNewsApp.swift              Entry point; injects AppState/AppCache; tracks scenePhase for session restart
 ├── App/
-│   ├── AdaptiveHomeView.swift       Root adaptive navigation container for iPhone/iPad
 │   ├── AppCache.swift               In-memory cache for canonical items and listing models; markListingsForFreshLoad()
 │   ├── AppState.swift               App-wide state: deep-link routing and lastBackgroundedAt for veryStale detection
 │   ├── DebugLog.swift               Debug-only logging shim
@@ -53,13 +52,13 @@ HackerNews/
 │   ├── LinkPreview.swift            Observable cached state for external story preview images
 │   └── Freshness.swift              Three-level freshness model (fresh/stale/veryStale)
 ├── Home/
-│   ├── HomeView.swift               iPhone root container; starts on Front Page and hosts toolbar-based listing switching
+│   ├── HomeView.swift               Unified NavigationSplitView root (iPhone collapses via preferredCompactColumn)
 │   ├── LoginView.swift              Sheet-based username/password form
 │   └── SettingsView.swift           Modal settings sheet; currently only exposes account actions
 ├── Listings/
-│   ├── ListingView.swift            Phone listing screen bound to one cached HNListing
+│   ├── ListingContentColumn.swift   Listing column used by the unified root, including refresh/toast behavior
 │   ├── ListingContextHeader.swift   Shared list explainer/filter header for HN list pages
-│   └── ListingItemCell.swift        Story row rendering and row-level vote menu
+│   └── ListingItemCell.swift        ListingItemCellContent story row rendering and row-level vote menu
 ├── Comments/
 │   ├── ItemDetailView.swift         Story detail screen with flat comment thread
 │   ├── ItemDetailHeader.swift       Story header with title, metadata, and self-post body
@@ -94,27 +93,25 @@ All network calls use `async/await`. Core models are `@MainActor ObservableObjec
 
 **All navigation is value-based** using `NavigationLink(value:)` plus `navigationDestination(for:)`. Do not mix it with `NavigationLink(destination:)` inside the same `NavigationStack`.
 
-**iPhone path** (compact size class → `HomeView`):
-```
-HomeView (NavigationStack; root defaults to `.news`)
-  → ListingView(selectedListing)
-    → NavigationLink(value: HNItem) → ItemDetailView
-      → HNUserRoute               → UserProfileView
-```
+A single `HomeView` serves both iPhone and iPad:
 
-Listing switching on iPhone is handled from the root toolbar menu rather than by pushing sibling listing screens onto the stack. The menu is grouped into `Stories` and `Lists`.
-
-**iPad path** (regular size class → `AdaptiveHomeView`):
 ```
-NavigationSplitView(columnVisibility: $columnVisibility)
-  ├── Sidebar: ListingKind selection
-  ├── Content: ListingContentColumn sets $selectedItem
+NavigationSplitView(columnVisibility: $columnVisibility,
+                    preferredCompactColumn: $preferredCompactColumn)
+  ├── Sidebar: ListingKind selection (List(selection: selectedSidebarKind))
+  ├── Content: ListingContentColumn sets $selectedItem (List(selection: $selectedItem))
   └── Detail: NavigationStack.id(selectedItem?.id)
         └── ItemDetailView
             └── HNUserRoute → UserProfileView
 ```
 
+On iPad (regular size class), this renders as a three-column split view. On iPhone (compact), SwiftUI automatically collapses into a single `NavigationStack` where the sidebar is the stack root, and `List(selection:)` bindings drive pushes (sidebar selection → content, item selection → detail).
+
+`preferredCompactColumn` is initialized to `.content` so iPhone users land on the currently selected listing (Front Page by default) rather than the sidebar at launch. Back button reveals the sidebar for listing switching. In compact size classes, `HomeView` clears the sidebar's transient selection when the sidebar becomes visible so selecting the current listing again still pushes the content column.
+
 The `.id(selectedItem?.id)` on the detail `NavigationStack` is intentional and important: it forces SwiftUI to recreate the stack when the selected story changes. Do not remove it casually.
+
+The `columnVisibility = .detailOnly` flip (deep-link item handler, detail full-screen toggle) is a no-op in compact but useful on iPad. `ItemDetailView` only shows the full-screen toolbar button in regular size classes.
 
 ### URL Handling
 
@@ -166,7 +163,7 @@ This matters because scroll-triggered pagination and refreshes can overlap if th
 1. `HackerNewsApp` tracks `scenePhase`. On `.background`, records `appState.lastBackgroundedAt`.
 2. On next `.active`, if the gap exceeds `veryStaleThreshold`, calls `cache.markListingsForFreshLoad()`, which sets `pendingFreshLoad = true` on every cached `HNListing`.
 3. Nothing happens immediately — no navigation is forced.
-4. When the user eventually pops back to a listing, `ListingView.onAppear` checks the flag, clears it, and does `reset()` + `loadInitialContent()` — a full fresh reload with spinner.
+4. When the user eventually pops back to a listing, `ListingContentColumnBody.onAppear` checks the flag, clears it, and does `reset()` + `loadInitialContent()` — a full fresh reload with spinner.
 5. Items and users are NOT eagerly reset. They reload lazily via `loadIfStaleOrMissing()` when next navigated to.
 
 **No state restoration** across app termination. Cold launch always starts on Front Page. If iOS state restoration (`@SceneStorage`) is added later, `lastBackgroundedAt` must be persisted to UserDefaults so the veryStale check survives termination.
@@ -303,25 +300,9 @@ Comments arrive as a flat document-order list. `HNHTMLParser.createCommentTree(n
 
 ### Listing Rows
 
-`ListingItemCellContent` is the reusable layout-only story row. The two platforms wrap it differently, and they are currently wrapped *asymmetrically* for iOS 26 compatibility reasons — see the tech-debt note below before "fixing" the asymmetry.
+`ListingItemCellContent` is the reusable story row. It's wrapped in `NavigationLink(value: item)` inside a `List(selection: $selectedItem)` in `ListingContentColumnBody`. The native split-view selection styling depends on this exact shape — commit `dc3fb08` explicitly tuned it. Do not replace this with a `Button`.
 
-- **iPhone (`ListingItemCell`)** wraps the content in a plain-styled `Button` that calls an `onSelect: () -> Void` closure passed in from `ListingView` → `HomeView`. `HomeView`'s closure runs `item.loadIfStaleOrMissing()` **synchronously**, then appends to its `NavigationPath`. This is freshness-gated: fresh cached items load instantly; stale items clear their comments and start a fresh fetch before the push animation begins.
-
-- **iPad (`AdaptiveHomeView.ListingContentColumnBody`)** wraps the content in `NavigationLink(value: item)` inside `List(selection: $selectedItem)`. The native iPad split-view selection styling depends on this exact shape — commit `dc3fb08` explicitly tuned it. Do not replace this with a `Button`. The equivalent pre-warm is done in `AdaptiveHomeView`'s `.onChange(of: selectedItem?.id)` handler, which calls `selectedItem?.loadIfStaleOrMissing()` synchronously when the `List(selection:)` binding updates, before the detail column's `ItemDetailView` is constructed.
-
-**Tech debt — revisit in iOS 27+:** The iPhone `Button`-with-closure shape exists because iOS 26 refactored SwiftUI's gesture recognizer system and `NavigationLink(value:) + .simultaneousGesture(TapGesture())` no longer works — `NavigationLink`'s default button style swallows simultaneous taps in iOS 26 (see ["Fixing SwiftUI NavigationLink Gesture Conflicts in iOS 26"](https://iosdev03.medium.com/fixing-swiftui-navigationlink-gesture-conflicts-in-ios-26-1d2e08cc214b) on Medium). When a future iOS (likely 27) fixes this regression, the cleaner shape is:
-
-```swift
-// Preferred post-iOS-26 shape (currently broken in iOS 26)
-NavigationLink(value: item) {
-    ListingItemCellContent(item: item)
-}
-.simultaneousGesture(TapGesture().onEnded {
-    // pre-warm loadMoreContent()
-})
-```
-
-When that works again, revert `ListingItemCell` to `NavigationLink(value:)` + `.simultaneousGesture` and **drop the `onSelect: (HNItem) -> Void` closure threading in `ListingView` and `HomeView`**. The iPad side doesn't need to change — its onChange-driven pre-warm is independent of this workaround and works fine regardless.
+Pre-warm for story fetches is done in `HomeView`'s `.onChange(of: selectedItem?.id)` handler, which calls `selectedItem?.loadIfStaleOrMissing()` synchronously when the `List(selection:)` binding updates — before the detail column's `ItemDetailView` is constructed. This runs identically on both iPad (selection column → detail column) and iPhone compact (selection → pushed detail), so there is only one pre-warm code path.
 
 ### Vote Menus
 

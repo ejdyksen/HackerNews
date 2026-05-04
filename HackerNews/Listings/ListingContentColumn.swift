@@ -1,34 +1,35 @@
-// Standalone listing screen for phone navigation. This binds one listing model
-// into a scrollable feed with refresh, pagination, and empty/error states.
+// Listing column used by the unified NavigationSplitView root.
 import SwiftUI
 
-struct ListingView: View {
+struct ListingContentColumn: View {
     let destination: HNListingDestination
+    @Binding var selectedItem: HNItem?
     let onUpdateDestination: (HNListingDestination) -> Void
-    let onSelectItem: (HNItem) -> Void
+    let onShowSettings: () -> Void
     @EnvironmentObject private var cache: AppCache
 
     var body: some View {
-        ListingViewBody(
+        ListingContentColumnBody(
             destination: destination,
             listing: cache.listing(for: destination),
+            selectedItem: $selectedItem,
             onUpdateDestination: onUpdateDestination,
-            onSelectItem: onSelectItem
+            onShowSettings: onShowSettings
         )
     }
 }
 
-private struct ListingViewBody: View {
+private struct ListingContentColumnBody: View {
     let destination: HNListingDestination
     @ObservedObject var listing: HNListing
+    @Binding var selectedItem: HNItem?
     let onUpdateDestination: (HNListingDestination) -> Void
-    let onSelectItem: (HNItem) -> Void
-    @State private var showRefresh = false
+    let onShowSettings: () -> Void
     @State private var now = Date.now
 
     var body: some View {
         ScrollViewReader { proxy in
-            List {
+            List(selection: $selectedItem) {
                 if destination.explainer != nil {
                     ListingContextHeader(
                         destination: destination,
@@ -38,21 +39,32 @@ private struct ListingViewBody: View {
                 }
 
                 ForEach(listing.items) { item in
-                    ListingItemCell(item: item) {
-                        onSelectItem(item)
+                    NavigationLink(value: item) {
+                        ListingItemCellContent(
+                            item: item,
+                            isSelected: selectedItem?.id == item.id,
+                            leadingInset: 6
+                        )
                     }
                 }
 
-                if !showRefresh, listing.hasMoreContent {
+                if listing.hasMoreContent {
                     ProgressView()
                         .frame(maxWidth: .infinity)
                         .onAppear { listing.loadMoreContent() }
                 }
             }
-            .refreshable {
-                showRefresh = true
-                await listing.loadMoreContent(reload: true)
-                showRefresh = false
+            .navigationTitle(destination.displayName)
+            .navigationSubtitle(listing.lastUpdated.map { "Updated \(relativeTimeString(from: $0, now: now))" } ?? " ")
+            .onReceive(Timer.publish(every: 60, on: .main, in: .common).autoconnect()) { now = $0 }
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(action: onShowSettings) {
+                        Image(systemName: "gearshape")
+                    }
+                    .accessibilityLabel("Settings")
+                }
             }
             .task(id: destination) {
                 listing.loadInitialContent()
@@ -64,9 +76,12 @@ private struct ListingViewBody: View {
                     listing.loadInitialContent()
                 }
             }
+            .refreshable {
+                await listing.loadMoreContent(reload: true)
+            }
             .overlay {
                 if listing.isLoading && listing.items.isEmpty {
-                    ProgressView()
+                    ProgressView("Loading...")
                 } else if let error = listing.loadError, listing.items.isEmpty {
                     ContentUnavailableView {
                         Label("Failed to Load", systemImage: "exclamationmark.triangle")
@@ -77,11 +92,7 @@ private struct ListingViewBody: View {
                     }
                 }
             }
-            .listStyle(.plain)
-            .navigationTitle(destination.displayName)
-            .navigationSubtitle(listing.lastUpdated.map { "Updated \(relativeTimeString(from: $0, now: now))" } ?? " ")
-            .onReceive(Timer.publish(every: 60, on: .main, in: .common).autoconnect()) { now = $0 }
-            .lastUpdatedToast(listing.lastUpdated, style: .refresh, source: "listing/\(destination.logKey)") {
+            .lastUpdatedToast(listing.lastUpdated, style: .refresh, source: "column/\(destination.logKey)") {
                 if let firstID = listing.items.first?.id {
                     withAnimation(.easeOut(duration: 0.3)) {
                         proxy.scrollTo(firstID, anchor: .top)
@@ -91,19 +102,6 @@ private struct ListingViewBody: View {
                     listing.loadMoreContent(reload: true)
                 }
             }
-        }
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationStack {
-            ListingView(
-                destination: .news,
-                onUpdateDestination: { _ in },
-                onSelectItem: { _ in }
-            )
-            .environmentObject(AppCache())
         }
     }
 }

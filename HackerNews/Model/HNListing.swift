@@ -256,8 +256,8 @@ enum HNListingDestination: Hashable {
     @Published var hasMoreContent = false
     @Published var loadError: String?
     @Published private(set) var lastUpdated: Date?
-    // Set by the scene-level veryStale check. The next appearance of a
-    // ListingView bound to this listing does a fresh reset+load before
+    // Set by the scene-level veryStale check. The next appearance of the
+    // listing column bound to this listing does a fresh reset+load before
     // rendering, so the user pops back into a clean list instead of landing
     // on the scroll position they left.
     var pendingFreshLoad = false
