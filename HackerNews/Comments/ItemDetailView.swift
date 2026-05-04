@@ -192,13 +192,13 @@ struct ItemDetailView: View {
                 item.loadMoreContent()
             }
         }
-        .lastUpdatedToast(item.lastUpdated, source: "item/\(item.id)") {
+        .lastUpdatedToast(item.lastUpdated, source: "item/\(item.id)", onRefresh: {
             withAnimation {
                 scrollPosition.scrollTo(edge: .top)
             } completion: {
                 item.loadMoreContent(reload: true)
             }
-        }
+        })
     }
 }
 

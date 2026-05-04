@@ -92,16 +92,26 @@ private struct ListingContentColumnBody: View {
                     }
                 }
             }
-            .lastUpdatedToast(listing.lastUpdated, style: .refresh, source: "column/\(destination.logKey)") {
-                if let firstID = listing.items.first?.id {
-                    withAnimation(.easeOut(duration: 0.3)) {
-                        proxy.scrollTo(firstID, anchor: .top)
+            .lastUpdatedToast(
+                listing.lastUpdated,
+                style: .refresh,
+                placement: .top,
+                source: "column/\(destination.logKey)",
+                prefersSystemRefresh: true,
+                onBeforeRefresh: {
+                    await MainActor.run {
+                        if let firstID = listing.items.first?.id {
+                            withAnimation(.easeOut(duration: 0.3)) {
+                                proxy.scrollTo(firstID, anchor: .top)
+                            }
+                        }
                     }
+                    try? await Task.sleep(nanoseconds: 350_000_000)
+                },
+                onRefresh: {
+                    await listing.loadMoreContent(reload: true)
                 }
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
-                    listing.loadMoreContent(reload: true)
-                }
-            }
+            )
         }
     }
 }

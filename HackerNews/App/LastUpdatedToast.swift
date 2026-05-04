@@ -9,12 +9,49 @@ enum ToastStyle {
     case timestamp
 }
 
+enum ToastPlacement {
+    case top
+    case bottom
+
+    var alignment: Alignment {
+        switch self {
+        case .top: return .top
+        case .bottom: return .bottom
+        }
+    }
+
+    var transitionEdge: Edge {
+        switch self {
+        case .top: return .top
+        case .bottom: return .bottom
+        }
+    }
+
+    var paddingEdge: Edge.Set {
+        switch self {
+        case .top: return .top
+        case .bottom: return .bottom
+        }
+    }
+
+    var paddingAmount: CGFloat {
+        switch self {
+        case .top: return 12
+        case .bottom: return 16
+        }
+    }
+}
+
 struct LastUpdatedToast: View {
+    @Environment(\.refresh) private var systemRefresh
     let lastUpdated: Date
     let now: Date
     let style: ToastStyle
+    let placement: ToastPlacement
     let isVeryStale: Bool
-    var onRefresh: (() -> Void)?
+    var prefersSystemRefresh: Bool = false
+    var onBeforeRefresh: (() async -> Void)?
+    var onRefresh: (() async -> Void)?
     @Binding var isDismissed: Bool
     @State private var dragOffset: CGFloat = 0
 
@@ -47,13 +84,20 @@ struct LastUpdatedToast: View {
         .overlay(Capsule().strokeBorder(.secondary.opacity(0.15), lineWidth: 0.5))
         .shadow(color: .black.opacity(0.08), radius: 4, y: 2)
         .offset(x: dragOffset)
-        .padding(.bottom, 16)
+        .padding(placement.paddingEdge, placement.paddingAmount)
         .onTapGesture {
-            guard let onRefresh else { return }
+            guard onRefresh != nil || (prefersSystemRefresh && systemRefresh != nil) else { return }
             withAnimation(.easeOut(duration: 0.2)) {
                 isDismissed = true
             }
-            onRefresh()
+            Task {
+                await onBeforeRefresh?()
+                if prefersSystemRefresh, let systemRefresh {
+                    await systemRefresh()
+                } else {
+                    await onRefresh?()
+                }
+            }
         }
         .simultaneousGesture(
             DragGesture()
@@ -82,13 +126,16 @@ struct LastUpdatedToast: View {
 struct LastUpdatedToastModifier: ViewModifier {
     let lastUpdated: Date?
     let style: ToastStyle
+    let placement: ToastPlacement
     let source: String
-    var onRefresh: (() -> Void)?
+    var prefersSystemRefresh: Bool
+    var onBeforeRefresh: (() async -> Void)?
+    var onRefresh: (() async -> Void)?
     @State private var isDismissed: Bool = false
 
     func body(content: Content) -> some View {
         content
-            .overlay(alignment: .bottom) {
+            .overlay(alignment: placement.alignment) {
                 TimelineView(.periodic(from: .now, by: 15)) { timeline in
                     let freshness = Freshness(for: lastUpdated, now: timeline.date)
                     let isAged = freshness == .stale || freshness == .veryStale
@@ -98,11 +145,14 @@ struct LastUpdatedToastModifier: ViewModifier {
                                 lastUpdated: date,
                                 now: timeline.date,
                                 style: style,
+                                placement: placement,
                                 isVeryStale: freshness == .veryStale,
+                                prefersSystemRefresh: prefersSystemRefresh,
+                                onBeforeRefresh: onBeforeRefresh,
                                 onRefresh: onRefresh,
                                 isDismissed: $isDismissed
                             )
-                            .transition(.move(edge: .bottom).combined(with: .opacity))
+                            .transition(.move(edge: placement.transitionEdge).combined(with: .opacity))
                             .onAppear { debugLog("toast/\(source)", "visible") }
                             .onDisappear { debugLog("toast/\(source)", "hidden") }
                         }
@@ -121,13 +171,19 @@ extension View {
     func lastUpdatedToast(
         _ lastUpdated: Date?,
         style: ToastStyle = .timestamp,
+        placement: ToastPlacement = .bottom,
         source: String,
-        onRefresh: (() -> Void)? = nil
+        prefersSystemRefresh: Bool = false,
+        onBeforeRefresh: (() async -> Void)? = nil,
+        onRefresh: (() async -> Void)? = nil
     ) -> some View {
         modifier(LastUpdatedToastModifier(
             lastUpdated: lastUpdated,
             style: style,
+            placement: placement,
             source: source,
+            prefersSystemRefresh: prefersSystemRefresh,
+            onBeforeRefresh: onBeforeRefresh,
             onRefresh: onRefresh
         ))
     }
@@ -164,6 +220,7 @@ extension View {
         lastUpdated: Date().addingTimeInterval(-7 * 60),
         now: .now,
         style: .refresh,
+        placement: .bottom,
         isVeryStale: false,
         isDismissed: .constant(false)
     )
@@ -174,6 +231,7 @@ extension View {
         lastUpdated: Date().addingTimeInterval(-90 * 60),
         now: .now,
         style: .timestamp,
+        placement: .bottom,
         isVeryStale: true,
         isDismissed: .constant(false)
     )

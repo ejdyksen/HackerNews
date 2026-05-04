@@ -174,7 +174,7 @@ This matters because scroll-triggered pagination and refreshes can overlap if th
 
 | Style | Label | Used by |
 |-------|-------|---------|
-| `.refresh` | "↻ Refresh" | Listing views — a call-to-action for the user |
+| `.refresh` | "↻ Refresh" | Listing views — a call-to-action near the top of the list |
 | `.timestamp` | "🕒 Updated X ago" | Item detail view — informational with tap-to-refresh |
 
 Both styles:
@@ -183,6 +183,8 @@ Both styles:
 - Turn orange when `.veryStale`
 - Dismiss via horizontal swipe only (left or right, 40pt threshold) — `.simultaneousGesture` for drag so tap and swipe coexist
 - Reset `isDismissed` when `lastUpdated` changes (so the toast reappears after a refresh)
+
+Listing refresh toasts use top placement and prefer SwiftUI's `.refreshable` environment action, after scrolling the first row to the top with a short delay. Keep that tap path aligned with pull-to-refresh so the system refresh affordance can be shown when SwiftUI supports it.
 
 **Listing navigation subtitle:** Both iPhone and iPad listing views use `.navigationSubtitle()` to always show the data age (e.g. "Updated 3 minutes ago"). A `Timer.publish(every: 60)` ticks the age string. A `" "` placeholder is used before the first load to reserve vertical space and prevent the initial scroll offset from shifting when the real text appears.
 
