@@ -20,7 +20,7 @@ struct HomeView: View {
     ]
     @State private var selectedItem: HNItem?
     @State private var profilePath: [HNUserRoute] = []
-    @State private var stackPath: [HomeRoute] = []
+    @State private var stackPath: [HomeRoute] = [.listing(.news)]
     @State private var columnVisibility: NavigationSplitViewVisibility = .all
     @State private var showingSettings = false
 
