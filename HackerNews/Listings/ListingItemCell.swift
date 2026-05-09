@@ -89,11 +89,26 @@ struct ListingItemCellContent: View {
     }
 }
 
+struct ListingItemCell: View {
+    @ObservedObject var item: HNItem
+    var onSelect: () -> Void
+
+    var body: some View {
+        Button(action: onSelect) {
+            ListingItemCellContent(item: item)
+        }
+        .buttonStyle(.plain)
+    }
+}
+
 #if DEBUG
 struct ListingItemCellContent_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             ListingItemCellContent(item: itemOne)
+                .previewLayout(.sizeThatFits)
+                .padding()
+            ListingItemCell(item: itemOne, onSelect: {})
                 .previewLayout(.sizeThatFits)
                 .padding()
         }

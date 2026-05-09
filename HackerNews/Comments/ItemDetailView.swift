@@ -164,7 +164,7 @@ struct ItemDetailView: View {
             }
             ToolbarItem(placement: .topBarTrailing) {
                 ShareLink(
-                    item: item.shareLink,
+                    item: item.itemLink,
                     preview: SharePreview(item.title)
                 ) {
                     Image(systemName: "square.and.arrow.up")

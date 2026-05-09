@@ -52,11 +52,12 @@ HackerNews/
 │   ├── LinkPreview.swift            Observable cached state for external story preview images
 │   └── Freshness.swift              Three-level freshness model (fresh/stale/veryStale)
 ├── Home/
-│   ├── HomeView.swift               Unified NavigationSplitView root (iPhone collapses via preferredCompactColumn)
+│   ├── HomeView.swift               Shared navigation state plus StackHomeView/SplitHomeView containers
 │   ├── LoginView.swift              Sheet-based username/password form
 │   └── SettingsView.swift           Modal settings sheet; currently only exposes account actions
 ├── Listings/
-│   ├── ListingContentColumn.swift   Listing column used by the unified root, including refresh/toast behavior
+│   ├── StackListingView.swift       Story listing screen used by the compact NavigationStack path
+│   ├── ListingContentColumn.swift   Listing column used by the regular split view, including refresh/toast behavior
 │   ├── ListingContextHeader.swift   Shared list explainer/filter header for HN list pages
 │   └── ListingItemCell.swift        ListingItemCellContent story row rendering and row-level vote menu
 ├── Comments/
@@ -91,13 +92,26 @@ All network calls use `async/await`. Core models are `@MainActor ObservableObjec
 
 ### Navigation
 
-**All navigation is value-based** using `NavigationLink(value:)` plus `navigationDestination(for:)`. Do not mix it with `NavigationLink(destination:)` inside the same `NavigationStack`.
+**All navigation is value-based** using `NavigationLink(value:)`, `NavigationPath.append(_:)`, and `navigationDestination(for:)`. Do not mix it with `NavigationLink(destination:)` inside the same `NavigationStack`.
 
-A single `HomeView` serves both iPhone and iPad:
+`HomeView` owns the shared navigation state (`selectedListing`, `selectedItem`, profile path, and the compact stack path). It renders that state through separate navigation containers so each size class follows the native SwiftUI pattern without losing selection during rotation.
+
+**iPhone path** (compact size class):
 
 ```
-NavigationSplitView(columnVisibility: $columnVisibility,
-                    preferredCompactColumn: $preferredCompactColumn)
+StackHomeView (NavigationStack)
+  ├── ListingDirectoryView (root list of HN listing kinds)
+  └── StackListingView
+        └── HomeRoute.item(HNItem) → ItemDetailView
+              └── HomeRoute.user  → UserProfileView
+```
+
+Listing switching on iPhone is handled by the root list, grouped into `Stories` and `Lists`. Do not route compact navigation through a collapsed `NavigationSplitView`; commit `0d27f4` tried that unified hierarchy, but the collapsed split-view toolbar/title transition was visibly less smooth on high-refresh iPhones.
+
+**iPad path** (regular size class):
+
+```
+SplitHomeView (NavigationSplitView)
   ├── Sidebar: ListingKind selection (List(selection: selectedSidebarKind))
   ├── Content: ListingContentColumn sets $selectedItem (List(selection: $selectedItem))
   └── Detail: NavigationStack.id(selectedItem?.id)
@@ -105,13 +119,9 @@ NavigationSplitView(columnVisibility: $columnVisibility,
             └── HNUserRoute → UserProfileView
 ```
 
-On iPad (regular size class), this renders as a three-column split view. On iPhone (compact), SwiftUI automatically collapses into a single `NavigationStack` where the sidebar is the stack root, and `List(selection:)` bindings drive pushes (sidebar selection → content, item selection → detail).
-
-`preferredCompactColumn` is initialized to `.content` so iPhone users land on the currently selected listing (Front Page by default) rather than the sidebar at launch. Back button reveals the sidebar for listing switching. In compact size classes, `HomeView` clears the sidebar's transient selection when the sidebar becomes visible so selecting the current listing again still pushes the content column.
-
 The `.id(selectedItem?.id)` on the detail `NavigationStack` is intentional and important: it forces SwiftUI to recreate the stack when the selected story changes. Do not remove it casually.
 
-The `columnVisibility = .detailOnly` flip (deep-link item handler, detail full-screen toggle) is a no-op in compact but useful on iPad. `ItemDetailView` only shows the full-screen toolbar button in regular size classes.
+The `columnVisibility = .detailOnly` flip (deep-link item handler, detail full-screen toggle) is regular-width only. `ItemDetailView` only shows the full-screen toolbar button in regular size classes.
 
 ### URL Handling
 
@@ -302,9 +312,15 @@ Comments arrive as a flat document-order list. `HNHTMLParser.createCommentTree(n
 
 ### Listing Rows
 
-`ListingItemCellContent` is the reusable story row. It's wrapped in `NavigationLink(value: item)` inside a `List(selection: $selectedItem)` in `ListingContentColumnBody`. The native split-view selection styling depends on this exact shape — commit `dc3fb08` explicitly tuned it. Do not replace this with a `Button`.
+`ListingItemCellContent` is the reusable story row.
 
-Pre-warm for story fetches is done in `HomeView`'s `.onChange(of: selectedItem?.id)` handler, which calls `selectedItem?.loadIfStaleOrMissing()` synchronously when the `List(selection:)` binding updates — before the detail column's `ItemDetailView` is constructed. This runs identically on both iPad (selection column → detail column) and iPhone compact (selection → pushed detail), so there is only one pre-warm code path.
+In the regular split-view column, it's wrapped in `NavigationLink(value: item)` inside a `List(selection: $selectedItem)` in `ListingContentColumnBody`. The native split-view selection styling depends on this exact shape — commit `dc3fb08` explicitly tuned it. Do not replace that regular-width row shape with a `Button`.
+
+In the compact listing screen, `ListingItemCell` is a plain `Button` wrapper that runs the pre-warm load and appends `HomeRoute.item` to the compact stack path. This keeps the compact stack on the native phone path and avoids split-view selection semantics on iPhone.
+
+Pre-warm for story fetches has two container-specific paths:
+- Regular: `HomeView`'s `.onChange(of: selectedItem?.id)` calls `selectedItem?.loadIfStaleOrMissing()` when the split-view list selection changes.
+- Compact: `HomeView.selectItem(_:)` calls `item.loadIfStaleOrMissing()` before appending the item to its stack path.
 
 ### Vote Menus
 
