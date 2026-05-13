@@ -1,0 +1,16 @@
+[mcp_servers.xcode]
+command = "xcrun"
+args = ["mcpbridge"]
+
+[mcp_servers.xcode.tools.XcodeListWindows]
+approval_mode = "approve"
+
+[mcp_servers.xcode.tools.BuildProject]
+approval_mode = "approve"
+
+[mcp_servers.xcode.tools.XcodeListNavigatorIssues]
+approval_mode = "approve"
+
+[mcp_servers.xcode.tools.GetBuildLog]
+approval_mode = "approve"
+
