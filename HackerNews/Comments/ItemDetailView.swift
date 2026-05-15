@@ -9,6 +9,7 @@ struct ItemDetailView: View {
     @State private var collapsedIDs: Set<Int> = []
     @State private var showScrolledTitle = false
     @State private var scrollPosition = ScrollPosition()
+    @State private var isShowingToastRefresh = false
     var onShowUserProfile: ((String) -> Void)? = nil
     var onToggleFullScreen: (() -> Void)? = nil
     var isFullScreen: Bool = false
@@ -192,13 +193,29 @@ struct ItemDetailView: View {
                 item.loadMoreContent()
             }
         }
-        .lastUpdatedToast(item.lastUpdated, source: "item/\(item.id)", onRefresh: {
-            withAnimation {
-                scrollPosition.scrollTo(edge: .top)
-            } completion: {
-                item.loadMoreContent(reload: true)
+        .lastUpdatedToast(
+            item.lastUpdated,
+            source: "item/\(item.id)",
+            isRefreshing: isShowingToastRefresh,
+            prefersSystemRefresh: true,
+            onBeforeRefresh: {
+                await MainActor.run {
+                    isShowingToastRefresh = true
+                    withAnimation(.easeOut(duration: 0.3)) {
+                        scrollPosition.scrollTo(edge: .top)
+                    }
+                }
+                try? await Task.sleep(nanoseconds: 350_000_000)
+            },
+            onAfterRefresh: {
+                await MainActor.run {
+                    isShowingToastRefresh = false
+                }
+            },
+            onRefresh: {
+                await item.loadMoreContent(reload: true)
             }
-        })
+        )
     }
 }
 

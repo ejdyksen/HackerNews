@@ -25,6 +25,7 @@ private struct StackListingViewBody: View {
     let onUpdateDestination: (HNListingDestination) -> Void
     let onSelectItem: (HNItem) -> Void
     @State private var now = Date.now
+    @State private var isShowingToastRefresh = false
 
     private var navigationSubtitle: String {
         listing.lastUpdated.map { "Updated \(relativeTimeString(from: $0, now: now))" } ?? " "
@@ -88,9 +89,11 @@ private struct StackListingViewBody: View {
                 style: .refresh,
                 placement: .top,
                 source: "stack/\(destination.logKey)",
+                isRefreshing: isShowingToastRefresh,
                 prefersSystemRefresh: true,
                 onBeforeRefresh: {
                     await MainActor.run {
+                        isShowingToastRefresh = true
                         if let firstID = listing.items.first?.id {
                             withAnimation(.easeOut(duration: 0.3)) {
                                 proxy.scrollTo(firstID, anchor: .top)
@@ -98,6 +101,11 @@ private struct StackListingViewBody: View {
                         }
                     }
                     try? await Task.sleep(nanoseconds: 350_000_000)
+                },
+                onAfterRefresh: {
+                    await MainActor.run {
+                        isShowingToastRefresh = false
+                    }
                 },
                 onRefresh: {
                     await listing.loadMoreContent(reload: true)
