@@ -68,7 +68,7 @@ Reading experience comes first. Participation features come after the app is a g
 - [x] **Flat comment rendering** — replaced recursive `CommentCell` tree with a `LazyVStack` over a pre-order flat list; collapse/expand state centralised in `ItemDetailView`
 - [x] **Value-based navigation** — all navigation migrated to `NavigationLink(value:)` + `navigationDestination(for:)` throughout; old-style destination links removed
 - [ ] **Keyboard navigation** — arrow keys to move between stories/comments on iPad with keyboard
-- [ ] **VoiceOver labels** on vote buttons and collapse/expand controls
+- [x] **VoiceOver labels** on vote buttons and collapse/expand controls
 - [ ] **Reduced motion** — respect `accessibilityReduceMotion` in comment collapse animation
 
 ---

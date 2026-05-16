@@ -31,6 +31,7 @@ struct LoginView: View {
                     Button(action: login) {
                         if isLoading {
                             ProgressView()
+                                .accessibilityLabel("Logging in")
                         } else {
                             Text("Login")
                         }

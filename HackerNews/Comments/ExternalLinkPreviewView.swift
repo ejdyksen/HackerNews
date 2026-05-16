@@ -29,7 +29,9 @@ private struct ExternalLinkPreviewSquare: View {
         .task(id: url) {
             preview.loadInitialContent()
         }
-        .accessibilityLabel("Open story link preview")
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(accessibilityLabel)
+        .accessibilityHint("Opens the story link")
     }
 
     @ViewBuilder
@@ -95,5 +97,12 @@ private struct ExternalLinkPreviewSquare: View {
             .foregroundStyle(.primary)
             .padding(5)
             .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
+    }
+
+    private var accessibilityLabel: String {
+        if let host = url.host(), !host.isEmpty {
+            return "Story preview from \(host)"
+        }
+        return "Story preview"
     }
 }

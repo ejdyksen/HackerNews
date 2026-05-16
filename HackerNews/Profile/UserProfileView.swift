@@ -84,6 +84,7 @@ private struct UserProfileViewBody: View {
                 }
                 .buttonStyle(.plain)
                 .foregroundStyle(.accent)
+                .accessibilityLabel("Open submissions for \(user.displayName)")
             }
 
             if let commentsURL = user.commentsURL {
@@ -92,6 +93,7 @@ private struct UserProfileViewBody: View {
                 }
                 .buttonStyle(.plain)
                 .foregroundStyle(.accent)
+                .accessibilityLabel("Open comments for \(user.displayName)")
             }
 
             if let favoritesURL = user.favoritesURL {
@@ -100,6 +102,7 @@ private struct UserProfileViewBody: View {
                 }
                 .buttonStyle(.plain)
                 .foregroundStyle(.accent)
+                .accessibilityLabel("Open favorites for \(user.displayName)")
             }
         }
     }
@@ -114,6 +117,8 @@ private struct UserProfileViewBody: View {
                 .font(.body)
                 .foregroundStyle(.primary)
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(label), \(value)")
     }
 }
 
