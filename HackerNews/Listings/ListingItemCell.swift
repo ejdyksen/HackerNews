@@ -28,7 +28,7 @@ struct ListingItemCellContent: View {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(accessibilityTitle)
         .accessibilityValue(accessibilityMetadata)
-        .accessibilityHint("Opens the discussion")
+        .accessibilityHint("Opens the comments")
         .storyVoteAccessibilityActions(for: item)
         .contextMenu {
             ShareLink(
