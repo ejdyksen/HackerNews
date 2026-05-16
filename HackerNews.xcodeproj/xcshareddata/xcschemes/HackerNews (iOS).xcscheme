@@ -20,6 +20,20 @@
                ReferencedContainer = "container:HackerNews.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "46CF70A61AB726F7C0C999D4"
+               BuildableName = "HackerNewsUITests.xctest"
+               BlueprintName = "HackerNewsUITests"
+               ReferencedContainer = "container:HackerNews.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -27,7 +41,26 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "29D8F8D4256B5FB400E37E1E"
+            BuildableName = "HackerNews.app"
+            BlueprintName = "HackerNews (iOS)"
+            ReferencedContainer = "container:HackerNews.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "46CF70A61AB726F7C0C999D4"
+               BuildableName = "HackerNewsUITests.xctest"
+               BlueprintName = "HackerNewsUITests"
+               ReferencedContainer = "container:HackerNews.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

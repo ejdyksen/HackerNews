@@ -46,6 +46,7 @@ private struct StackListingViewBody: View {
                     ListingItemCell(item: item) {
                         onSelectItem(item)
                     }
+                    .accessibilityIdentifier("ScreenshotStoryRow")
                 }
 
                 if listing.hasMoreContent {
@@ -55,6 +56,7 @@ private struct StackListingViewBody: View {
                 }
             }
             .listStyle(.plain)
+            .accessibilityIdentifier("ScreenshotListView")
             .navigationTitle(destination.displayName)
             .navigationSubtitle(navigationSubtitle)
             .onReceive(Timer.publish(every: 60, on: .main, in: .common).autoconnect()) { now = $0 }

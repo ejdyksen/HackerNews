@@ -24,3 +24,7 @@ DerivedData/
 
 ## Gcc Patch
 /*.gcno
+
+# fastlane generated output
+fastlane/report.xml
+fastlane/screenshots/

@@ -131,6 +131,7 @@ struct ItemDetailView: View {
             .frame(maxWidth: readableContentWidth, alignment: .leading)
             .frame(maxWidth: .infinity, alignment: .center)
         }
+        .accessibilityIdentifier("ScreenshotCommentsView")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             if horizontalSizeClass == .regular, let toggle = onToggleFullScreen {

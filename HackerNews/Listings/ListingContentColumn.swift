@@ -47,6 +47,7 @@ private struct ListingContentColumnBody: View {
                             leadingInset: 6
                         )
                     }
+                    .accessibilityIdentifier("ScreenshotStoryRow")
                 }
 
                 if listing.hasMoreContent {
@@ -55,6 +56,7 @@ private struct ListingContentColumnBody: View {
                         .onAppear { listing.loadMoreContent() }
                 }
             }
+            .accessibilityIdentifier("ScreenshotListView")
             .navigationTitle(destination.displayName)
             .navigationSubtitle(listing.lastUpdated.map { "Updated \(relativeTimeString(from: $0, now: now))" } ?? " ")
             .onReceive(Timer.publish(every: 60, on: .main, in: .common).autoconnect()) { now = $0 }
