@@ -17,8 +17,11 @@ struct CommentCell: View {
         min(CGFloat(comment.indentLevel) * Self.indentStep, Self.maxIndent)
     }
 
+    private var plainText: String {
+        String(comment.content.characters)
+    }
+
     private var collapsedPreviewText: String {
-        let plainText = String(comment.content.characters)
         let compact = plainText
             .replacingOccurrences(of: "\n", with: " ")
             .split(whereSeparator: \.isWhitespace)
@@ -26,22 +29,42 @@ struct CommentCell: View {
         return compact
     }
 
+    private var descendantCount: Int {
+        countDescendants(of: comment)
+    }
+
+    private var accessibilityValueText: String {
+        var pieces: [String] = [
+            relativeTimeString(from: comment.age),
+            "level \(comment.indentLevel + 1)"
+        ]
+
+        if comment.isUpvoted {
+            pieces.append("upvoted")
+        } else if comment.isDownvoted {
+            pieces.append("downvoted")
+        }
+
+        if isCollapsed {
+            pieces.append("collapsed")
+            if descendantCount > 0 {
+                let hiddenText = descendantCount == 1 ? "1 reply hidden" : "\(descendantCount) replies hidden"
+                pieces.append(hiddenText)
+            }
+            pieces.append(collapsedPreviewText)
+        } else {
+            pieces.append(plainText)
+        }
+
+        return pieces.joined(separator: ", ")
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             VStack(alignment: .leading, spacing: 8) {
                 HStack(alignment: .lastTextBaseline) {
                     if comment.canUpvote {
-                        Group {
-                            if comment.isUpvoted {
-                                Image(systemName: "hand.thumbsup.fill")
-                                    .foregroundColor(.orange)
-                            } else if comment.isDownvoted {
-                                Image(systemName: "hand.thumbsdown.fill")
-                                    .foregroundColor(.gray)
-                        }
-                    }
-                        .font(.caption)
-                        .frame(width: 12, height: 12)
+                        voteStateIcon
                     }
                     Text(comment.author)
                         .font(.headline)
@@ -75,6 +98,28 @@ struct CommentCell: View {
                     onToggle()
                 }
             }
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("Comment by \(comment.author)")
+            .accessibilityValue(accessibilityValueText)
+            .accessibilityHint(isCollapsed ? "Double tap to expand" : "Double tap to collapse")
+            .accessibilityAddTraits(.isButton)
+            .accessibilityAction {
+                withAnimation(.easeInOut(duration: 0.3)) {
+                    onToggle()
+                }
+            }
+            .accessibilityAction(named: Text(isCollapsed ? "Expand comment" : "Collapse comment")) {
+                withAnimation(.easeInOut(duration: 0.3)) {
+                    onToggle()
+                }
+            }
+            .accessibilityAction(named: Text("Collapse thread to root")) {
+                onCollapseToRoot?(comment)
+            }
+            .accessibilityAction(named: Text("View profile")) {
+                onShowUserProfile?(comment.author)
+            }
+            .commentVoteAccessibilityActions(for: comment)
             .contextMenu {
                 Button {
                     onCollapseToRoot?(comment)
@@ -102,8 +147,10 @@ struct CommentCell: View {
                         Button { Task { try? await comment.upvote() } } label: {
                             Label("Upvote", systemImage: "hand.thumbsup")
                         }
-                        Button { Task { try? await comment.downvote() } } label: {
-                            Label("Downvote", systemImage: "hand.thumbsdown")
+                        if comment.canDownvote {
+                            Button { Task { try? await comment.downvote() } } label: {
+                                Label("Downvote", systemImage: "hand.thumbsdown")
+                            }
                         }
                     } else {
                         Button { Task { try? await comment.unvote() } } label: {
@@ -113,6 +160,53 @@ struct CommentCell: View {
                     }
                 }
             }
+        }
+    }
+
+    @ViewBuilder
+    private var voteStateIcon: some View {
+        Group {
+            if comment.isUpvoted {
+                Image(systemName: "hand.thumbsup.fill")
+                    .foregroundColor(.orange)
+            } else if comment.isDownvoted {
+                Image(systemName: "hand.thumbsdown.fill")
+                    .foregroundColor(.gray)
+            }
+        }
+        .font(.caption)
+        .frame(width: 12, height: 12)
+        .accessibilityHidden(true)
+    }
+
+    private func countDescendants(of comment: HNComment) -> Int {
+        comment.children.reduce(comment.children.count) { total, child in
+            total + countDescendants(of: child)
+        }
+    }
+}
+
+private extension View {
+    @ViewBuilder
+    func commentVoteAccessibilityActions(for comment: HNComment) -> some View {
+        if comment.canUpvote, comment.canDownvote, !comment.isUpvoted, !comment.isDownvoted {
+            self
+                .accessibilityAction(named: Text("Upvote comment")) {
+                    Task { try? await comment.upvote() }
+                }
+                .accessibilityAction(named: Text("Downvote comment")) {
+                    Task { try? await comment.downvote() }
+                }
+        } else if comment.canUpvote, !comment.isUpvoted, !comment.isDownvoted {
+            self.accessibilityAction(named: Text("Upvote comment")) {
+                Task { try? await comment.upvote() }
+            }
+        } else if comment.canResetVote, comment.isUpvoted || comment.isDownvoted {
+            self.accessibilityAction(named: Text("Unvote comment")) {
+                Task { try? await comment.unvote() }
+            }
+        } else {
+            self
         }
     }
 }

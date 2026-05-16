@@ -161,6 +161,8 @@ struct ItemDetailView: View {
                         }
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel("Scroll to top")
+                    .accessibilityValue(item.title)
                     .transition(.opacity.combined(with: .move(edge: .top)))
                 }
             }
@@ -171,6 +173,7 @@ struct ItemDetailView: View {
                 ) {
                     Image(systemName: "square.and.arrow.up")
                 }
+                .accessibilityLabel("Share story")
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Menu {
@@ -182,6 +185,7 @@ struct ItemDetailView: View {
                 } label: {
                     Image(systemName: "ellipsis")
                 }
+                .accessibilityLabel("More actions")
             }
         }
         .scrollPosition($scrollPosition)

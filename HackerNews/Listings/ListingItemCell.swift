@@ -25,6 +25,11 @@ struct ListingItemCellContent: View {
         }
         .padding(.leading, leadingInset)
         .frame(maxWidth: .infinity, alignment: .leading)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(accessibilityTitle)
+        .accessibilityValue(accessibilityMetadata)
+        .accessibilityHint("Opens the discussion")
+        .storyVoteAccessibilityActions(for: item)
         .contextMenu {
             ShareLink(
                 item: item.shareLink,
@@ -87,6 +92,38 @@ struct ListingItemCellContent: View {
         }
         return result
     }
+
+    private var accessibilityTitle: String {
+        if item.domain.isEmpty {
+            return item.title
+        }
+        return "\(item.title), \(item.domain)"
+    }
+
+    private var accessibilityMetadata: String {
+        var pieces: [String] = []
+
+        if let score = item.score {
+            pieces.append("\(score) \(score == 1 ? "point" : "points")")
+        }
+
+        if item.isUpvoted {
+            pieces.append("upvoted")
+        } else if item.isDownvoted {
+            pieces.append("downvoted")
+        }
+
+        if let author = item.author, !author.isEmpty {
+            pieces.append("by \(author)")
+        }
+
+        if let age = item.age {
+            pieces.append(relativeTimeString(from: age))
+        }
+
+        pieces.append("\(item.commentCount) \(item.commentCount == 1 ? "comment" : "comments")")
+        return pieces.joined(separator: ", ")
+    }
 }
 
 struct ListingItemCell: View {
@@ -98,6 +135,31 @@ struct ListingItemCell: View {
             ListingItemCellContent(item: item)
         }
         .buttonStyle(.plain)
+    }
+}
+
+private extension View {
+    @ViewBuilder
+    func storyVoteAccessibilityActions(for item: HNItem) -> some View {
+        if item.canUpvote, item.canDownvote, !item.isUpvoted, !item.isDownvoted {
+            self
+                .accessibilityAction(named: Text("Upvote story")) {
+                    Task { try? await item.upvote() }
+                }
+                .accessibilityAction(named: Text("Downvote story")) {
+                    Task { try? await item.downvote() }
+                }
+        } else if item.canUpvote, !item.isUpvoted, !item.isDownvoted {
+            self.accessibilityAction(named: Text("Upvote story")) {
+                Task { try? await item.upvote() }
+            }
+        } else if item.canResetVote, item.isUpvoted || item.isDownvoted {
+            self.accessibilityAction(named: Text("Unvote story")) {
+                Task { try? await item.unvote() }
+            }
+        } else {
+            self
+        }
     }
 }
 

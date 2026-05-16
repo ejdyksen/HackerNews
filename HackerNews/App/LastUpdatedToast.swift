@@ -65,6 +65,10 @@ struct LastUpdatedToast: View {
         isVeryStale ? .orange : .secondary
     }
 
+    private var canRefresh: Bool {
+        onRefresh != nil || (prefersSystemRefresh && systemRefresh != nil)
+    }
+
     var body: some View {
         HStack(spacing: 6) {
             if isRefreshing {
@@ -94,17 +98,7 @@ struct LastUpdatedToast: View {
         .offset(x: dragOffset)
         .padding(placement.paddingEdge, placement.paddingAmount)
         .onTapGesture {
-            guard !isRefreshing else { return }
-            guard onRefresh != nil || (prefersSystemRefresh && systemRefresh != nil) else { return }
-            Task {
-                await onBeforeRefresh?()
-                if prefersSystemRefresh, let systemRefresh {
-                    await systemRefresh()
-                } else {
-                    await onRefresh?()
-                }
-                await onAfterRefresh?()
-            }
+            refresh()
         }
         .simultaneousGesture(
             DragGesture()
@@ -127,10 +121,37 @@ struct LastUpdatedToast: View {
         .accessibilityLabel(isRefreshing ? "Refreshing" : style == .refresh ? "Refresh" : "Last updated")
         .accessibilityValue(isRefreshing || style == .refresh ? "" : agoText)
         .accessibilityHint(
-            !isRefreshing && (onRefresh != nil || (prefersSystemRefresh && systemRefresh != nil))
+            !isRefreshing && canRefresh
                 ? "Tap to refresh, swipe to dismiss"
                 : "Swipe to dismiss"
         )
+        .toastRefreshAccessibilityAction(isEnabled: canRefresh) {
+            refresh()
+        }
+    }
+
+    private func refresh() {
+        guard !isRefreshing, canRefresh else { return }
+        Task {
+            await onBeforeRefresh?()
+            if prefersSystemRefresh, let systemRefresh {
+                await systemRefresh()
+            } else {
+                await onRefresh?()
+            }
+            await onAfterRefresh?()
+        }
+    }
+}
+
+private extension View {
+    @ViewBuilder
+    func toastRefreshAccessibilityAction(isEnabled: Bool, action: @escaping () -> Void) -> some View {
+        if isEnabled {
+            self.accessibilityAction(named: Text("Refresh"), action)
+        } else {
+            self
+        }
     }
 }
 

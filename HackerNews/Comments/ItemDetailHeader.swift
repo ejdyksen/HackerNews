@@ -40,6 +40,7 @@ struct ItemDetailHeader: View {
                             .foregroundStyle(.accent)
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel("View profile for \(author)")
                 } else {
                     Text(author)
                 }
@@ -75,6 +76,8 @@ struct ItemDetailHeader: View {
                     .multilineTextAlignment(.leading)
             }
             .buttonStyle(.plain)
+            .accessibilityLabel("Open story: \(item.title)")
+            .accessibilityHint(item.domain.isEmpty ? "Opens the story link" : "Opens the story link from \(item.domain)")
         }
     }
 

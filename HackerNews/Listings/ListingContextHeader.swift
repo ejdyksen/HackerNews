@@ -39,11 +39,14 @@ struct ListingContextHeader: View {
                 Image(systemName: "chevron.left")
             }
             .buttonStyle(.bordered)
+            .accessibilityLabel("Previous day")
+            .accessibilityValue(HNListingDestination.frontDayLabel(for: day))
 
             Spacer(minLength: 0)
 
             Text(HNListingDestination.frontDayLabel(for: day))
                 .font(.subheadline.weight(.semibold))
+                .accessibilityLabel("Selected day")
 
             Spacer(minLength: 0)
 
@@ -56,6 +59,8 @@ struct ListingContextHeader: View {
             }
             .buttonStyle(.bordered)
             .disabled(HNListingDestination.nextDayString(from: day) == nil)
+            .accessibilityLabel("Next day")
+            .accessibilityValue(HNListingDestination.frontDayLabel(for: day))
         }
         .controlSize(.small)
     }
@@ -75,6 +80,7 @@ struct ListingContextHeader: View {
         }
         .pickerStyle(.segmented)
         .labelsHidden()
+        .accessibilityLabel("Best stories time window")
     }
 
     private func bestWindowLabel(for hours: Int) -> String {
