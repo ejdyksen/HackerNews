@@ -33,7 +33,7 @@ struct CommentCell: View {
                     if comment.canUpvote {
                         Group {
                             if comment.isUpvoted {
-                                Image(systemName: "hand.thumbsup.fill")
+                                Image(systemName: "triangle.fill")
                                     .foregroundColor(.orange)
                             } else if comment.isDownvoted {
                                 Image(systemName: "hand.thumbsdown.fill")
@@ -100,7 +100,7 @@ struct CommentCell: View {
                 if comment.canUpvote {
                     if !comment.isUpvoted && !comment.isDownvoted {
                         Button { Task { try? await comment.upvote() } } label: {
-                            Label("Upvote", systemImage: "hand.thumbsup")
+                            Label("Upvote", systemImage: "triangle.fill")
                         }
                         Button { Task { try? await comment.downvote() } } label: {
                             Label("Downvote", systemImage: "hand.thumbsdown")

@@ -36,7 +36,7 @@ struct ListingItemCellContent: View {
             if item.canUpvote {
                 if !item.isUpvoted && !item.isDownvoted {
                     Button { Task { try? await item.upvote() } } label: {
-                        Label("Upvote", systemImage: "hand.thumbsup")
+                        Label("Upvote", systemImage: "triangle.fill")
                     }
                     if item.canDownvote {
                         Button { Task { try? await item.downvote() } } label: {
@@ -70,7 +70,7 @@ struct ListingItemCellContent: View {
             if item.isUpvoted {
                 pieces.append(
                     Text(
-                        "\(Text(Image(systemName: "hand.thumbsup.fill")).foregroundStyle(.orange)) \(score) pts"
+                        "\(Text(Image(systemName: "triangle.fill")).foregroundStyle(.orange)) \(score) pts"
                     )
                 )
             } else {

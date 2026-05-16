@@ -16,7 +16,7 @@ struct ItemDetailHeader: View {
         guard let score = item.score else { return nil }
         if item.isUpvoted {
             return Text(
-                "\(Text(Image(systemName: "hand.thumbsup.fill")).foregroundStyle(.orange)) \(score) points"
+                "\(Text(Image(systemName: "triangle.fill")).foregroundStyle(.orange)) \(score) points"
             )
         }
         return Text("\(score) points")
